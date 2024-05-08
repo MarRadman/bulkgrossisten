@@ -57,3 +57,111 @@ CREATE TABLE
         delivery_status VARCHAR(20) DEFAULT 'pending',
         expected_delivery_time TIMESTAMP
     );
+
+INSERT INTO
+    users (
+        username,
+        email,
+        password_hash,
+        address,
+        phone_number
+    )
+VALUES
+    (
+        'fitness_guru',
+        'fitness@example.com',
+        'hashed_password_1',
+        '123 Gym St, Fitness City, Country',
+        '+1234567890'
+    ),
+    (
+        'muscle_maniac',
+        'muscle@example.com',
+        'hashed_password_2',
+        '456 Protein Ave, Muscle Town, Country',
+        '+9876543210'
+    );
+
+INSERT INTO
+    products (name, description, price)
+VALUES
+    (
+        'Proteinpulver',
+        'Vasslebaserat proteinpulver för muskelåterhämtning och tillväxt',
+        29.99
+    ),
+    (
+        'Kycklingbröst',
+        'Färskt kycklingbröst med högt proteininnehåll och lågt fettinnehåll',
+        9.99
+    ),
+    (
+        'Kvarg',
+        'Mager kvarg med högt proteininnehåll och lågt kolhydratinnehåll',
+        2.49
+    ),
+    (
+        'Havregryn',
+        'Helkornig havregryn för långvarig energi och kolhydratintag',
+        3.99
+    ),
+    (
+        'Ägg',
+        'Färska ägg för högvärdigt protein och viktiga näringsämnen',
+        4.99
+    ),
+    (
+        'Tonfisk på burk',
+        'Tonfisk i vatten för bekväm proteinkälla',
+        1.99
+    ),
+    (
+        'Keso',
+        'Mager keso med högt proteininnehåll och lågt fettinnehåll',
+        1.79
+    ),
+    (
+        'Mandelsmör',
+        'Naturligt mandelsmör för hälsosamma fetter och energi',
+        7.99
+    );
+
+INSERT INTO
+    orders (user_id, delivery_address)
+VALUES
+    (1, '123 Gym St, Fitness City, Country'),
+    (2, '456 Protein Ave, Muscle Town, Country');
+
+INSERT INTO
+    order_details (
+        order_id,
+        product_id,
+        quantity,
+        special_instructions
+    )
+VALUES
+    (1, 1, 2, 'No flavor preference'),
+    (1, 2, 1, 'Skinless and boneless only'),
+    (2, 3, 3, 'Low fat only');
+
+INSERT INTO
+    menus (name, description)
+VALUES
+    (
+        'Bulk Breakfast',
+        'High protein and high calorie breakfast options for bulking'
+    ),
+    (
+        'Bulk Lunch',
+        'Nutrient-dense lunch options for bulking phase'
+    ),
+    (
+        'Bulk Dinner',
+        'Protein-rich and satisfying dinner options for bulking phase'
+    );
+
+INSERT INTO
+    deliveries (order_id, carrier, expected_delivery_time)
+VALUES
+    (1, 'BulkDelivery', '2024-05-10 09:00:00'),
+    (2, 'MuscleExpress', '2024-05-10 12:00:00');
