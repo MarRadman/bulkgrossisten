@@ -46,21 +46,33 @@ var client = new pg_1.Client({
     database: process.env.PGDATABASE,
     host: process.env.PGHOST,
     password: process.env.PGPASSWORD,
-    port: parseInt(process.env.PGPORT || '5432'), // Konvertera porten till ett heltal
+    port: parseInt(process.env.PGPORT || '5432'),
     user: process.env.PGUSER
 });
 client.connect();
 var app = express();
 app.use(cors());
 app.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var rows;
+    var rows, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, client.query('SELECT * FROM users')];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, client.query('SELECT * FROM users')];
             case 1:
                 rows = (_a.sent()).rows;
-                res.json(rows);
-                return [2 /*return*/];
+                if (rows.length === 0) {
+                    res.status(404).json({ error: 'No users found' });
+                }
+                else {
+                    res.json(rows);
+                }
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                res.status(500).json({ error: 'An error occured' });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); });

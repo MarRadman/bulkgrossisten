@@ -1,7 +1,8 @@
-import cors from 'cors';
-import express from 'express';
+import * as cors from 'cors';
+import * as express from 'express';
+import { Request, Response } from 'express';
 import { Client } from 'pg';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -11,7 +12,7 @@ const client = new Client({
   database: process.env.PGDATABASE,
   host: process.env.PGHOST,
   password: process.env.PGPASSWORD,
-  port: parseInt(process.env.PGPORT || '5432'), // Konvertera porten till ett heltal
+  port: parseInt(process.env.PGPORT || '5432'),
   user: process.env.PGUSER
 });
 
@@ -21,7 +22,7 @@ const app = express();
 
 app.use(cors());
 
-app.get('/', async (req, res) => {
+app.get('/', async (req: Request, res: Response) => {
   try  {
     const { rows } = await client.query('SELECT * FROM users');
     if(rows.length === 0) {
