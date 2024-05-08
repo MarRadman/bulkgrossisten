@@ -1,8 +1,7 @@
-import * as cors from 'cors';
-import * as express from 'express';
-import { Request, Response } from 'express';
+import cors from 'cors';
+import express from 'express';
 import { Client } from 'pg';
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -22,7 +21,7 @@ const app = express();
 
 app.use(cors());
 
-app.get('/', async (req: Request, res: Response) => {
+app.get('/', async (req, res) => {
   try  {
     const { rows } = await client.query('SELECT * FROM users');
     if(rows.length === 0) {

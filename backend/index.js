@@ -36,11 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var cors = require("cors");
-var express = require("express");
+var cors_1 = require("cors");
+var express_1 = require("express");
 var pg_1 = require("pg");
-var dotenv = require("dotenv");
-dotenv.config();
+var dotenv_1 = require("dotenv");
+dotenv_1.default.config();
 var port = process.env.PORT || 3000;
 var client = new pg_1.Client({
     database: process.env.PGDATABASE,
@@ -50,8 +50,8 @@ var client = new pg_1.Client({
     user: process.env.PGUSER
 });
 client.connect();
-var app = express();
-app.use(cors());
+var app = (0, express_1.default)();
+app.use((0, cors_1.default)());
 app.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_1;
     return __generator(this, function (_a) {
