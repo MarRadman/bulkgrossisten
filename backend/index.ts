@@ -1,7 +1,7 @@
-import cors from 'cors';
-import express from 'express';
+import cors = require('cors');
+import express = require('express');
 import { Client } from 'pg';
-import dotenv from 'dotenv';
+import dotenv =  require('dotenv');
 
 dotenv.config();
 
