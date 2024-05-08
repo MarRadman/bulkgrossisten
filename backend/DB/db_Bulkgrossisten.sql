@@ -1,4 +1,4 @@
--- Användartabell
+-- User table
 CREATE TABLE
     users (
         user_id SERIAL PRIMARY KEY,
@@ -9,17 +9,17 @@ CREATE TABLE
         phone_number VARCHAR(15)
     );
 
--- Produkttabell
+-- Product table
 CREATE TABLE
     products (
         product_id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         description TEXT,
         price DECIMAL(10, 2) NOT NULL
-        -- Här kan man lägga till fler attribut som storlek, vikt, allergener etc
+        -- Additional attributes like size, weight, allergens, etc. can be added here
     );
 
--- Beställningstabell
+-- Order table
 CREATE TABLE
     orders (
         order_id SERIAL PRIMARY KEY,
@@ -29,7 +29,7 @@ CREATE TABLE
         status VARCHAR(20) DEFAULT 'pending'
     );
 
--- Beställningsdetaljerstabell
+-- Order details table
 CREATE TABLE
     order_details (
         order_detail_id SERIAL PRIMARY KEY,
@@ -39,16 +39,16 @@ CREATE TABLE
         special_instructions TEXT
     );
 
--- Menytabell
+-- Menu table
 CREATE TABLE
     menus (
         menu_id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         description TEXT
-        -- Här kan man lägga till ytterligare attribut som behövs för menyer eller recept
+        -- Additional attributes needed for menus or recipes can be added here
     );
 
--- Leveranstabell
+-- Delivery table
 CREATE TABLE
     deliveries (
         delivery_id SERIAL PRIMARY KEY,
