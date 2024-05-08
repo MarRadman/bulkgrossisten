@@ -41,14 +41,17 @@ var express = require("express");
 var pg_1 = require("pg");
 var dotenv = require("dotenv");
 dotenv.config();
-var port = process.env.PORT || 3000;
 var client = new pg_1.Client({
-    database: process.env.PGDATABASE,
-    host: process.env.PGHOST,
-    password: process.env.PGPASSWORD,
-    port: parseInt(process.env.PGPORT || '5432'),
-    user: process.env.PGUSER
+    connectionString: process.env.PGURI
 });
+// const port = process.env.PORT || 3000;
+// const client = new Client({
+//   database: process.env.PGDATABASE,
+//   host: process.env.PGHOST,
+//   password: process.env.PGPASSWORD,
+//   port: parseInt(process.env.PGPORT || '5432'),
+//   user: process.env.PGUSER
+// });
 client.connect();
 var app = express();
 app.use(cors());
@@ -77,5 +80,5 @@ app.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, func
     });
 }); });
 app.listen(3000, function () {
-    console.log("Server is running on port ".concat(port));
+    console.log("Server is running on port localhost:3000");
 });

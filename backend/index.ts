@@ -5,15 +5,19 @@ import dotenv =  require('dotenv');
 
 dotenv.config();
 
-const port = process.env.PORT || 3000;
-
 const client = new Client({
-  database: process.env.PGDATABASE,
-  host: process.env.PGHOST,
-  password: process.env.PGPASSWORD,
-  port: parseInt(process.env.PGPORT || '5432'),
-  user: process.env.PGUSER
-});
+  connectionString: process.env.PGURI
+})
+
+// const port = process.env.PORT || 3000;
+
+// const client = new Client({
+//   database: process.env.PGDATABASE,
+//   host: process.env.PGHOST,
+//   password: process.env.PGPASSWORD,
+//   port: parseInt(process.env.PGPORT || '5432'),
+//   user: process.env.PGUSER
+// });
 
 client.connect();
 
@@ -37,5 +41,5 @@ app.get('/', async (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port localhost:3000`);
 })
