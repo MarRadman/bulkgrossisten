@@ -1,5 +1,5 @@
 #TODO
-
+Bulkgrossisten
 Projekt: Matleverans: https://www.foodora.se/ & https://www.hellofresh.se/
 
 1. Planering och Design:
