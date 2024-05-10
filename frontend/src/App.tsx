@@ -13,26 +13,25 @@ function App() {
       });
   }, []);
 
-  const handleUserSelect = (id) => {
-    const user = users.find((user) => user.user_id === id);
+  const handleUserSelect = (id: number) => {
+    const user = users.find((user) => user.id === id);
     setSelectedUser(user || null);
   };
 
   return (
     <>
-      <h1></h1>
+      <h1>Users</h1>
       <ul>
         {users.map((user) => (
-          <li key={user.user_id} onClick={() => handleUserSelect(user.user_id)}>
-            {user.username}
+          <li key={user.id} onClick={() => handleUserSelect(user.id)}>
+            {user.name}
           </li>
         ))}
       </ul>
       {selectedUser && (
         <div>
-          <h2>{selectedUser.username}</h2>
-          <p>{selectedUser.email}</p>
-          {/* Add more fields as needed */}
+          <h2>{selectedUser.user.username}</h2>
+          <p>{selectedUser.user.email}</p>
         </div>
       )}
     </>
