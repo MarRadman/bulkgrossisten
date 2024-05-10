@@ -39,14 +39,13 @@ function App() {
     <>
       <h1>Users</h1>
       <ul>
-        {userList.map((currentUsers) => (
-          <li key={currentUsers.user_id} onClick={() => handleUserSelect(currentUsers.user_id)}>
-            {currentUsers.username}
-            {currentUsers.email}
-            {currentUsers.phone_number}
-            {currentUsers.password_hash}
-            {currentUsers.address}
-          </li>
+      {userList.map((currentUsers) => (
+        <li key={currentUsers.user_id} onClick={() => handleUserSelect(currentUsers.user_id)}>
+          <h2>{currentUsers.username}</h2>
+            <p>Email: {currentUsers.email}</p>
+            <p>Phone: {currentUsers.phone_number}</p>
+            <p>Address: {currentUsers.address}</p>
+        </li>
         ))}
       </ul>
     </>
