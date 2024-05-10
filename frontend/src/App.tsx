@@ -15,17 +15,19 @@ function App() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/users")
-      .then((response) => response.json())
-      .then((result) => {
-        if(result.length === 0 || result === null) {
-          console.log("No users found");
-        }
-        else {
-          setUserList(result);
-          console.log(result);
-        }
-      });
+    const fetchData = async () => {
+      const response = await fetch("http://localhost:3000/users");
+      const result = await response.json();
+      if(result.length === 0 || result === null) {
+        console.log("No users found");
+      }
+      else {
+        setUserList(result);
+        console.log(result);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handleUserSelect = (id: number) => {
