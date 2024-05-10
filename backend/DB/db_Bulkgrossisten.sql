@@ -88,42 +88,42 @@ VALUES
     (
         'Proteinpulver',
         'Vasslebaserat proteinpulver för muskelåterhämtning och tillväxt',
-        29.99
+        39
     ),
     (
         'Kycklingbröst',
         'Färskt kycklingbröst med högt proteininnehåll och lågt fettinnehåll',
-        9.99
+        49
     ),
     (
         'Kvarg',
         'Mager kvarg med högt proteininnehåll och lågt kolhydratinnehåll',
-        2.49
+        35
     ),
     (
         'Havregryn',
         'Helkornig havregryn för långvarig energi och kolhydratintag',
-        3.99
+        28
     ),
     (
         'Ägg',
         'Färska ägg för högvärdigt protein och viktiga näringsämnen',
-        4.99
+        3
     ),
     (
         'Tonfisk på burk',
         'Tonfisk i vatten för bekväm proteinkälla',
-        1.99
+        15
     ),
     (
         'Keso',
         'Mager keso med högt proteininnehåll och lågt fettinnehåll',
-        1.79
+        30
     ),
     (
         'Mandelsmör',
         'Naturligt mandelsmör för hälsosamma fetter och energi',
-        7.99
+        39
     );
 
 INSERT INTO
