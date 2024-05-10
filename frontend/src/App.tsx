@@ -1,15 +1,23 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
+type User = {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+};
+
 function App() {
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
 
   useEffect(() => {
     fetch("/users")
       .then((response) => response.json())
       .then((result) => {
-        setUsers(result.users);
+        setUsers(result);
       });
   }, []);
 
@@ -30,8 +38,8 @@ function App() {
       </ul>
       {selectedUser && (
         <div>
-          <h2>{selectedUser.user.username}</h2>
-          <p>{selectedUser.user.email}</p>
+          <h2>{selectedUser.username}</h2>
+          <p>{selectedUser.email}</p>
         </div>
       )}
     </>
