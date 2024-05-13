@@ -38,13 +38,13 @@ function App() {
         <div className="photo-container">
           <Link to="/products">
             <img src="../src/assets/MainFoodPhoto.jpg" alt="First" />
-            <h2>Products</h2>
+            <h2>Produkter</h2>
           </Link>
         </div>
         <div className="photo-container">
           <Link to="/menus">
             <img src="../src/assets/SecFoodPhoto.jpg" alt="Second" />
-            <h2>Menus</h2>
+            <h2>Menyer</h2>
           </Link>
         </div>
       </div>
