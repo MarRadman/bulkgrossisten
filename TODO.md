@@ -2,6 +2,24 @@
 Bulkgrossisten
 Projekt: Matleverans: https://www.foodora.se/ & https://www.hellofresh.se/
 
+Node.js, Express.js, React, TypeScript, and PostgreSQL is a solid stack for a full-stack application. This stack is often referred to as "PERT" stack (PostgreSQL, Express.js, React, TypeScript).
+
+Here are some considerations for your stack:
+
+Database Connection: You can use libraries like pg (node-postgres) or an ORM like Sequelize or TypeORM to connect and interact with your PostgreSQL database.
+
+Database Migrations: Consider using a migration tool to handle changes to your database schema. Both Sequelize and TypeORM have migration capabilities built-in.
+
+Environment Variables: Use environment variables to store sensitive information like your database credentials. You can use the dotenv package to load environment variables from a .env file in your Node.js application.
+
+API Design: Design your API endpoints following RESTful principles. Express.js makes it easy to set up routes for your API.
+
+Error Handling: Make sure to handle errors properly in both your Express.js and React applications. This includes database errors, network errors, and runtime errors.
+
+Authentication and Authorization: If your application requires user authentication, consider using JSON Web Tokens (JWT) or session-based authentication. Libraries like passport.js can help with this.
+
+Testing: Don't forget to write tests for your application. You can use libraries like Jest for testing both your backend and frontend code.
+
 1. Planering och Design:
    1.1 Definiera funktioner och målgrupp:
    Identifiera huvudfunktioner för Bulkgrossisten, inklusive användarregistrering, bläddra i produkter, skapa beställningar, betalningsintegration och leveransspårning.

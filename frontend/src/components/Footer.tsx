@@ -11,9 +11,9 @@ const Footer = () => {
   return (
     <div className="container">
       <footer className="py-3 my-4">
-        <div className="row">
-          <div className="col-md-3">
-            <h5>About</h5>
+        <div className="row text-center text-md-start">
+        <div className="col-md-3">
+          <h5>About</h5>
             <ul className="list-unstyled text-small">
               <li><a className="text-muted" href="#">Our Team</a></li>
               <li><a className="text-muted" href="#">Locations</a></li>
