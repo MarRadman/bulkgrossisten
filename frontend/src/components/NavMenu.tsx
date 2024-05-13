@@ -20,7 +20,7 @@ const NavMenu = () => (
       </Col>
       <Col xs={2} md={4} className="d-flex justify-content-end">
         <NavDropdown className="cart-dropdown" title={<FontAwesomeIcon icon={faShoppingCart} />} id="cart-nav-dropdown">
-          <NavDropdown.Item href="#">Cart Action 1</NavDropdown.Item>
+          <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
           {/* <NavDropdown.Item href="#">Cart Action 2</NavDropdown.Item>
           <NavDropdown.Item href="#">Cart Action 3</NavDropdown.Item> */}
         </NavDropdown>
