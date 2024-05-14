@@ -1,12 +1,13 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 
-const SignUpView: React.FC = () => {
+function LoginView() {
 
   return (
     <div>
       {/* Code here */}
     </div>
   );
-};
+}
 
-export default SignUpView;
+export default LoginView;

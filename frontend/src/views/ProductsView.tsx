@@ -11,6 +11,7 @@ type Product = {
 
 function ProductsView() {
   const [productList, setProductList] = useState<Product[]>([]);
+  // const [selectedCartItem, setSelectedCartItem] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchProductData = async () => {
