@@ -1,0 +1,11 @@
+.navbar {
+  z-index: 100000;
+  background-color: #ab5c4b;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navmenu_icons {
+  height: auto;
+  width: 1.8rem;
+}

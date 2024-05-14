@@ -1,3 +1,10 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: #caa6a649;
+}
+
 #App {
   display: flex;
   flex-direction: column;
@@ -9,11 +16,6 @@
 
 li {
   list-style-type: none;
-}
-
-.custom-navbar {
-  z-index: 100000;
-  background-color: #AB5C4B;
 }
 
 .appView_photos {
@@ -53,10 +55,13 @@ li {
   left: 50%;
   transform: translate(-50%, -50%);
   color: white;
-  border-color: #E37171;
+  border-color: #e37171;
 }
 
-@media (min-width: 768px) {
+@media only screen and (min-width: 768px) {
+  #headTitle {
+    font-size: 2rem; /* Ställ in storlek efter behov */
+  }
   .appView_photos {
     flex-direction: row;
     justify-content: space-around;

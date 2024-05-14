@@ -1,28 +1,42 @@
-import { Navbar, Nav, NavDropdown, Container, Col } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faHome } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
-import '../assets/App.css';
-import 'bootstrap/dist/css/bootstrap.css';
+import { Navbar, NavDropdown, Container, Col } from "react-bootstrap";
+import BurgerMenuIcon from "../assets/icons&photos/burgerIcon.svg";
+import CartIcon from "../assets/icons&photos/cartIcon.svg";
+import { Link } from "react-router-dom";
+import "../assets/Navmenu.css";
 
 const NavMenu = () => (
-  <Navbar className="custom-navbar" expand="lg" sticky="top">
-    <Container>
-      <Col xs={2} md={4} className="d-flex justify-content-start">
-        <NavDropdown className="no-caret" title={<FontAwesomeIcon icon={faHome} />} id="home-nav-dropdown">
+  <Navbar className="navbar" expand="lg" sticky="top">
+    <Container fluid>
+      <Col xs={3} sm={2} md={2} lg={2} className="d-flex justify-content-start">
+        <NavDropdown
+          title={
+            <img
+              src={BurgerMenuIcon}
+              alt="BurgerMenuIcon"
+              className="navmenu_icons"
+            />
+          }
+        >
           <NavDropdown.Item href="/member">Profile</NavDropdown.Item>
-          {/* <NavDropdown.Item href="#">Home Action 2</NavDropdown.Item>
-          <NavDropdown.Item href="#">Home Action 3</NavDropdown.Item> */}
         </NavDropdown>
       </Col>
-      <Col xs={8} md={4} className="d-flex justify-content-center">
-        <Navbar.Brand href="/">Bulkgrossisten</Navbar.Brand>
+      <Col
+        xs={6}
+        sm={8}
+        md={8}
+        lg={8}
+        className="d-flex justify-content-center"
+      >
+        <Navbar.Brand href="/" className="text-center">
+          Bulkgrossisten
+        </Navbar.Brand>
       </Col>
-      <Col xs={2} md={4} className="d-flex justify-content-end">
-        <NavDropdown className="cart-dropdown" title={<FontAwesomeIcon icon={faShoppingCart} />} id="cart-nav-dropdown">
+      <Col xs={3} sm={2} md={2} lg={2} className="d-flex justify-content-end">
+        <NavDropdown
+          title={<img src={CartIcon} alt="Cart" className="navmenu_icons" />}
+          className="custom-dropdown"
+        >
           <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
-          {/* <NavDropdown.Item href="#">Cart Action 2</NavDropdown.Item>
-          <NavDropdown.Item href="#">Cart Action 3</NavDropdown.Item> */}
         </NavDropdown>
       </Col>
     </Container>
