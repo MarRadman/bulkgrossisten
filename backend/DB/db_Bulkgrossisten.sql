@@ -3,10 +3,11 @@ CREATE TABLE
     users (
         user_id SERIAL PRIMARY KEY,
         username VARCHAR(50) UNIQUE NOT NULL,
-        email VARCHAR(100) UNIQUE NOT NULL,
-        password_hash VARCHAR(100) NOT NULL,
-        address VARCHAR(255),
-        phone_number VARCHAR(15)
+        email TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        address TEXT,
+        phone_number TEXT,
+        country TEXT
     );
 
 -- Product table
@@ -64,22 +65,25 @@ INSERT INTO
         email,
         password_hash,
         address,
-        phone_number
+        phone_number,
+        country
     )
 VALUES
     (
         'fitness_guru',
         'fitness@example.com',
         'hashed_password_1',
-        '123 Gym St, Fitness City, Country',
-        '+1234567890'
+        '123 Gym St, Fitness City',
+        '+1234567890',
+        'United States'
     ),
     (
         'muscle_maniac',
         'muscle@example.com',
         'hashed_password_2',
-        '456 Protein Ave, Muscle Town, Country',
-        '+9876543210'
+        '456 Protein Ave, Muscle Town',
+        '+9876543210',
+        'United States'
     );
 
 INSERT INTO

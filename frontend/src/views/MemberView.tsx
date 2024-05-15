@@ -12,6 +12,7 @@ type User = {
   email: string;
   phone_number: string;
   address: string;
+  country: string;
 };
 
 type Order = {
@@ -63,6 +64,7 @@ type Order = {
               <p>Email: {user.email}</p>
               <p>Tele: {user.phone_number}</p>
               <p>Adress: {user.address}</p>
+              <p>Country: {user.country}</p>
             </ListGroup.Item>
           ))}
         </ListGroup>
