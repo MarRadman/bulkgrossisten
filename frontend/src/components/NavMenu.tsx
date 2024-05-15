@@ -1,7 +1,7 @@
 import { Navbar, NavDropdown, Container, Col } from "react-bootstrap";
 import BurgerMenuIcon from "../assets/icons&photos/burgerIcon.svg";
 import CartIcon from "../assets/icons&photos/cartIcon.svg";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import "../assets/Navmenu.css";
 
 const NavMenu = () => (
