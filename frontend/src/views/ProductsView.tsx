@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { ListGroup } from 'react-bootstrap';
+import { ListGroup , Button} from 'react-bootstrap';
 
 type Product = {
   product_id: number;
@@ -39,6 +39,7 @@ function ProductsView() {
               <h2>{product.name}</h2>
               <p>Beskriving: {product.description}</p>
               <p>Pris: {product.price}kr</p>
+                <Button onClick={() => addToCart(product)}>Add to Cart</Button>
             </ListGroup.Item>
           ))}
         </ListGroup>
