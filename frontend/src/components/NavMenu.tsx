@@ -1,7 +1,6 @@
 import { Navbar, NavDropdown, Container, Col } from "react-bootstrap";
 import BurgerMenuIcon from "../assets/icons&photos/burgerIcon.svg";
 import CartIcon from "../assets/icons&photos/cartIcon.svg";
-// import { Link } from "react-router-dom";
 import "../assets/Navmenu.css";
 
 const NavMenu = () => (
@@ -27,7 +26,7 @@ const NavMenu = () => (
         lg={8}
         className="d-flex justify-content-center"
       >
-        <Navbar.Brand href="/" className="text-center">
+        <Navbar.Brand href="/app" className="text-center">
           Bulkgrossisten
         </Navbar.Brand>
       </Col>
@@ -36,7 +35,7 @@ const NavMenu = () => (
           title={<img src={CartIcon} alt="Cart" className="navmenu_icons" />}
           className="custom-dropdown"
         >
-          <NavDropdown.Item href="/cart">Cart</NavDropdown.Item>
+          <NavDropdown.Item href="/cart">View Cart</NavDropdown.Item>
         </NavDropdown>
       </Col>
     </Container>

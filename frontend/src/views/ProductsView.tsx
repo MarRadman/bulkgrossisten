@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { ListGroup , Button} from 'react-bootstrap';
+import { ListGroup, Button } from 'react-bootstrap';
 
 type Product = {
   product_id: number;
@@ -11,7 +11,7 @@ type Product = {
 
 function ProductsView() {
   const [productList, setProductList] = useState<Product[]>([]);
-  // const [selectedCartItem, setSelectedCartItem] = useState<Product[]>([]);
+  const [selectedCartItem, setSelectedCartItem] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -30,6 +30,11 @@ function ProductsView() {
     fetchProductData();
   },[]);
 
+  function handleClick() {
+    console.log("Item added to cart", productList);
+    setSelectedCartItem(productList); //TODO add selected item to cart
+  }
+
   return (
     <React.Fragment>
       <h2>Products</h2>
@@ -39,7 +44,7 @@ function ProductsView() {
               <h2>{product.name}</h2>
               <p>Beskriving: {product.description}</p>
               <p>Pris: {product.price}kr</p>
-                <Button onClick={() => addToCart(product)}>Add to Cart</Button>
+              <Button onClick={handleClick} >Add to Cart</Button> {/*TODO add onClick event to add item to cart*/}
             </ListGroup.Item>
           ))}
         </ListGroup>

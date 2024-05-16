@@ -1,8 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, Navigate, useLocation } from "react-router-dom";
+import LoginContext from '../context/loginContext';
 import "../assets/App.css";
 
 function App() {
+  // const loginContext = useContext(LoginContext);
+  // const location = useLocation();
+
+  // if (!loginContext || !loginContext.token) {
+  //   return <Navigate to="/" state={{ from: location }} />;
+  // }
+
   return (
     <React.Fragment>
       <div className="appView_photos">
@@ -28,4 +36,5 @@ function App() {
     </React.Fragment>
   );
 }
+
 export default App;

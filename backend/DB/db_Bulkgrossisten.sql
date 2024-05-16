@@ -7,7 +7,8 @@ CREATE TABLE
         password_hash TEXT NOT NULL,
         address TEXT,
         phone_number TEXT,
-        country TEXT
+        country TEXT,
+        token TEXT
     );
 
 -- Product table
@@ -84,6 +85,14 @@ VALUES
         '456 Protein Ave, Muscle Town',
         '+9876543210',
         'United States'
+    ),
+    (
+        'testUser',
+        'test@test.com',
+        'testPW',
+        'testAddress',
+        '1234',
+        'Sweden'
     );
 
 INSERT INTO
