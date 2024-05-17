@@ -15,10 +15,20 @@ function MenusView() {
 
   useEffect(() => {
     const fetchMenuData = async () => {
-      const response = await fetch("http://localhost:3000/menus");
+
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.log('No token found');
+        return;
+      }
+      const response = await fetch('http://localhost:3000/menus', {
+        headers: {
+          'Authorization': token
+        }
+      });
       const result = await response.json();
       if(result.length === 0 || result === null) {
-        console.log("No products found");
+        console.log("No menus found");
         return;
       }
       else {

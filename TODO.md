@@ -70,3 +70,10 @@ Testing: Don't forget to write tests for your application. You can use libraries
    6.2 Skalning:
    Övervaka prestanda och användning för att skal upp eller ned efter behov.
    Optimera kod och infrastruktur för att hantera ökande trafik och användarbas.
+
+#TODO
+
+Fixa så man kan lägga till produkter i varukorgen och därefter kunna trycka köp.
+När man tryckt köp så läggs ordern med användarens namn, adress, land och orderstatus.
+
+Betalningsmetoder skipar jag för nu. Implementerar i framtiden om det skulle bli aktuellt.

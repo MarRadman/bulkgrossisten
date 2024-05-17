@@ -149,18 +149,21 @@ app.get('/users',authenticate, async (req: Request, res: Response) => {
   }
 });
 
-app.get('/products',authenticate, async (req: Request, res: Response) => {
+app.get('/products', authenticate, async (req: Request, res: Response) => {
   try  {
     const { rows } = await client.query('SELECT * FROM products');
+    console.log('SQL query result:', rows);
+
     if(rows.length === 0) {
-      res.status(404).json({ error: 'No users found' });
+      res.status(404).json({ error: 'No products found' });
     }
     else {
       res.json(rows);
     }
 
   } catch (error) {
-    res.status(500).json({ error: 'An error occured' });
+    console.error('An error occurred:', error);
+    res.status(500).json({ error: 'An error occurred' });
   }
 });
 

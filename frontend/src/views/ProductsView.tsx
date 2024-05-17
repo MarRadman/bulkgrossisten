@@ -18,9 +18,14 @@ function ProductsView() {
   useEffect(() => {
     const fetchProductData = async () => {
       const token = localStorage.getItem('token');
+      if (!token) {
+        console.log('No token found');
+        return;
+      }
+
       const response = await fetch('http://localhost:3000/products', {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': token
         }
       });
       const result = await response.json();
