@@ -35,6 +35,8 @@ interface RequestUser extends Request {
   user: User;
 }
 
+// Middleware to authenticate the user
+
 const authenticate = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization;
 
@@ -115,6 +117,22 @@ app.post('/signup', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while creating the user' });
   }
 });
+
+//Get orders as a user
+
+app.get('/orders', authenticate, async (req: Request, res: Response) => {
+  try {
+    const user = (req as RequestUser).user;
+    const { rows } = await client.query('SELECT * FROM orders WHERE user_id = $1', [user.user_id]);
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching the orders' });
+  }
+});
+
+
+//Get all users, products, orders, order_details and menus with authentication as admin
 
 app.get('/users',authenticate, async (req: Request, res: Response) => {
   try  {

@@ -52,6 +52,7 @@ var app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+// Middleware to authenticate the user
 var authenticate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var token, rows, error_1;
     return __generator(this, function (_a) {
@@ -157,37 +158,36 @@ app.post('/signup', function (req, res) { return __awaiter(void 0, void 0, void 
         }
     });
 }); });
-app.get('/users', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var rows, error_4;
+//Get orders as a user
+app.get('/orders', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, rows, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client.query('SELECT * FROM users')];
+                user = req.user;
+                return [4 /*yield*/, client.query('SELECT * FROM orders WHERE user_id = $1', [user.user_id])];
             case 1:
                 rows = (_a.sent()).rows;
-                if (rows.length === 0) {
-                    res.status(404).json({ error: 'No users found' });
-                }
-                else {
-                    res.json(rows);
-                }
+                res.json(rows);
                 return [3 /*break*/, 3];
             case 2:
                 error_4 = _a.sent();
-                res.status(500).json({ error: 'An error occured' });
+                console.error(error_4);
+                res.status(500).json({ error: 'An error occurred while fetching the orders' });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
-app.get('/products', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+//Get all users, products, orders, order_details and menus with authentication as admin
+app.get('/users', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client.query('SELECT * FROM products')];
+                return [4 /*yield*/, client.query('SELECT * FROM users')];
             case 1:
                 rows = (_a.sent()).rows;
                 if (rows.length === 0) {
@@ -205,13 +205,13 @@ app.get('/products', authenticate, function (req, res) { return __awaiter(void 0
         }
     });
 }); });
-app.get('/orders', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get('/products', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client.query('SELECT * FROM orders')];
+                return [4 /*yield*/, client.query('SELECT * FROM products')];
             case 1:
                 rows = (_a.sent()).rows;
                 if (rows.length === 0) {
@@ -229,13 +229,13 @@ app.get('/orders', authenticate, function (req, res) { return __awaiter(void 0, 
         }
     });
 }); });
-app.get('/order_details', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get('/orders', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client.query('SELECT * FROM order_details')];
+                return [4 /*yield*/, client.query('SELECT * FROM orders')];
             case 1:
                 rows = (_a.sent()).rows;
                 if (rows.length === 0) {
@@ -253,8 +253,32 @@ app.get('/order_details', authenticate, function (req, res) { return __awaiter(v
         }
     });
 }); });
-app.get('/menus', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get('/order_details', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_8;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, client.query('SELECT * FROM order_details')];
+            case 1:
+                rows = (_a.sent()).rows;
+                if (rows.length === 0) {
+                    res.status(404).json({ error: 'No users found' });
+                }
+                else {
+                    res.json(rows);
+                }
+                return [3 /*break*/, 3];
+            case 2:
+                error_8 = _a.sent();
+                res.status(500).json({ error: 'An error occured' });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+app.get('/menus', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var rows, error_9;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -270,7 +294,7 @@ app.get('/menus', authenticate, function (req, res) { return __awaiter(void 0, v
                 }
                 return [3 /*break*/, 3];
             case 2:
-                error_8 = _a.sent();
+                error_9 = _a.sent();
                 res.status(500).json({ error: 'An error occured' });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];

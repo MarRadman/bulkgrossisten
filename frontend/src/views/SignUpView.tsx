@@ -107,6 +107,7 @@ function SignUpView() {
         <input type="submit" value="Sign Up" />
       </form>
       {errorMessage && <p>{errorMessage}</p>} {/* Add this line */}
+      <p>Got an Account?</p><a href="/">Login</a>
     </div>
   );
 }

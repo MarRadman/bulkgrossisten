@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
-const LoginView = () => {
+function LoginView() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -30,6 +30,7 @@ const LoginView = () => {
     const data = await response.json();
 
     if (response.ok) {
+      localStorage.setItem('token', data.token); // Save token to local storage just for testing. Remove in production
       setTimeout(() => {
         setLoading(false); // Stop loading
         console.log("Login successful");

@@ -73,7 +73,7 @@ VALUES
     (
         'fitness_guru',
         'fitness@example.com',
-        'hashed_password_1',
+        '0895092d-9f86-42f4-8195-4d2ba1b429d9',
         '123 Gym St, Fitness City',
         '+1234567890',
         'United States'
@@ -81,7 +81,7 @@ VALUES
     (
         'muscle_maniac',
         'muscle@example.com',
-        'hashed_password_2',
+        '0895092d-9f86-42f4-8195-4d2ba1b429d9',
         '456 Protein Ave, Muscle Town',
         '+9876543210',
         'United States'
@@ -89,7 +89,7 @@ VALUES
     (
         'testUser',
         'test@test.com',
-        'testPW',
+        'dd939414-f897-4956-8226-5aae0015cc4e',
         'testAddress',
         '1234',
         'Sweden'
@@ -143,7 +143,8 @@ INSERT INTO
     orders (user_id, delivery_address)
 VALUES
     (1, '123 Gym St, Fitness City, Country'),
-    (2, '456 Protein Ave, Muscle Town, Country');
+    (2, '456 Protein Ave, Muscle Town, Country'),
+    (3, 'testAddress, Sweden');
 
 INSERT INTO
     order_details (
@@ -177,4 +178,5 @@ INSERT INTO
     deliveries (order_id, carrier, expected_delivery_time)
 VALUES
     (1, 'BulkDelivery', '2024-05-10 09:00:00'),
-    (2, 'MuscleExpress', '2024-05-10 12:00:00');
+    (2, 'MuscleExpress', '2024-05-10 12:00:00'),
+    (3, 'TestDelivery', '2024-05-10 12:00:00');

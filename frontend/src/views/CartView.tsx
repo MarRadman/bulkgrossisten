@@ -1,14 +1,15 @@
 import React from "react";
-// import  { Link } from "react-router-dom";
-// import { useState, useEffect } from "react";
 import '../assets/App.css';
+import withAuthCheck from '../authentication/withAuthCheck';
+import BackBtn from '../components/BackBtn';
 
 function CartView() {
   return (
     <React.Fragment>
       <h2>Cart</h2>
       <p>Cart view</p>
+      <BackBtn />
     </React.Fragment>
   );
 }
-export default CartView;
+export default withAuthCheck(CartView);

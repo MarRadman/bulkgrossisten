@@ -3,7 +3,8 @@ import BurgerMenuIcon from "../assets/icons&photos/burgerIcon.svg";
 import CartIcon from "../assets/icons&photos/cartIcon.svg";
 import "../assets/Navmenu.css";
 
-const NavMenu = () => (
+function NavMenu() {
+  return(
   <Navbar className="navbar" expand="lg" sticky="top">
     <Container fluid>
       <Col xs={3} sm={2} md={2} lg={2} className="d-flex justify-content-start">
@@ -16,7 +17,7 @@ const NavMenu = () => (
             />
           }
         >
-          <NavDropdown.Item href="/member">Profile</NavDropdown.Item>
+          <NavDropdown.Item href="/order">Orders</NavDropdown.Item>
         </NavDropdown>
       </Col>
       <Col
@@ -40,6 +41,6 @@ const NavMenu = () => (
       </Col>
     </Container>
   </Navbar>
-);
+)}
 
 export default NavMenu;

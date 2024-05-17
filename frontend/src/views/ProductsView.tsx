@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { ListGroup, Button } from 'react-bootstrap';
+import withAuthCheck from '../authentication/withAuthCheck';
+import BackBtn from '../components/BackBtn';
 
 type Product = {
   product_id: number;
@@ -15,7 +17,12 @@ function ProductsView() {
 
   useEffect(() => {
     const fetchProductData = async () => {
-      const response = await fetch("http://localhost:3000/products");
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:3000/products', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const result = await response.json();
       if(result.length === 0 || result === null) {
         console.log("No products found");
@@ -48,8 +55,9 @@ function ProductsView() {
             </ListGroup.Item>
           ))}
         </ListGroup>
+        <BackBtn />
       </React.Fragment>
     );
 }
 
-export default ProductsView;
+export default withAuthCheck(ProductsView);

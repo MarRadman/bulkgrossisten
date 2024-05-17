@@ -1,16 +1,19 @@
-import React, { useContext } from "react";
-import { Link, Navigate, useLocation } from "react-router-dom";
-import LoginContext from '../context/loginContext';
+import React from "react";
+import { Link } from "react-router-dom";
 import "../assets/App.css";
+import withAuthCheck from '../authentication/withAuthCheck';
 
 function App() {
-  // const loginContext = useContext(LoginContext);
-  // const location = useLocation();
 
-  // if (!loginContext || !loginContext.token) {
+  // Wanted to check if user had a token, but didnt want to repeat the code in every view. So made a
+  // HOC (higher-order component) to check if user have an token.
+
+  // const location = useLocation();
+  // const token = localStorage.getItem('token');
+
+  // if (!token) {
   //   return <Navigate to="/" state={{ from: location }} />;
   // }
-
   return (
     <React.Fragment>
       <div className="appView_photos">
@@ -37,4 +40,4 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthCheck(App);

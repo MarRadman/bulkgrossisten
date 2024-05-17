@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
+import withAuthCheck from '../authentication/withAuthCheck';
+import BackBtn from '../components/BackBtn';
 
 type Menu = {
   menu_id: number;
@@ -39,8 +41,9 @@ function MenusView() {
             </ListGroup.Item>
           ))}
         </ListGroup>
+        <BackBtn />
       </React.Fragment>
     );
 }
 
-export default MenusView;
+export default withAuthCheck(MenusView);
