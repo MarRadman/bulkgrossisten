@@ -28,6 +28,8 @@ li {
 
 .photo-container {
   transition: transform 0.3s ease-in-out;
+  justify-content: center;
+  align-items: center;
 }
 
 .photo-container:hover {
@@ -60,17 +62,22 @@ li {
 
 @media only screen and (min-width: 768px) {
   #headTitle {
-    font-size: 2rem; /* Ställ in storlek efter behov */
+    font-size: 5rem; /* Ställ in storlek efter behov */
   }
   .appView_photos {
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
     margin: 0 10% 0 10%;
     width: 75%;
     height: 100%;
   }
   .appView_photos img {
-    width: 90%;
-    height: auto;
+    min-width: auto;
+    max-height: 300px;
+  }
+  .photo-container {
+    justify-content: center;
+    align-items: center;
   }
 }

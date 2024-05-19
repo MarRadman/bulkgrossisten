@@ -7,5 +7,17 @@
 
 .navmenu_icons {
   height: auto;
-  width: 1.8rem;
+  width: 2.2rem;
+}
+
+.title {
+  font-size: 5em;
+  font-Family: "fantasy";
+}
+
+/* Decrease font size for screens smaller than 768px */
+@media (max-width: 767px) {
+  .title {
+    font-size: 2em; /* adjust as needed */
+  }
 }

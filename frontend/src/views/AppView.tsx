@@ -14,6 +14,7 @@ function App() {
   // if (!token) {
   //   return <Navigate to="/" state={{ from: location }} />;
   // }
+
   return (
     <React.Fragment>
       <div className="appView_photos">
