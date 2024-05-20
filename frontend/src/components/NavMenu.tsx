@@ -24,7 +24,9 @@ function NavMenu() {
       const cart = sessionStorage.getItem("cart");
       if (cart) {
         const cartItems = JSON.parse(cart);
-        setAddCart(cartItems);
+        setAddCart(cartItems || []);
+      } else {
+        setAddCart([]);
       }
     };
 
@@ -72,11 +74,11 @@ function NavMenu() {
           title={<img src={CartIcon} alt="Cart" className="navmenu_icons" />}
           className="custom-dropdown"
         >
-        {addCart.map((item: CartItem, index: number) => (
-          <NavDropdown.Item key={index}>
-            {item.product.name}: {item.quantity}st
-          </NavDropdown.Item>
-        ))}
+          {addCart && addCart.map((item: CartItem, index: number) => (
+            <NavDropdown.Item key={index}>
+              {item.product.name}: {item.quantity}st
+            </NavDropdown.Item>
+          ))}
           <NavDropdown.Item href="/cart" style={{color:"blue"}}>Checkout
           </NavDropdown.Item>
       </NavDropdown>
