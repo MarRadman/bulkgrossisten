@@ -118,23 +118,40 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-//Get orders as a user
+//Post & Get order as an user
 
-app.get('/orders', authenticate, async (req: Request, res: Response) => {
+app.get('/orderUser', authenticate, async (req: Request, res: Response) => {
   try {
     const user = (req as RequestUser).user;
     const { rows } = await client.query('SELECT * FROM orders WHERE user_id = $1', [user.user_id]);
-    res.json(rows);
+    res.status(200).json({ data: rows, message: 'Order fetched' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while fetching the orders' });
   }
 });
 
+app.post('/orderUser', authenticate, async (req: Request, res: Response) => {
+  try {
+    const user = (req as RequestUser).user;
+    const cartItems = req.body;  // Get the cart items from the request body
+
+    // Insert each cart item into the orders table
+    for (const item of cartItems) {
+      await client.query('INSERT INTO orders (user_id, delivery_address) VALUES ($1, $2)', [user.user_id, item.address]);
+    }
+
+    res.status(200).json({ message: 'Order created' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while creating the order' });
+  }
+});
+
 
 //Get all users, products, orders, order_details and menus with authentication as admin
 
-app.get('/users',authenticate, async (req: Request, res: Response) => {
+app.get('/usersAdmin',authenticate, async (req: Request, res: Response) => {
   try  {
     const { rows } = await client.query('SELECT * FROM users');
     if(rows.length === 0) {
@@ -149,7 +166,7 @@ app.get('/users',authenticate, async (req: Request, res: Response) => {
   }
 });
 
-app.get('/products', authenticate, async (req: Request, res: Response) => {
+app.get('/productsAdmin', authenticate, async (req: Request, res: Response) => {
   try  {
     const { rows } = await client.query('SELECT * FROM products');
     console.log('SQL query result:', rows);
@@ -167,7 +184,7 @@ app.get('/products', authenticate, async (req: Request, res: Response) => {
   }
 });
 
-app.get('/orders',authenticate, async (req: Request, res: Response) => {
+app.get('/ordersAdmin',authenticate, async (req: Request, res: Response) => {
   try  {
     const { rows } = await client.query('SELECT * FROM orders');
     if(rows.length === 0) {
@@ -182,7 +199,7 @@ app.get('/orders',authenticate, async (req: Request, res: Response) => {
   }
  });
 
- app.get('/order_details',authenticate, async (req: Request, res: Response) => {
+ app.get('/order_detailsAdmin',authenticate, async (req: Request, res: Response) => {
   try {
     const { rows } = await client.query('SELECT * FROM order_details');
     if(rows.length === 0) {
@@ -196,7 +213,7 @@ app.get('/orders',authenticate, async (req: Request, res: Response) => {
   }
  });
 
- app.get('/menus',authenticate, async (req: Request, res: Response) => {
+ app.get('/menusAdmin',authenticate, async (req: Request, res: Response) => {
   try {
     const { rows } = await client.query('SELECT * FROM menus');
     if(rows.length === 0) {

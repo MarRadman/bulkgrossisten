@@ -4,17 +4,29 @@ import '../assets/Order.css';
 import withAuthCheck from '../authentication/withAuthCheck';
 import BackBtn from '../components/BackBtn';
 
+
+type Order = {
+  order_id: number;
+  user_id: number;
+  order_date: string;
+  delivery_address: string;
+  status: string;
+};
+
+interface Product {
+  product_id: number;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+}
+
 function OrderView() {
-
-  type Order = {
-    order_id: number;
-    user_id: number;
-    order_date: string;
-    delivery_address: string;
-    status: string;
-  };
-
   const [orderList, setOrderList] = useState<Order[]>([]);
+  const [productList, setProductList] = useState<Product[]>([]);
+
+  // const cartItems = location.state.cartItems;
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,19 +36,19 @@ function OrderView() {
         return;
       }
 
-      const responseOrders = await fetch(`http://localhost:3000/orders?token=${token}`, {
+      const response = await fetch('http://localhost:3000/orderUser', {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': token
         }
       });
 
-      const resultOrders = await responseOrders.json();
+      const result = await response.json();
 
-      if(resultOrders.length === 0 || resultOrders === null) {
+      if(result.data.length === 0 || result.data === null) {
         console.log("No orders found");
       } else {
-        setOrderList(resultOrders);
-        console.log(resultOrders);
+        setOrderList(result.data);
+        console.log(result.data);
       }
     };
 
@@ -45,21 +57,14 @@ function OrderView() {
 
   return (
     <div>
-      <h1>Your Orders</h1>
-      {orderList.length > 0 ? (
-        <ListGroup>
-          {orderList.map((order) => (
-            <ListGroup.Item key={order.order_id}>
-              <p>Order ID: {order.order_id}</p>
-              <p>Order Date: {order.order_date}</p>
-              <p>Delivery Address: {order.delivery_address}</p>
-              <p>Status: {order.status}</p>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      ) : (
-        <p>You have no orders.</p>
-      )}
+      <h1>Order Details</h1>
+      <ListGroup>
+        {productList.map((item, index) => (
+          <ListGroup.Item key={index}>
+            {item.name} - {item.quantity}
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
       <BackBtn />
     </div>
   );

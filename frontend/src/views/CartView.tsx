@@ -69,9 +69,8 @@ function CartView() {
       } else {
         newItems.push({ product: productToAdd, quantity: 1 });
       }
-
+      refreshPage(); //Temporary solution to refresh the page
       return newItems;
-
     })
   }
 
@@ -93,29 +92,59 @@ function CartView() {
           newItems.splice(itemIndex, 1);
         }
       }
+      refreshPage(); //Temporary solution to refresh the page
       return newItems;
     });
   }
 
   function handlePayment() {
-    return () => {
+    const fetchOrderData = async () => {
+      const cartItems = JSON.parse(sessionStorage.getItem('cart') || '[]');
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        console.log('No token found');
+        return;
+      }
+
       if (cartItems.length === 0) {
         alert("Your cart is empty!");
         return;
       }
-      else{
+
+      try {
+        const response = await fetch('http://localhost:3000/orderUser', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          },
+          body: JSON.stringify(cartItems),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const order = await response.json();
         alert("Payment Successful");
-        navigate('/order');
-        setCartItems([]);
-        sessionStorage.setItem('cart', JSON.stringify([]));
+        navigate('/order', { state: { order } });
+      } catch (error) {
+        console.error(error);
       }
-    }
+    };
+
+    fetchOrderData();
+  }
+
+  function refreshPage(){
+    window.location.reload();
   }
 
   return (
     <React.Fragment>
       <h2>Cart</h2>
-      <div className="product-grid">
+      <div className="product-grid-cart">
       {productList && cartItems.map((item: CartItem) => (
         <div className="product-card" key={item.product.product_id}>
           <ListGroup.Item action className="product-item">
@@ -145,7 +174,7 @@ function CartView() {
           </div>
           {cartItems.length <= 0  && <p>Your cart is empty. Checkout <a href="/products">Products</a></p>}
           {cartItems.length > 0 && <p>Total Price: {totalPrice}kr</p>}
-          <input onClick={handlePayment()} type="button" value="Procced to Payment" />
+          <input onClick={handlePayment} type="button" value="Procced to Payment" />
       <BackBtn />
     </React.Fragment>
   );

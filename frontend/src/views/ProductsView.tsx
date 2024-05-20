@@ -48,6 +48,7 @@ function ProductsView() {
   useEffect(() => {
     const fetchProductData = async () => {
       const token = localStorage.getItem('token');
+
       if (!token) {
         console.log('No token found');
         return;
@@ -99,7 +100,7 @@ const addToCart = (product: Product) => {
     } else {
       newItems.push({ product, quantity: 1 });
     }
-
+    refreshPage() //Temporary solution to refresh the page
     return newItems;
   });
 };
@@ -113,10 +114,14 @@ const addToCart = (product: Product) => {
     setShowModal(false);
   };
 
+  function refreshPage(){
+    window.location.reload();
+  }
+
   return (
     <React.Fragment>
     <h1 className='Products-title'>Products</h1>
-    <div className="product-grid">
+    <div className="product-grid-products">
       {productList && productList.map((product) => (
         <div className="product-card" key={product.product_id}>
           <ListGroup.Item action className="product-item">
