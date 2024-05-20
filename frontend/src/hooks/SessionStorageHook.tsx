@@ -9,7 +9,7 @@ function SessionStorageHook(key: string) {
 
   useEffect(() => {
     if (value === null) {
-      sessionStorage.removeItem(key);
+      sessionStorage.setItem('cart', JSON.stringify([]));
     } else {
       sessionStorage.setItem(key, JSON.stringify(value));
     }

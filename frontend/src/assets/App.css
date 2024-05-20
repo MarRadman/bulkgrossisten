@@ -24,6 +24,7 @@ li {
   justify-content: center;
   align-items: center;
   margin: 10% 0 10% 0;
+  gap: 10%;
 }
 
 .photo-container {
@@ -40,18 +41,27 @@ li {
   position: relative;
   width: 80%;
   height: auto;
-  margin: 5% 1% 5% 1%;
+  margin: 5% 1%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.appView_photos div .image-container {
+  width: 100%;
+  height: auto;
 }
 
 .appView_photos img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
   border-radius: 5%;
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.5);
 }
 
 .appView_photos h2 {
-  font-size: 3rem;
+  font-size: 2rem;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -60,24 +70,28 @@ li {
   border-color: #e37171;
 }
 
+
 @media only screen and (min-width: 768px) {
-  #headTitle {
-    font-size: 5rem; /* Ställ in storlek efter behov */
+  .appView_photos h2 {
+    font-size: 3rem;
   }
   .appView_photos {
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin: 0 10% 0 10%;
+    margin: 0 10%;
     width: 75%;
-    height: 100%;
+    height: auto;
   }
   .appView_photos img {
-    min-width: auto;
-    max-height: 300px;
+    min-width: 300px;
+    min-height: 300px;
   }
-  .photo-container {
-    justify-content: center;
-    align-items: center;
+}
+
+@media only screen and (min-width: 1200px) {
+  .appView_photos h2 {
+    font-size: 4rem;
+  }
+  .appView_photos {
+    width: 60%;
   }
 }

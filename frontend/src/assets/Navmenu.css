@@ -2,22 +2,63 @@
   z-index: 100000;
   background-color: #ab5c4b;
   display: flex;
-  justify-content: space-between;
-}
-
-.navmenu_icons {
-  height: auto;
-  width: 2.2rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 0 10px 10px;
+  min-width: 100%;
 }
 
 .title {
-  font-size: 5em;
-  font-Family: "fantasy";
+  font-family: "fantasy";
+  text-align: center;
+  font-size: 4em;
 }
 
-/* Decrease font size for screens smaller than 768px */
+.title a {
+  text-decoration: none;
+  color: black;
+}
+
+.navIcons {
+  width: 40px;
+  height: 40px;
+}
+
+.dropdown-menu-burger {
+  display: none;
+  position: absolute;
+  left: 0;
+  background-color: #f9f9f9;
+  width: 200px;
+  height: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 10000;
+  border-radius: 0 10px 10px 10px;
+}
+
+.dropdown-menu-cart {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 200px;
+  height: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 10000;
+  border-radius: 10px 0 10px 10px;
+}
+
+.dropdown:hover .dropdown-menu-cart , .dropdown:hover .dropdown-menu-burger {
+  display: block;
+}
+
 @media (max-width: 767px) {
+  .navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .title {
-    font-size: 2em; /* adjust as needed */
+    font-size: 1.5em !important;
   }
 }

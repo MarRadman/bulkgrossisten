@@ -30,7 +30,7 @@ interface Product {
   name: string;
   description: string;
   price: number;
-  images: string;
+  image: string;
 }
 
 interface CartItem {
@@ -42,7 +42,8 @@ function ProductsView() {
   const [productList, setProductList] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [cartItems, setCartItems] = useSessionStorage<CartItem[]>("cart");
+  const [cartItems, setCartItems] = useSessionStorage<CartItem>("cart", []);
+  // const [cartItems, setCartItems] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -87,27 +88,19 @@ const addToCart = (product: Product) => {
   // If the product is valid, we log a message saying that it's being added to the cart
   console.log("Item added to cart", product.name);
 
-  // Then, we update the cart items. We use a function to do this because we want to base the new cart items on the old ones
+  // Then, we update the cart items.
   setCartItems((prevItems: CartItem[]) => {
-    // If there are no previous items (meaning the cart is empty), we just add the new product to the cart
-    if (!prevItems) {
-      return [{ product, quantity: 1 }];
+    const newItems = [...prevItems];
+    const itemIndex = newItems.findIndex(item => item.product.product_id === product.product_id);
+
+    if (itemIndex !== -1) {
+      const updatedItem = { ...newItems[itemIndex], quantity: newItems[itemIndex].quantity + 1 };
+      newItems[itemIndex] = updatedItem;
+    } else {
+      newItems.push({ product, quantity: 1 });
     }
 
-    // If there are previous items, we check if the product is already in the cart
-    const existingProductIndex = prevItems.findIndex(item => item.product.product_id === product.product_id);
-
-    // If the product is already in the cart, we increase its quantity
-    if (existingProductIndex !== -1) {
-      const newItems = [...prevItems];
-      newItems[existingProductIndex].quantity += 1;
-      return newItems;
-    }
-
-    // If the product is not in the cart, we add it with a quantity of 1
-    else {
-      return [...prevItems, { product, quantity: 1 }];
-    }
+    return newItems;
   });
 };
 
@@ -122,7 +115,7 @@ const addToCart = (product: Product) => {
 
   return (
     <React.Fragment>
-    <h1>Products</h1>
+    <h1 className='Products-title'>Products</h1>
     <div className="product-grid">
       {productList && productList.map((product) => (
         <div className="product-card" key={product.product_id}>
