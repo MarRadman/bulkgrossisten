@@ -160,16 +160,16 @@ app.post('/signup', function (req, res) { return __awaiter(void 0, void 0, void 
 }); });
 //Post & Get order as an user
 app.get('/orderUser', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, rows, error_4;
+    var user, result, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 user = req.user;
-                return [4 /*yield*/, client.query('SELECT * FROM orders WHERE user_id = $1', [user.user_id])];
+                return [4 /*yield*/, client.query('SELECT orders.order_id, order_details.product_id, order_details.quantity FROM orders INNER JOIN order_details ON orders.order_id = order_details.order_id WHERE orders.user_id = $1', [user.user_id])];
             case 1:
-                rows = (_a.sent()).rows;
-                res.status(200).json({ data: rows, message: 'Order fetched' });
+                result = _a.sent();
+                res.status(200).json(result.rows);
                 return [3 /*break*/, 3];
             case 2:
                 error_4 = _a.sent();
@@ -181,40 +181,76 @@ app.get('/orderUser', authenticate, function (req, res) { return __awaiter(void 
     });
 }); });
 app.post('/orderUser', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, cartItems, _i, cartItems_1, item, error_5;
+    var user, cartItems, _i, cartItems_1, item, orderResult, orderId, error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 5, , 6]);
+                _a.trys.push([0, 6, , 8]);
                 user = req.user;
                 cartItems = req.body;
                 _i = 0, cartItems_1 = cartItems;
                 _a.label = 1;
             case 1:
-                if (!(_i < cartItems_1.length)) return [3 /*break*/, 4];
+                if (!(_i < cartItems_1.length)) return [3 /*break*/, 5];
                 item = cartItems_1[_i];
-                return [4 /*yield*/, client.query('INSERT INTO orders (user_id, delivery_address) VALUES ($1, $2)', [user.user_id, item.address])];
+                return [4 /*yield*/, client.query('INSERT INTO orders (user_id, delivery_address) VALUES ($1, $2) RETURNING order_id', [user.user_id, user.address])];
             case 2:
-                _a.sent();
-                _a.label = 3;
+                orderResult = _a.sent();
+                orderId = orderResult.rows[0].order_id;
+                return [4 /*yield*/, client.query('INSERT INTO order_details (order_id, product_id, quantity) VALUES ($1, $2, $3)', [orderId, item.productId, item.quantity])];
             case 3:
+                _a.sent();
+                _a.label = 4;
+            case 4:
                 _i++;
                 return [3 /*break*/, 1];
-            case 4:
-                res.status(200).json({ message: 'Order created' });
-                return [3 /*break*/, 6];
             case 5:
+                res.status(200).json({ message: 'Order created' });
+                return [3 /*break*/, 8];
+            case 6:
                 error_5 = _a.sent();
+                // If there's an error, rollback the transaction
+                return [4 /*yield*/, client.query('ROLLBACK')];
+            case 7:
+                // If there's an error, rollback the transaction
+                _a.sent();
                 console.error(error_5);
                 res.status(500).json({ error: 'An error occurred while creating the order' });
-                return [3 /*break*/, 6];
-            case 6: return [2 /*return*/];
+                return [3 /*break*/, 8];
+            case 8: return [2 /*return*/];
+        }
+    });
+}); });
+//Remove orders from the userId
+app.delete('/ordersUser/:userId', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, error_6;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                userId = req.params.userId;
+                // Delete all orders associated with the user ID
+                return [4 /*yield*/, client.query('DELETE FROM order_details WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = $1)', [userId])];
+            case 1:
+                // Delete all orders associated with the user ID
+                _a.sent();
+                return [4 /*yield*/, client.query('DELETE FROM orders WHERE user_id = $1', [userId])];
+            case 2:
+                _a.sent();
+                res.status(200).json({ message: 'Orders deleted' });
+                return [3 /*break*/, 4];
+            case 3:
+                error_6 = _a.sent();
+                console.error(error_6);
+                res.status(500).json({ error: 'An error occurred while deleting the orders' });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); });
 //Get all users, products, orders, order_details and menus with authentication as admin
 app.get('/usersAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var rows, error_6;
+    var rows, error_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -230,7 +266,7 @@ app.get('/usersAdmin', authenticate, function (req, res) { return __awaiter(void
                 }
                 return [3 /*break*/, 3];
             case 2:
-                error_6 = _a.sent();
+                error_7 = _a.sent();
                 res.status(500).json({ error: 'An error occured' });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
@@ -238,7 +274,7 @@ app.get('/usersAdmin', authenticate, function (req, res) { return __awaiter(void
     });
 }); });
 app.get('/productsAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var rows, error_7;
+    var rows, error_8;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -255,8 +291,8 @@ app.get('/productsAdmin', authenticate, function (req, res) { return __awaiter(v
                 }
                 return [3 /*break*/, 3];
             case 2:
-                error_7 = _a.sent();
-                console.error('An error occurred:', error_7);
+                error_8 = _a.sent();
+                console.error('An error occurred:', error_8);
                 res.status(500).json({ error: 'An error occurred' });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
@@ -264,36 +300,12 @@ app.get('/productsAdmin', authenticate, function (req, res) { return __awaiter(v
     });
 }); });
 app.get('/ordersAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var rows, error_8;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client.query('SELECT * FROM orders')];
-            case 1:
-                rows = (_a.sent()).rows;
-                if (rows.length === 0) {
-                    res.status(404).json({ error: 'No users found' });
-                }
-                else {
-                    res.json(rows);
-                }
-                return [3 /*break*/, 3];
-            case 2:
-                error_8 = _a.sent();
-                res.status(500).json({ error: 'An error occured' });
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); });
-app.get('/order_detailsAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_9;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client.query('SELECT * FROM order_details')];
+                return [4 /*yield*/, client.query('SELECT * FROM orders')];
             case 1:
                 rows = (_a.sent()).rows;
                 if (rows.length === 0) {
@@ -311,8 +323,32 @@ app.get('/order_detailsAdmin', authenticate, function (req, res) { return __awai
         }
     });
 }); });
-app.get('/menusAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get('/order_detailsAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_10;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, client.query('SELECT * FROM order_details')];
+            case 1:
+                rows = (_a.sent()).rows;
+                if (rows.length === 0) {
+                    res.status(404).json({ error: 'No users found' });
+                }
+                else {
+                    res.json(rows);
+                }
+                return [3 /*break*/, 3];
+            case 2:
+                error_10 = _a.sent();
+                res.status(500).json({ error: 'An error occured' });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+app.get('/menusAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var rows, error_11;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -328,7 +364,7 @@ app.get('/menusAdmin', authenticate, function (req, res) { return __awaiter(void
                 }
                 return [3 /*break*/, 3];
             case 2:
-                error_10 = _a.sent();
+                error_11 = _a.sent();
                 res.status(500).json({ error: 'An error occured' });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];

@@ -44,7 +44,7 @@ interface CartItem {
 }
 
 function CartView() {
-  const [cartItems, setCartItems] = useSessionStorage("cart");
+  const [cartItems, setCartItems] = useSessionStorage<CartItem[]>("cart", []);
   const [productList, setProductList] = useState<Product[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -69,7 +69,7 @@ function CartView() {
       } else {
         newItems.push({ product: productToAdd, quantity: 1 });
       }
-      refreshPage(); //Temporary solution to refresh the page
+      // refreshPage(); //Temporary solution to refresh the page
       return newItems;
     })
   }
@@ -92,14 +92,13 @@ function CartView() {
           newItems.splice(itemIndex, 1);
         }
       }
-      refreshPage(); //Temporary solution to refresh the page
+      // refreshPage(); //Temporary solution to refresh the page
       return newItems;
     });
   }
 
   function handlePayment() {
     const fetchOrderData = async () => {
-      const cartItems = JSON.parse(sessionStorage.getItem('cart') || '[]');
       const token = localStorage.getItem('token');
 
       if (!token) {
@@ -107,10 +106,21 @@ function CartView() {
         return;
       }
 
+      const cartItems = JSON.parse(sessionStorage.getItem('cart') || '[]');
+
       if (cartItems.length === 0) {
         alert("Your cart is empty!");
         return;
       }
+
+      const items = cartItems.map((item: CartItem) => ({
+        product_id: item.product.product_id,
+        quantity: item.quantity
+      }));
+
+      const order = {
+        items
+      };
 
       try {
         const response = await fetch('http://localhost:3000/orderUser', {
@@ -119,16 +129,16 @@ function CartView() {
             'Content-Type': 'application/json',
             'Authorization': token
           },
-          body: JSON.stringify(cartItems),
+          body: JSON.stringify(order)
         });
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const order = await response.json();
+        const orders = await response.json();
         alert("Payment Successful");
-        navigate('/order', { state: { order } });
+        navigate('/order', { state: { orders } });
       } catch (error) {
         console.error(error);
       }
@@ -137,9 +147,9 @@ function CartView() {
     fetchOrderData();
   }
 
-  function refreshPage(){
-    window.location.reload();
-  }
+  // function refreshPage(){
+  //   window.location.reload();
+  // }
 
   return (
     <React.Fragment>
@@ -173,8 +183,8 @@ function CartView() {
           ))}
           </div>
           {cartItems.length <= 0  && <p>Your cart is empty. Checkout <a href="/products">Products</a></p>}
-          {cartItems.length > 0 && <p>Total Price: {totalPrice}kr</p>}
-          <input onClick={handlePayment} type="button" value="Procced to Payment" />
+          {cartItems.length > 0 && <p>Total Price: {totalPrice}kr</p> &&
+          <input onClick={handlePayment} type="button" value="Procced to Payment" />}
       <BackBtn />
     </React.Fragment>
   );

@@ -29,6 +29,9 @@ interface User {
   user_id: number;
   username: string;
   email: string;
+  address: string;
+  phone_number: string;
+  country: string;
 }
 
 interface RequestUser extends Request {
@@ -123,8 +126,10 @@ app.post('/signup', async (req, res) => {
 app.get('/orderUser', authenticate, async (req: Request, res: Response) => {
   try {
     const user = (req as RequestUser).user;
-    const { rows } = await client.query('SELECT * FROM orders WHERE user_id = $1', [user.user_id]);
-    res.status(200).json({ data: rows, message: 'Order fetched' });
+
+    const result = await client.query('SELECT orders.order_id, order_details.product_id, order_details.quantity FROM orders INNER JOIN order_details ON orders.order_id = order_details.order_id WHERE orders.user_id = $1', [user.user_id]);
+
+    res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while fetching the orders' });
@@ -136,15 +141,35 @@ app.post('/orderUser', authenticate, async (req: Request, res: Response) => {
     const user = (req as RequestUser).user;
     const cartItems = req.body;  // Get the cart items from the request body
 
-    // Insert each cart item into the orders table
+    // Insert each cart item into the orders and order_details tables
     for (const item of cartItems) {
-      await client.query('INSERT INTO orders (user_id, delivery_address) VALUES ($1, $2)', [user.user_id, item.address]);
+      const orderResult = await client.query('INSERT INTO orders (user_id, delivery_address) VALUES ($1, $2) RETURNING order_id', [user.user_id, user.address]);
+      const orderId = orderResult.rows[0].order_id;
+      await client.query('INSERT INTO order_details (order_id, product_id, quantity) VALUES ($1, $2, $3)', [orderId, item.productId, item.quantity]);
     }
 
     res.status(200).json({ message: 'Order created' });
   } catch (error) {
+    // If there's an error, rollback the transaction
+    await client.query('ROLLBACK');
     console.error(error);
     res.status(500).json({ error: 'An error occurred while creating the order' });
+  }
+});
+
+//Remove orders from the userId
+app.delete('/ordersUser/:userId', async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+
+    // Delete all orders associated with the user ID
+    await client.query('DELETE FROM order_details WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = $1)', [userId]);
+    await client.query('DELETE FROM orders WHERE user_id = $1', [userId]);
+
+    res.status(200).json({ message: 'Orders deleted' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while deleting the orders' });
   }
 });
 

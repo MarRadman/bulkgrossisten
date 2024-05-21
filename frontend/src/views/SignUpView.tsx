@@ -1,4 +1,4 @@
-import { useState, FormEvent} from 'react';
+import { useState, FormEvent, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function SignUpView() {
@@ -11,6 +11,13 @@ function SignUpView() {
   const [country, setCountry] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/app');
+    }
+  },[navigate]);
 
   const handleSubmit = async (e: FormEvent) => {
 

@@ -27,6 +27,7 @@
 .dropdown-menu-burger {
   display: none;
   position: absolute;
+  padding: 20px;
   left: 0;
   background-color: #f9f9f9;
   width: 200px;
@@ -37,6 +38,8 @@
 }
 
 .dropdown-menu-cart {
+  border: solid red 1px;
+  padding: 20px;
   display: none;
   position: absolute;
   right: 0;
@@ -50,6 +53,20 @@
 
 .dropdown:hover .dropdown-menu-cart , .dropdown:hover .dropdown-menu-burger {
   display: block;
+}
+
+.dropdown-menu-cart li, .dropdown-menu-burger li {
+  padding: 10px;
+}
+
+#removeBtnCart {
+  background-color: #ff2f00;
+  color: white;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-right: 5%;
 }
 
 @media (max-width: 767px) {

@@ -21,7 +21,7 @@ function MenusView() {
         console.log('No token found');
         return;
       }
-      const response = await fetch('http://localhost:3000/menus', {
+      const response = await fetch('http://localhost:3000/menusAdmin', {
         headers: {
           'Authorization': token
         }
@@ -33,7 +33,7 @@ function MenusView() {
       }
       else {
         setMenuList(result);
-        console.log(result);
+        // console.log(result);
       }
     };
 

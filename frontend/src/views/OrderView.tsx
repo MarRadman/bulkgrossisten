@@ -19,6 +19,7 @@ interface Product {
   description: string;
   price: number;
   image: string;
+  quantity: number;
 }
 
 function OrderView() {
@@ -43,12 +44,16 @@ function OrderView() {
       });
 
       const result = await response.json();
+      console.log(result);
 
-      if(result.data.length === 0 || result.data === null) {
+      // Check if result.data is defined before trying to access its properties
+      if(result && result.length === 0) {
         console.log("No orders found");
+      } else if(result) {
+        setOrderList(result);
+        console.log(result);
       } else {
-        setOrderList(result.data);
-        console.log(result.data);
+        console.log("Unexpected response format");
       }
     };
 
@@ -59,9 +64,9 @@ function OrderView() {
     <div>
       <h1>Order Details</h1>
       <ListGroup>
-        {productList.map((item, index) => (
+        {orderList.map((item, index) => (
           <ListGroup.Item key={index}>
-            {item.name} - {item.quantity}
+            Order ID: {item.order_id} - Quantity: {item.quantity}
           </ListGroup.Item>
         ))}
       </ListGroup>

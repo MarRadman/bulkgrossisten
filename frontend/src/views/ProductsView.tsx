@@ -1,6 +1,5 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { ListGroup, Button , Modal} from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { ListGroup, Button, Modal } from 'react-bootstrap';
 import withAuthCheck from '../authentication/withAuthCheck';
 import BackBtn from '../components/BackBtn';
 import '../assets/Product.css';
@@ -42,68 +41,69 @@ function ProductsView() {
   const [productList, setProductList] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [cartItems, setCartItems] = useSessionStorage<CartItem>("cart", []);
-  // const [cartItems, setCartItems] = useState<Product[]>([]);
+  const [cartItems, setCartItems] = useSessionStorage<CartItem[]>("cart", []);
 
   useEffect(() => {
     const fetchProductData = async () => {
       const token = localStorage.getItem('token');
-
       if (!token) {
         console.log('No token found');
         return;
       }
 
-      const response = await fetch('http://localhost:3000/products', {
-        headers: {
-          'Authorization': token
-        }
-      });
-      // const result = await response.json();
-      const products: Product[] = await response.json();
+      try {
+        const response = await fetch('http://localhost:3000/productsAdmin', {
+          headers: {
+            'Authorization': token
+          }
+        });
 
-      if(products.length === 0 || products === null) {
-        console.log("No products found");
-        return;
-      }
-      else {
+        if (!response.ok) {
+          console.log('Failed to fetch products');
+          return;
+        }
+
+        const products: Product[] = await response.json();
+        if (products.length === 0) {
+          console.log("No products found");
+          return;
+        }
+
         setProductList(products);
+      } catch (error) {
+        console.error('Error fetching products:', error);
       }
     };
 
     fetchProductData();
-  },[]);
+  }, []);
 
   useEffect(() => {
     sessionStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
-// This function is called when you want to add a product to the cart
-const addToCart = (product: Product) => {
-  // First, we check if the product is valid. If it's not, we log an error message and stop the function
-  if (!product || !product.name) {
-    console.log('Invalid product');
-    return;
-  }
-
-  // If the product is valid, we log a message saying that it's being added to the cart
-  console.log("Item added to cart", product.name);
-
-  // Then, we update the cart items.
-  setCartItems((prevItems: CartItem[]) => {
-    const newItems = [...prevItems];
-    const itemIndex = newItems.findIndex(item => item.product.product_id === product.product_id);
-
-    if (itemIndex !== -1) {
-      const updatedItem = { ...newItems[itemIndex], quantity: newItems[itemIndex].quantity + 1 };
-      newItems[itemIndex] = updatedItem;
-    } else {
-      newItems.push({ product, quantity: 1 });
+  const addToCart = (product: Product) => {
+    if (!product || !product.name) {
+      console.log('Invalid product');
+      return;
     }
-    refreshPage() //Temporary solution to refresh the page
-    return newItems;
-  });
-};
+
+    console.log("Item added to cart", product.name);
+
+    setCartItems(prevItems => {
+      const newItems = [...prevItems];
+      const itemIndex = newItems.findIndex(item => item.product.product_id === product.product_id);
+
+      if (itemIndex !== -1) {
+        const updatedItem = { ...newItems[itemIndex], quantity: newItems[itemIndex].quantity + 1 };
+        newItems[itemIndex] = updatedItem;
+      } else {
+        newItems.push({ product, quantity: 1 });
+      }
+
+      return newItems;
+    });
+  };
 
   const handleShowModal = (product: Product) => {
     setSelectedProduct(product);
@@ -114,39 +114,37 @@ const addToCart = (product: Product) => {
     setShowModal(false);
   };
 
-  function refreshPage(){
-    window.location.reload();
-  }
-
   return (
     <React.Fragment>
-    <h1 className='Products-title'>Products</h1>
-    <div className="product-grid-products">
-      {productList && productList.map((product) => (
-        <div className="product-card" key={product.product_id}>
-          <ListGroup.Item action className="product-item">
-            <h2>{product.name}</h2>
-            <img src={images[product.product_id]} alt={product.name} />
-            <p>Pris: {product.price}kr</p>
-          </ListGroup.Item>
-          <div className="button-group">
-            <Button onClick={() => addToCart(product)}>Add to Cart</Button>
-            <Button variant="info" onClick={() => handleShowModal(product)}>Info</Button>
+      <h1 className='Products-title'>Products</h1>
+      <div className="product-grid-products">
+        {productList.map((product) => (
+          <div className="product-card" key={product.product_id}>
+            <ListGroup.Item action className="product-item">
+              <h2>{product.name}</h2>
+              <img src={images[product.product_id]} alt={product.name} />
+              <p>Pris: {product.price}kr</p>
+            </ListGroup.Item>
+            <div className="button-group">
+              <Button onClick={() => addToCart(product)}>Add to Cart</Button>
+              <Button variant="info" onClick={() => handleShowModal(product)}>Info</Button>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Header closeButton>
-        <Modal.Title>{selectedProduct?.name}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{selectedProduct?.description}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        ))}
+      </div>
+      {selectedProduct && (
+        <Modal show={showModal} onHide={handleCloseModal} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>{selectedProduct.name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{selectedProduct.description}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
       <BackBtn />
     </React.Fragment>
   );

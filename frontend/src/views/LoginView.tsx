@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
 function LoginView() {
@@ -7,6 +7,14 @@ function LoginView() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/app');
+      sessionStorage.setItem('cart', JSON.stringify([]));
+    }
+  },[navigate]);
 
   //https://stackoverflow.com/questions/60635093/react-formeventhtmlformelement-form-input-props-types
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
