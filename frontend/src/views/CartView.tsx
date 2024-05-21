@@ -97,18 +97,17 @@ function CartView() {
     });
   }
 
-  function handlePayment() {
+  async function handlePayment() {
     const fetchOrderData = async () => {
       const token = localStorage.getItem('token');
+      const cartItems = JSON.parse(sessionStorage.getItem('cart') || '[]');
 
       if (!token) {
         console.log('No token found');
         return;
       }
 
-      const cartItems = JSON.parse(sessionStorage.getItem('cart') || '[]');
-
-      if (cartItems.length === 0) {
+      if (cartItems.length === 0 || cartItems === null) {
         alert("Your cart is empty!");
         return;
       }
@@ -122,6 +121,7 @@ function CartView() {
         items
       };
 
+      console.log(order);
       try {
         const response = await fetch('http://localhost:3000/orderUser', {
           method: 'POST',
@@ -133,14 +133,17 @@ function CartView() {
         });
 
         if (!response.ok) {
+          console.log("server error");
           throw new Error(`HTTP error! status: ${response.status}`);
+        } else {
+          const data = await response.json();
+          console.log(data);
+          alert("Payment Successful");
+          navigate('/order', { state: { data } });
         }
 
-        const orders = await response.json();
-        alert("Payment Successful");
-        navigate('/order', { state: { orders } });
       } catch (error) {
-        console.error(error);
+        console.error("An error occurred while sending the order:", error);
       }
     };
 
@@ -183,8 +186,12 @@ function CartView() {
           ))}
           </div>
           {cartItems.length <= 0  && <p>Your cart is empty. Checkout <a href="/products">Products</a></p>}
-          {cartItems.length > 0 && <p>Total Price: {totalPrice}kr</p> &&
-          <input onClick={handlePayment} type="button" value="Procced to Payment" />}
+          {cartItems.length > 0 && (
+            <React.Fragment>
+              <p>Total Price: {totalPrice}kr</p>
+              <input onClick={handlePayment} type="button" value="Proceed to Payment" />
+            </React.Fragment>
+          )}
       <BackBtn />
     </React.Fragment>
   );

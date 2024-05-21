@@ -18,7 +18,6 @@ CREATE TABLE
         name VARCHAR(100) NOT NULL,
         description TEXT,
         price DECIMAL(10, 2) NOT NULL
-        -- Additional attributes like size, weight, allergens, etc. can be added here
     );
 
 -- Order table

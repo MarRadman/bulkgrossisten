@@ -7,12 +7,12 @@ function LoginView() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  sessionStorage.setItem('cart', JSON.stringify([]));
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       navigate('/app');
-      sessionStorage.setItem('cart', JSON.stringify([]));
     }
   },[navigate]);
 

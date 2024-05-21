@@ -127,7 +127,16 @@ app.get('/orderUser', authenticate, async (req: Request, res: Response) => {
   try {
     const user = (req as RequestUser).user;
 
-    const result = await client.query('SELECT orders.order_id, order_details.product_id, order_details.quantity FROM orders INNER JOIN order_details ON orders.order_id = order_details.order_id WHERE orders.user_id = $1', [user.user_id]);
+    const result = await client.query(`
+    SELECT orders.order_id,
+    orders.delivery_address,
+    orders.status,
+    users.username,
+    order_details.product_id,
+    order_details.quantity FROM orders INNER JOIN users ON orders.user_id =
+    users.user_id INNER JOIN order_details ON orders.order_id =
+    order_details.order_id WHERE orders.user_id = $1`,
+    [user.user_id]);
 
     res.status(200).json(result.rows);
   } catch (error) {
@@ -141,17 +150,17 @@ app.post('/orderUser', authenticate, async (req: Request, res: Response) => {
     const user = (req as RequestUser).user;
     const cartItems = req.body;  // Get the cart items from the request body
 
-    // Insert each cart item into the orders and order_details tables
-    for (const item of cartItems) {
-      const orderResult = await client.query('INSERT INTO orders (user_id, delivery_address) VALUES ($1, $2) RETURNING order_id', [user.user_id, user.address]);
-      const orderId = orderResult.rows[0].order_id;
-      await client.query('INSERT INTO order_details (order_id, product_id, quantity) VALUES ($1, $2, $3)', [orderId, item.productId, item.quantity]);
+    // Create the order
+    const orderResult = await client.query('INSERT INTO orders (user_id, delivery_address) VALUES ($1, $2) RETURNING order_id', [user.user_id, user.address]);
+    const orderId = orderResult.rows[0].order_id;
+
+    // Insert each cart item into the order_details table
+    for (const item of cartItems.items) {
+      await client.query('INSERT INTO order_details (order_id, product_id, quantity) VALUES ($1, $2, $3)', [orderId, item.product_id, item.quantity]);
     }
 
     res.status(200).json({ message: 'Order created' });
   } catch (error) {
-    // If there's an error, rollback the transaction
-    await client.query('ROLLBACK');
     console.error(error);
     res.status(500).json({ error: 'An error occurred while creating the order' });
   }

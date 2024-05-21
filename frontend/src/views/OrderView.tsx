@@ -5,29 +5,20 @@ import withAuthCheck from '../authentication/withAuthCheck';
 import BackBtn from '../components/BackBtn';
 
 
-type Order = {
-  order_id: number;
-  user_id: number;
-  order_date: string;
-  delivery_address: string;
-  status: string;
+type OrderItem = {
+  product_id: number;
+  quantity: number;
 };
 
-interface Product {
-  product_id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  quantity: number;
-}
+type Order = {
+  order_id: number;
+  delivery_address: string;
+  status: string;
+  items: OrderItem[];
+};
 
 function OrderView() {
   const [orderList, setOrderList] = useState<Order[]>([]);
-  const [productList, setProductList] = useState<Product[]>([]);
-
-  // const cartItems = location.state.cartItems;
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,23 +28,39 @@ function OrderView() {
         return;
       }
 
-      const response = await fetch('http://localhost:3000/orderUser', {
-        headers: {
-          'Authorization': token
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+        });
+
+        if (!response.ok) {
+          console.log(`HTTP error! status: ${response.status}`);
+          return;
         }
-      });
 
-      const result = await response.json();
-      console.log(result);
-
-      // Check if result.data is defined before trying to access its properties
-      if(result && result.length === 0) {
-        console.log("No orders found");
-      } else if(result) {
-        setOrderList(result);
+        let result = await response.json();
         console.log(result);
-      } else {
-        console.log("Unexpected response format");
+
+        if(result && result.length === 0) {
+          console.log("No orders found");
+        } else if(result) {
+
+          result = result.map(order => ({
+            ...order,
+            items: order.items || [],
+          }));
+
+          setOrderList(result);
+        } else {
+          console.log("Unexpected response format");
+        }
+
+      } catch (error) {
+        console.error("An error occurred while fetching the orders:", error);
       }
     };
 
@@ -62,14 +69,24 @@ function OrderView() {
 
   return (
     <div>
-      <h1>Order Details</h1>
-      <ListGroup>
-        {orderList.map((item, index) => (
+      <h2>Orders</h2>
+        <ListGroup>
+        {orderList.map((order: Order, index: number) => (
           <ListGroup.Item key={index}>
-            Order ID: {item.order_id} - Quantity: {item.quantity}
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
+            Order ID: {order.order_id}
+            Delivery address: {order.delivery_address}
+            Status: {order.status}
+            Items:
+            <ul>
+              {order.items.map((item, itemIndex) => (
+                <li key={itemIndex}>
+                  Product ID: {item.product_id} - Quantity: {item.quantity}
+                </li>
+              ))}
+            </ul>
+      </ListGroup.Item>
+    ))}
+  </ListGroup>
       <BackBtn />
     </div>
   );

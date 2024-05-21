@@ -166,7 +166,7 @@ app.get('/orderUser', authenticate, function (req, res) { return __awaiter(void 
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 user = req.user;
-                return [4 /*yield*/, client.query('SELECT orders.order_id, order_details.product_id, order_details.quantity FROM orders INNER JOIN order_details ON orders.order_id = order_details.order_id WHERE orders.user_id = $1', [user.user_id])];
+                return [4 /*yield*/, client.query("\n    SELECT orders.order_id,\n    orders.delivery_address,\n    orders.status,\n    users.username,\n    order_details.product_id,\n    order_details.quantity FROM orders INNER JOIN users ON orders.user_id =\n    users.user_id INNER JOIN order_details ON orders.order_id =\n    order_details.order_id WHERE orders.user_id = $1", [user.user_id])];
             case 1:
                 result = _a.sent();
                 res.status(200).json(result.rows);
@@ -181,43 +181,38 @@ app.get('/orderUser', authenticate, function (req, res) { return __awaiter(void 
     });
 }); });
 app.post('/orderUser', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, cartItems, _i, cartItems_1, item, orderResult, orderId, error_5;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var user, cartItems, orderResult, orderId, _i, _a, item, error_5;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                _a.trys.push([0, 6, , 8]);
+                _b.trys.push([0, 6, , 7]);
                 user = req.user;
                 cartItems = req.body;
-                _i = 0, cartItems_1 = cartItems;
-                _a.label = 1;
-            case 1:
-                if (!(_i < cartItems_1.length)) return [3 /*break*/, 5];
-                item = cartItems_1[_i];
                 return [4 /*yield*/, client.query('INSERT INTO orders (user_id, delivery_address) VALUES ($1, $2) RETURNING order_id', [user.user_id, user.address])];
-            case 2:
-                orderResult = _a.sent();
+            case 1:
+                orderResult = _b.sent();
                 orderId = orderResult.rows[0].order_id;
-                return [4 /*yield*/, client.query('INSERT INTO order_details (order_id, product_id, quantity) VALUES ($1, $2, $3)', [orderId, item.productId, item.quantity])];
+                _i = 0, _a = cartItems.items;
+                _b.label = 2;
+            case 2:
+                if (!(_i < _a.length)) return [3 /*break*/, 5];
+                item = _a[_i];
+                return [4 /*yield*/, client.query('INSERT INTO order_details (order_id, product_id, quantity) VALUES ($1, $2, $3)', [orderId, item.product_id, item.quantity])];
             case 3:
-                _a.sent();
-                _a.label = 4;
+                _b.sent();
+                _b.label = 4;
             case 4:
                 _i++;
-                return [3 /*break*/, 1];
+                return [3 /*break*/, 2];
             case 5:
                 res.status(200).json({ message: 'Order created' });
-                return [3 /*break*/, 8];
+                return [3 /*break*/, 7];
             case 6:
-                error_5 = _a.sent();
-                // If there's an error, rollback the transaction
-                return [4 /*yield*/, client.query('ROLLBACK')];
-            case 7:
-                // If there's an error, rollback the transaction
-                _a.sent();
+                error_5 = _b.sent();
                 console.error(error_5);
                 res.status(500).json({ error: 'An error occurred while creating the order' });
-                return [3 /*break*/, 8];
-            case 8: return [2 /*return*/];
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
         }
     });
 }); });
