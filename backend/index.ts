@@ -1,4 +1,4 @@
-import { v4 as uuid } from "uuid";
+import { v4 as uuid } from 'uuid';
 import cors = require('cors');
 import express = require('express');
 import { Client } from 'pg';
