@@ -64,20 +64,20 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
 // Login section
 
 app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { email , password } = req.body;
 
   try {
-    const { rows } = await client.query('SELECT * FROM users WHERE username = $1', [username]);
+    const { rows } = await client.query('SELECT * FROM users WHERE email = $1', [email]);
     const user = rows[0];
 
     if (!user) {
-      return res.status(400).json({ error: 'Invalid username or password' });
+      return res.status(400).json({ error: 'Invalid email or password' });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!passwordMatch) {
-      return res.status(400).json({ error: 'Invalid username or password' });
+      return res.status(400).json({ error: 'Invalid email or password' });
     }
 
     // If the username and password are valid, generate a token and send it as the response
@@ -244,6 +244,25 @@ app.delete('/ordersUser/:userId', async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while deleting the orders' });
+  }
+});
+
+//Remove orders and user from the database
+app.delete('/UserAdmin/:userId', async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+
+    // Delete all orders associated with the user ID
+    await client.query('DELETE FROM order_details WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = $1)', [userId]);
+    await client.query('DELETE FROM orders WHERE user_id = $1', [userId]);
+
+    // Delete the user
+    await client.query('DELETE FROM users WHERE user_id = $1', [userId]);
+
+    res.status(200).json({ message: 'User and associated orders deleted' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while deleting the user and orders' });
   }
 });
 

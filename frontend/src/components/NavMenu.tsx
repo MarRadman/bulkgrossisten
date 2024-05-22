@@ -64,7 +64,6 @@ function NavMenu() {
 
   function handleLogout() {
     localStorage.removeItem('token');
-    sessionStorage.setItem('cart', JSON.stringify([]));
   }
 
   return(
@@ -74,10 +73,10 @@ function NavMenu() {
           <img src={BurgerMenuIcon} alt="BurgerMenu" className="navIcons" />
           <ul className="dropdown-menu-burger" aria-labelledby="dropdownMenuButton">
             <li>
-              <a href="/order">Orders</a>
+              <a className="dropDownLinks" href="/order">Orders</a>
             </li>
             <li>
-              <a href="/" onClick={handleLogout}>Logout</a>
+              <a className="dropDownLinks" href="/" onClick={handleLogout}>Logout</a>
             </li>
           </ul>
         </div>
@@ -95,7 +94,7 @@ function NavMenu() {
                 {item.product.name}: {item.quantity} st
               </li>
             ))}
-            <li><a id="dropDownCheckout" href="/cart">Checkout</a></li>
+            <li><a className="dropDownLinks" href="/cart">Checkout</a></li>
           </ul>
         </div>
       </div>

@@ -4,7 +4,6 @@ import { ListGroup } from 'react-bootstrap';
 import '../assets/Order.css';
 import withAuthCheck from '../authentication/withAuthCheck';
 import BackBtn from '../components/BackBtn';
-import "../assets/Order.css";
 
 type OrderItem = {
   product_id: number;
@@ -43,11 +42,12 @@ const OrderView = () => {
   const [orderList, setOrderList] = useState([]);
   const [productList, setProductList] = useState<Product[]>([]);
   const token = localStorage.getItem('token');
-  const [price, setPrice] = useState(0);
+
   sessionStorage.setItem('cart', JSON.stringify([]));
   const [totalPrice, setTotalPrice] = useState(0);
 
-  async function fetchProductData() {
+
+const fetchProductData = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
       console.log('No token found');
@@ -112,26 +112,24 @@ const OrderView = () => {
       const orderResult = await orderResponse.json();
 
       setOrderList(orderResult);
-      // console.log(orderResult);
+      console.log(orderResult);
       let total = 0;
 
-      // Add price to each item in each order
-      if(totalPrice === 0) {
+      if(orderResult.ok) {
         for (const order of orderResult) {
           for (const item of order.items) {
             const product = productList.find(product => product.product_id === item.product_id);
             if (product) {
-              item.price = product.price;
-              setPrice(product.price); // set the price of the current item
-              total += product.price * item.quantity; // add the total price of the current item to the total
+              total += product.price * item.quantity;
             } else {
               console.log('No product found for item:', item);
             }
           }
         }
+        console.log(total);
+        setTotalPrice(total);
       }
 
-      setTotalPrice(total);
     } catch (error) {
       console.error("An error occurred while fetching the user and orders:", error);
     }
@@ -144,39 +142,37 @@ const OrderView = () => {
     }
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
-  }, [totalPrice]);
 
   return (
     <React.Fragment>
       {userId && (
-        <ListGroup>
-          <h2>User Information</h2>
+        <ListGroup className='userInfo'>
+          <h2 className='userInfoTitle'>User Information</h2>
           <p>Username: {userId.username}</p>
           <p>Email: {userId.email}</p>
           <p>Address: {userId.address}</p>
-          <p>Phone number: {userId.phone_number}</p>
+          <p>Number: {userId.phone_number}</p>
           <p>Country: {userId.country}</p>
         </ListGroup>
       )}
-      <h2>Order Information</h2>
-      <div className="orders-grid">  {/* This div applies the grid layout to the orders */}
-        {orderList && orderList.map((order: Order, index: number) => {
+      <h2 className='orderInfoTitle'>Order Information</h2>
+      <div className="orders-grid">
+      {/* This div applies the grid layout to the orders */}
+        {orderList && orderList.map((order: Order) => {
           // Calculate the total price for this order
           const orderTotalPrice = order.items.reduce((total, item) => total + item.price * item.quantity, 0);
 
           return (
-            <div className="order-card">
-              <ListGroup.Item key={index}>
-                <p>Order ID: {order.order_id}</p>
-                <p>Order Date: {new Date(order.order_date).toLocaleDateString()}</p>
-                <p>Delivery address: {order.delivery_address}</p>
-                <p>Status: {order.status}</p>
+            <div className="order-card" key={order.order_id}>
+              <ListGroup.Item>
+                <h5>Order ID: {order.order_id}</h5>
+                <h5>Order Date: {new Date(order.order_date).toLocaleDateString()}</h5>
+                <h5>Delivery address: {order.delivery_address}</h5>
+                <h5>Status: {order.status}</h5>
                 <h5>Items:</h5>
                 <ul>
-                  {order.items && order.items.map((item, itemIndex) => (
-                    <li key={itemIndex}>
+                  {order.items && order.items.map((item) => (
+                    <li key={item.product_id}>
                       <p>Product: {item.product_name} x {item.quantity}</p>
                     </li>
                   ))}
@@ -188,7 +184,7 @@ const OrderView = () => {
         })}
       </div>
       <ul>
-        <li><p>Total Price: {totalPrice}</p></li>
+        <li><p>Total Price: {totalPrice}</p></li> {/* Display the total price for all orders */}
       </ul>
       <BackBtn />
     </React.Fragment>

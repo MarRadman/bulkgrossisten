@@ -13,6 +13,7 @@ import image5 from '../assets/productsPhotos/5.jpg';
 import image6 from '../assets/productsPhotos/6.jpg';
 import image7 from '../assets/productsPhotos/7.jpg';
 import image8 from '../assets/productsPhotos/8.jpg';
+import { Link } from 'react-router-dom';
 
 const images: { [key: number]: string } = {
   1: image1,
@@ -185,7 +186,7 @@ function CartView() {
           </div>
           ))}
           </div>
-          {cartItems.length <= 0  && <p>Your cart is empty. Checkout <a href="/products">Products</a></p>}
+          {cartItems.length <= 0  && <p>Your cart is empty. Checkout <Link to="/prodcuts">Products</Link></p>}
           {cartItems.length > 0 && (
             <React.Fragment>
               <p>Total Price: {totalPrice}kr</p>

@@ -1,8 +1,9 @@
 import { useState, FormEvent, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import "../assets/Login.css";
 
 function SignUpView() {
-
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -63,7 +64,7 @@ function SignUpView() {
     <div>
       <form onSubmit={handleSubmit}>
         <label>
-        Username:
+        Name:
         <input
           onChange={(event) => setUsername(event.target.value)}
           placeholder="Username"
@@ -113,8 +114,8 @@ function SignUpView() {
         </label>
         <input type="submit" value="Sign Up" />
       </form>
-      {errorMessage && <p>{errorMessage}</p>} {/* Add this line */}
-      <p>Got an Account?</p><a href="/">Login</a>
+      {errorMessage && <p>{errorMessage}</p>}
+      <p>Got an Account?</p><Link to="/">Login</Link>
     </div>
   );
 }

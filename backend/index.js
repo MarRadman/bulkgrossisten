@@ -85,26 +85,26 @@ var authenticate = function (req, res, next) { return __awaiter(void 0, void 0, 
 }); };
 // Login section
 app.post('/login', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, username, password, rows, user, passwordMatch, token, error_2;
+    var _a, email, password, rows, user, passwordMatch, token, error_2;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _a = req.body, username = _a.username, password = _a.password;
+                _a = req.body, email = _a.email, password = _a.password;
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 5, , 6]);
-                return [4 /*yield*/, client.query('SELECT * FROM users WHERE username = $1', [username])];
+                return [4 /*yield*/, client.query('SELECT * FROM users WHERE email = $1', [email])];
             case 2:
                 rows = (_b.sent()).rows;
                 user = rows[0];
                 if (!user) {
-                    return [2 /*return*/, res.status(400).json({ error: 'Invalid username or password' })];
+                    return [2 /*return*/, res.status(400).json({ error: 'Invalid email or password' })];
                 }
                 return [4 /*yield*/, bcrypt.compare(password, user.password_hash)];
             case 3:
                 passwordMatch = _b.sent();
                 if (!passwordMatch) {
-                    return [2 /*return*/, res.status(400).json({ error: 'Invalid username or password' })];
+                    return [2 /*return*/, res.status(400).json({ error: 'Invalid email or password' })];
                 }
                 token = (0, uuid_1.v4)();
                 // Store the token in the database
@@ -307,9 +307,41 @@ app.delete('/ordersUser/:userId', function (req, res) { return __awaiter(void 0,
         }
     });
 }); });
+//Remove orders and user from the database
+app.delete('/UserAdmin/:userId', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, error_8;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 4, , 5]);
+                userId = req.params.userId;
+                // Delete all orders associated with the user ID
+                return [4 /*yield*/, client.query('DELETE FROM order_details WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = $1)', [userId])];
+            case 1:
+                // Delete all orders associated with the user ID
+                _a.sent();
+                return [4 /*yield*/, client.query('DELETE FROM orders WHERE user_id = $1', [userId])];
+            case 2:
+                _a.sent();
+                // Delete the user
+                return [4 /*yield*/, client.query('DELETE FROM users WHERE user_id = $1', [userId])];
+            case 3:
+                // Delete the user
+                _a.sent();
+                res.status(200).json({ message: 'User and associated orders deleted' });
+                return [3 /*break*/, 5];
+            case 4:
+                error_8 = _a.sent();
+                console.error(error_8);
+                res.status(500).json({ error: 'An error occurred while deleting the user and orders' });
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); });
 //Get all users, products, orders, order_details and menus with authentication as admin
 app.get('/usersAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var rows, error_8;
+    var rows, error_9;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -325,7 +357,7 @@ app.get('/usersAdmin', authenticate, function (req, res) { return __awaiter(void
                 }
                 return [3 /*break*/, 3];
             case 2:
-                error_8 = _a.sent();
+                error_9 = _a.sent();
                 res.status(500).json({ error: 'An error occured' });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
@@ -333,7 +365,7 @@ app.get('/usersAdmin', authenticate, function (req, res) { return __awaiter(void
     });
 }); });
 app.get('/productsAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var rows, error_9;
+    var rows, error_10;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -350,8 +382,8 @@ app.get('/productsAdmin', authenticate, function (req, res) { return __awaiter(v
                 }
                 return [3 /*break*/, 3];
             case 2:
-                error_9 = _a.sent();
-                console.error('An error occurred:', error_9);
+                error_10 = _a.sent();
+                console.error('An error occurred:', error_10);
                 res.status(500).json({ error: 'An error occurred' });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
@@ -359,36 +391,12 @@ app.get('/productsAdmin', authenticate, function (req, res) { return __awaiter(v
     });
 }); });
 app.get('/ordersAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var rows, error_10;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client.query('SELECT * FROM orders')];
-            case 1:
-                rows = (_a.sent()).rows;
-                if (rows.length === 0) {
-                    res.status(404).json({ error: 'No users found' });
-                }
-                else {
-                    res.json(rows);
-                }
-                return [3 /*break*/, 3];
-            case 2:
-                error_10 = _a.sent();
-                res.status(500).json({ error: 'An error occured' });
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); });
-app.get('/order_detailsAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_11;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client.query('SELECT * FROM order_details')];
+                return [4 /*yield*/, client.query('SELECT * FROM orders')];
             case 1:
                 rows = (_a.sent()).rows;
                 if (rows.length === 0) {
@@ -406,8 +414,32 @@ app.get('/order_detailsAdmin', authenticate, function (req, res) { return __awai
         }
     });
 }); });
-app.get('/menusAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get('/order_detailsAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_12;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, client.query('SELECT * FROM order_details')];
+            case 1:
+                rows = (_a.sent()).rows;
+                if (rows.length === 0) {
+                    res.status(404).json({ error: 'No users found' });
+                }
+                else {
+                    res.json(rows);
+                }
+                return [3 /*break*/, 3];
+            case 2:
+                error_12 = _a.sent();
+                res.status(500).json({ error: 'An error occured' });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+app.get('/menusAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var rows, error_13;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -423,7 +455,7 @@ app.get('/menusAdmin', authenticate, function (req, res) { return __awaiter(void
                 }
                 return [3 /*break*/, 3];
             case 2:
-                error_12 = _a.sent();
+                error_13 = _a.sent();
                 res.status(500).json({ error: 'An error occured' });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];

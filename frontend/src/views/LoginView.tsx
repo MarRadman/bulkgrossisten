@@ -1,87 +1,100 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import '../assets/Login.css';
+import { Link } from 'react-router-dom';
 
 function LoginView() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  sessionStorage.setItem('cart', JSON.stringify([]));
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       navigate('/app');
     }
-  },[navigate]);
+  }, [navigate]);
 
-  //https://stackoverflow.com/questions/60635093/react-formeventhtmlformelement-form-input-props-types
+  useEffect(() => {
+    sessionStorage.setItem('cart', JSON.stringify([]));
+  }, []);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
 
-    if (!username || !password) {
+    if (!email || !password) {
       setError('Please fill in all fields');
       setLoading(false);
       return;
     }
 
-    const response = await fetch("http://localhost:3000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email , password }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      localStorage.setItem('token', data.token); // Save token to local storage just for testing. Remove in production
+      if (response.ok) {
+        localStorage.setItem('token', data.token); // Save token to local storage just for testing. Remove in production
+        setTimeout(() => {
+          setLoading(false);
+          navigate('/app'); // Navigate to AppView
+        }, 2000);
+      } else {
+        throw new Error(data.message || 'Wrong Username or Password');
+      }
+    } catch (error: unknown) {
       setTimeout(() => {
-        setLoading(false); // Stop loading
-        console.log("Login successful");
-        navigate('/app'); // Navigate to AppView
+        setLoading(false);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError('An unknown error occurred');
+        }
       }, 2000);
-    } else {
-      setTimeout(() => {
-        setLoading(false); // Stop loading
-        setError(data.message || 'Wrong Username or Password'); // Show error message
-      }, 2000); // Wait for 2 seconds
     }
   };
 
   return (
-    <div>
-        <form onSubmit={handleSubmit}>
+    <div className="container">
+      <form onSubmit={handleSubmit}>
+        <div>
           <label>
             Username:
             <input
-              onChange={(event) => {
-                setUsername(event.target.value);
-              }}
-              placeholder="Username"
-              value={username}
-
+              type="text"
+              placeholder="Email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
             />
           </label>
+        </div>
+        <div>
           <label>
             Password:
             <input
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
-              placeholder="Password"
               type="password"
+              placeholder="Password"
               value={password}
+              onChange={(event) => setPassword(event.target.value)}
             />
           </label>
+        </div>
+        <div>
           <input type="submit" value="Login" />
-        </form>
-        {loading && <p>Loading...</p>} {/* Show loading message */}
-        {error && <p>{error}</p>} {/* Show error message */}
-        <p>Dont have an account?</p><a href="/signup">Sign up</a>
+        </div>
+      </form>
+      {loading && <p className="loading">Loading...</p>}
+      {error && <p className="error">{error}</p>}
+      <p>Don't have an account?</p><Link to="/signup">Sign up</Link>
     </div>
   );
 }

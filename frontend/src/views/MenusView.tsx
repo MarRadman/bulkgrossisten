@@ -47,7 +47,7 @@ function MenusView() {
           {menuList.length > 0 && menuList.map((menu) => (
             <ListGroup.Item action key={menu.menu_id}>
               <h2>{menu.name}</h2>
-              <p>Beskriving: {menu.description}</p>
+              <p>{menu.description}</p>
             </ListGroup.Item>
           ))}
         </ListGroup>
