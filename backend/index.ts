@@ -5,6 +5,7 @@ import { Client } from 'pg';
 import dotenv =  require('dotenv');
 import bcrypt = require('bcrypt');
 import { Request, Response, NextFunction } from 'express';
+import path from 'path';
 
 dotenv.config();
 
@@ -22,6 +23,9 @@ app.use(cors());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+// Serve static files from the 'dist' directory
+app.use(express.static(path.join(path.resolve(), 'dist')))
 
 //Authentication section
 
