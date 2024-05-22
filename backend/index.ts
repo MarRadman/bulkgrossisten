@@ -1,7 +1,7 @@
 const { v4: uuidV4 } = require('uuid');
 import cors = require('cors');
 import express = require('express');
-import { Client, Pool } from 'pg';
+import { Pool } from 'pg';
 import dotenv =  require('dotenv');
 import bcrypt = require('bcrypt');
 import { Request, Response, NextFunction } from 'express';
