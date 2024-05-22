@@ -1,4 +1,4 @@
-import { v4 as uuid } from 'uuid';
+const { v4: uuidV4 } = require('uuid');
 import cors = require('cors');
 import express = require('express');
 import { Client } from 'pg';
@@ -81,7 +81,7 @@ app.post('/login', async (req, res) => {
     }
 
     // If the username and password are valid, generate a token and send it as the response
-    const token = uuid();
+    const token = uuidV4();
 
     // Store the token in the database
     await client.query('UPDATE users SET token = $1 WHERE user_id = $2', [token, user.user_id]);

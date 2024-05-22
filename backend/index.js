@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var uuid_1 = require("uuid");
+var uuidV4 = require('uuid').v4;
 var cors = require("cors");
 var express = require("express");
 var pg_1 = require("pg");
@@ -106,7 +106,7 @@ app.post('/login', function (req, res) { return __awaiter(void 0, void 0, void 0
                 if (!passwordMatch) {
                     return [2 /*return*/, res.status(400).json({ error: 'Invalid email or password' })];
                 }
-                token = (0, uuid_1.v4)();
+                token = uuidV4();
                 // Store the token in the database
                 return [4 /*yield*/, client.query('UPDATE users SET token = $1 WHERE user_id = $2', [token, user.user_id])];
             case 4:
