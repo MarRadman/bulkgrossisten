@@ -46,7 +46,7 @@ interface CartItem {
 
 function CartView() {
   const [cartItems, setCartItems] = useSessionStorage<CartItem[]>("cart", []);
-  const [productList, setProductList] = useState<Product[]>([]);
+  const [productList, _setProductList] = useState<Product[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
   const navigate = useNavigate();
