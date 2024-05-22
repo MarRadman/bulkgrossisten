@@ -42,16 +42,22 @@ var express = require("express");
 var pg_1 = require("pg");
 var dotenv = require("dotenv");
 var bcrypt = require("bcrypt");
+var path = require("path");
 dotenv.config();
 var client = new pg_1.Client({
     connectionString: process.env.PGURI
 });
 var port = process.env.PORT || 3000;
+var pool = new pg_1.Pool({
+    connectionString: process.env.DATABASE_URL,
+});
 client.connect();
 var app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+// Serve static files from the 'dist' directory
+app.use(express.static(path.join(path.resolve(), 'dist')));
 // Middleware to authenticate the user
 var authenticate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var token, rows, error_1;

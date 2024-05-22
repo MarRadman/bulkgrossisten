@@ -1,11 +1,11 @@
 const { v4: uuidV4 } = require('uuid');
 import cors = require('cors');
 import express = require('express');
-import { Client } from 'pg';
+import { Client, Pool } from 'pg';
 import dotenv =  require('dotenv');
 import bcrypt = require('bcrypt');
 import { Request, Response, NextFunction } from 'express';
-import path from 'path';
+import * as path from 'path';
 
 dotenv.config();
 
@@ -14,6 +14,10 @@ const client = new Client({
 })
 
 const port = process.env.PORT || 3000;
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 
 client.connect();
 
