@@ -1,0 +1,5 @@
+services:
+  - name: frontend
+    buildCommand: npm install && npm run build
+    # directory: path/to/frontend
+    # Ingen specifik directory behövs om frontend-koden ligger i samma katalog
