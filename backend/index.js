@@ -49,7 +49,7 @@ var client = new pg_1.Client({
 });
 var port = process.env.PORT || 3000;
 var pool = new pg_1.Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.DATABASE_URL
 });
 client.connect();
 var app = express();
