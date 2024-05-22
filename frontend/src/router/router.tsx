@@ -7,20 +7,22 @@ import CartView from '../views/CartView';
 import LoginView from '../views/LoginView';
 import SignUpView from '../views/SignUpView';
 
-const Router: React.FC = () => {
+
+function AppRouter() {
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginView />} />
+        <Route path="/signup" element={<SignUpView />} />
         <Route path="/app" element={<AppView />} />
         <Route path="/products" element={<Products />} />
         <Route path="/menus" element={<Menus />} />
-        <Route path="/order" element={<OrderView />} />
         <Route path="/cart" element= {<CartView />} />
-        <Route path="/signup" element={<SignUpView />} />
+        <Route path="/order" element={<OrderView />} />
       </Routes>
     </BrowserRouter>
-  );
-};
+  )
+}
 
-export default Router;
+export default AppRouter;

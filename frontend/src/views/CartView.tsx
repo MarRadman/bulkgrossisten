@@ -121,7 +121,7 @@ function CartView() {
         items
       };
 
-      console.log(order);
+      console.log("the items",order);
       try {
         const response = await fetch('http://localhost:3000/orderUser', {
           method: 'POST',

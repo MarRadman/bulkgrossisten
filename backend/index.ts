@@ -44,7 +44,7 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
   const token = req.headers.authorization;
 
   if (!token) {
-    return res.status(401).json({ error: 'No token provided' });
+    console.log("came here. SO wrong in the authentication function");
   }
 
   try {
@@ -121,30 +121,95 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-//Post & Get order as an user
+//Get user by user_id
 
-app.get('/orderUser', authenticate, async (req: Request, res: Response) => {
+app.get('/user', authenticate, async (req: Request, res: Response) => {
   try {
     const user = (req as RequestUser).user;
+
+    if (!user) {
+      console.log("came here. SO wrong in the /user route");
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const { rows } = await client.query('SELECT * FROM users WHERE user_id = $1', [user.user_id]);
+
+    if (rows.length === 0) {
+      res.status(404).json({ error: 'User not found' });
+    } else {
+      res.json(rows[0]);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching the user' });
+  }
+});
+
+//Get order as an user in the orderView
+app.get('/orderUser/:userId', authenticate, async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
 
     const result = await client.query(`
     SELECT orders.order_id,
     orders.delivery_address,
+    orders.order_date,
     orders.status,
     users.username,
     order_details.product_id,
-    order_details.quantity FROM orders INNER JOIN users ON orders.user_id =
-    users.user_id INNER JOIN order_details ON orders.order_id =
-    order_details.order_id WHERE orders.user_id = $1`,
-    [user.user_id]);
+    order_details.quantity,
+    products.name
+    FROM orders
+    INNER JOIN users ON orders.user_id = users.user_id
+    INNER JOIN order_details ON orders.order_id = order_details.order_id
+    INNER JOIN products ON order_details.product_id = products.product_id
+    WHERE orders.user_id = $1`,
+    [userId]
+  );
 
-    res.status(200).json(result.rows);
+  let orders = [];
+
+  for (let i = 0; i < result.rows.length; i++) {
+    let row = result.rows[i];
+    let existingOrder = null;
+
+    for (let j = 0; j < orders.length; j++) {
+      if (orders[j].order_id === row.order_id) {
+        existingOrder = orders[j];
+        break;
+      }
+    }
+
+    if (existingOrder) {
+      existingOrder.items.push({
+        product_id: row.product_id,
+        product_name: row.name,
+        quantity: row.quantity
+      });
+    } else {
+      orders.push({
+        order_id: row.order_id,
+        delivery_address: row.delivery_address,
+        order_date: row.order_date,
+        status: row.status,
+        username: row.username,
+        items: [{
+          product_id: row.product_id,
+          product_name: row.name,
+          quantity: row.quantity
+        }]
+      });
+    }
+  }
+
+  res.status(200).json(orders);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while fetching the orders' });
   }
 });
 
+//Post order as an user in the cartView
 app.post('/orderUser', authenticate, async (req: Request, res: Response) => {
   try {
     const user = (req as RequestUser).user;
