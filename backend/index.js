@@ -43,6 +43,7 @@ var pg_1 = require("pg");
 var dotenv = require("dotenv");
 var bcrypt = require("bcrypt");
 var path = require("path");
+var config_1 = require("./config");
 dotenv.config();
 var pool = new pg_1.Pool({
     connectionString: process.env.PGURI,
@@ -91,7 +92,7 @@ function authenticate(req, res, next) {
     });
 }
 // Login section
-app.post("/login", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("".concat(config_1.default, "/login"), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, email, password, rows, user, passwordMatch, token, error_2;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -136,7 +137,7 @@ app.post("/login", function (req, res) { return __awaiter(void 0, void 0, void 0
     });
 }); });
 //Signup section
-app.post("/signup", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("".concat(config_1.default, "/signup"), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, username, email, password, address, phone_number, country, rows, password_hash, query, values, error_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -182,7 +183,7 @@ app.post("/signup", function (req, res) { return __awaiter(void 0, void 0, void 
     });
 }); });
 //Get user by user_id
-app.get("/user", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default, "/user"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, rows, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -215,7 +216,7 @@ app.get("/user", authenticate, function (req, res) { return __awaiter(void 0, vo
     });
 }); });
 //Get order as an user in the orderView
-app.get("/orderUser/:userId", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default, "/orderUser/:userId"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, result, orders, i, row, existingOrder, j, error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -273,7 +274,7 @@ app.get("/orderUser/:userId", authenticate, function (req, res) { return __await
     });
 }); });
 //Post order as an user in the cartView
-app.post("/orderUser", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("".concat(config_1.default, "/orderUser"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, cartItems, orderResult, orderId, _i, _a, item, error_6;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -312,7 +313,7 @@ app.post("/orderUser", authenticate, function (req, res) { return __awaiter(void
     });
 }); });
 //Remove orders from the userId
-app.delete("/ordersUser/:userId", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.delete("".concat(config_1.default, "/ordersUser/:userId"), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, error_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -341,7 +342,7 @@ app.delete("/ordersUser/:userId", function (req, res) { return __awaiter(void 0,
     });
 }); });
 //Remove orders and user from the database
-app.delete("/UserAdmin/:userId", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.delete("".concat(config_1.default, "/UserAdmin/:userId"), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, error_8;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -375,7 +376,7 @@ app.delete("/UserAdmin/:userId", function (req, res) { return __awaiter(void 0, 
     });
 }); });
 //Get all users, products, orders, order_details and menus with authentication as admin
-app.get("/usersAdmin", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default, "/usersAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_9;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -399,7 +400,7 @@ app.get("/usersAdmin", authenticate, function (req, res) { return __awaiter(void
         }
     });
 }); });
-app.get("/productsAdmin", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default, "/productsAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_10;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -425,7 +426,7 @@ app.get("/productsAdmin", authenticate, function (req, res) { return __awaiter(v
         }
     });
 }); });
-app.get("/ordersAdmin", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default, "/ordersAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_11;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -449,7 +450,7 @@ app.get("/ordersAdmin", authenticate, function (req, res) { return __awaiter(voi
         }
     });
 }); });
-app.get("/order_detailsAdmin", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default, "/order_detailsAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_12;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -473,7 +474,7 @@ app.get("/order_detailsAdmin", authenticate, function (req, res) { return __awai
         }
     });
 }); });
-app.get("/menusAdmin", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default, "/menusAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_13;
     return __generator(this, function (_a) {
         switch (_a.label) {

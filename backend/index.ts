@@ -6,6 +6,7 @@ import dotenv = require("dotenv");
 import bcrypt = require("bcrypt");
 import { Request, Response, NextFunction } from "express";
 import * as path from "path";
+import apiUrl from "./config";
 
 dotenv.config();
 
@@ -26,8 +27,6 @@ app.use(express.json());
 
 // Serve static files from the 'dist' directory
 app.use(express.static(path.join(path.resolve(), "dist")));
-
-//Authentication section
 
 interface User {
   user_id: number;
@@ -69,7 +68,7 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
 
 // Login section
 
-app.post("/login", async (req, res) => {
+app.post(`${apiUrl}/login`, async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -106,7 +105,7 @@ app.post("/login", async (req, res) => {
 
 //Signup section
 
-app.post("/signup", async (req, res) => {
+app.post(`${apiUrl}/signup`, async (req, res) => {
   const { username, email, password, address, phone_number, country } =
     req.body;
 
@@ -145,7 +144,7 @@ app.post("/signup", async (req, res) => {
 
 //Get user by user_id
 
-app.get("/user", authenticate, async (req: Request, res: Response) => {
+app.get(`${apiUrl}/user`, authenticate, async (req: Request, res: Response) => {
   try {
     const user = (req as RequestUser).user;
 
@@ -174,7 +173,7 @@ app.get("/user", authenticate, async (req: Request, res: Response) => {
 
 //Get order as an user in the orderView
 app.get(
-  "/orderUser/:userId",
+  `${apiUrl}/orderUser/:userId`,
   authenticate,
   async (req: Request, res: Response) => {
     try {
@@ -246,7 +245,7 @@ app.get(
 );
 
 //Post order as an user in the cartView
-app.post("/orderUser", authenticate, async (req: Request, res: Response) => {
+app.post(`${apiUrl}/orderUser`, authenticate, async (req: Request, res: Response) => {
   try {
     const user = (req as RequestUser).user;
     const cartItems = req.body; // Get the cart items from the request body
@@ -276,7 +275,7 @@ app.post("/orderUser", authenticate, async (req: Request, res: Response) => {
 });
 
 //Remove orders from the userId
-app.delete("/ordersUser/:userId", async (req: Request, res: Response) => {
+app.delete(`${apiUrl}/ordersUser/:userId`, async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
 
@@ -297,7 +296,7 @@ app.delete("/ordersUser/:userId", async (req: Request, res: Response) => {
 });
 
 //Remove orders and user from the database
-app.delete("/UserAdmin/:userId", async (req: Request, res: Response) => {
+app.delete(`${apiUrl}/UserAdmin/:userId`, async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
 
@@ -322,7 +321,7 @@ app.delete("/UserAdmin/:userId", async (req: Request, res: Response) => {
 
 //Get all users, products, orders, order_details and menus with authentication as admin
 
-app.get("/usersAdmin", authenticate, async (req: Request, res: Response) => {
+app.get(`${apiUrl}/usersAdmin`, authenticate, async (req: Request, res: Response) => {
   try {
     const { rows } = await pool.query("SELECT * FROM users");
     if (rows.length === 0) {
@@ -335,7 +334,7 @@ app.get("/usersAdmin", authenticate, async (req: Request, res: Response) => {
   }
 });
 
-app.get("/productsAdmin", authenticate, async (req: Request, res: Response) => {
+app.get(`${apiUrl}/productsAdmin`, authenticate, async (req: Request, res: Response) => {
   try {
     const { rows } = await pool.query("SELECT * FROM products");
     console.log("SQL query result:", rows);
@@ -351,7 +350,7 @@ app.get("/productsAdmin", authenticate, async (req: Request, res: Response) => {
   }
 });
 
-app.get("/ordersAdmin", authenticate, async (req: Request, res: Response) => {
+app.get(`${apiUrl}/ordersAdmin`, authenticate, async (req: Request, res: Response) => {
   try {
     const { rows } = await pool.query("SELECT * FROM orders");
     if (rows.length === 0) {
@@ -365,7 +364,7 @@ app.get("/ordersAdmin", authenticate, async (req: Request, res: Response) => {
 });
 
 app.get(
-  "/order_detailsAdmin",
+  `${apiUrl}/order_detailsAdmin`,
   authenticate,
   async (req: Request, res: Response) => {
     try {
@@ -381,7 +380,7 @@ app.get(
   }
 );
 
-app.get("/menusAdmin", authenticate, async (req: Request, res: Response) => {
+app.get(`${apiUrl}/menusAdmin`, authenticate, async (req: Request, res: Response) => {
   try {
     const { rows } = await pool.query("SELECT * FROM menus");
     if (rows.length === 0) {

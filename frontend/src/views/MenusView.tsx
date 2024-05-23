@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import withAuthCheck from '../authentication/withAuthCheck';
 import BackBtn from '../components/BackBtn';
+import apiUrl from "../../../backend/config";
 
 type Menu = {
   menu_id: number;
@@ -21,7 +22,7 @@ function MenusView() {
         console.log('No token found');
         return;
       }
-      const response = await fetch('http://localhost:3000/menusAdmin', {
+      const response = await fetch(`${apiUrl}/menusAdmin`, {
         headers: {
           'Authorization': token
         }

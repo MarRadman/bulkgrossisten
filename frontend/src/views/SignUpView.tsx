@@ -2,8 +2,7 @@ import { useState, FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "../assets/Login.css";
-// import { apiUrl } from "../config";
-// `${apiUrl}"/signup`
+import apiUrl from "../../../backend/config";
 
 function SignUpView() {
   const [username, setUsername] = useState("");
@@ -37,7 +36,7 @@ function SignUpView() {
       return;
     }
 
-    const response = await fetch("http://localhost:3000/signup", {
+    const response = await fetch(`${apiUrl}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
