@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../assets/App.css";
 import withAuthCheck from '../authentication/withAuthCheck';
+import image1 from "../assets/FoodProducts.jpg";
+import image2 from "../assets/MenusPhoto.jpg";
 
 function App() {
 
@@ -22,7 +24,7 @@ function App() {
           <Link to="/products">
             <div className="image-container">
               <img
-                src="../assets/FoodProducts.jpg"
+                src= {image1}
                 alt="First"
               />
             </div>
@@ -33,7 +35,7 @@ function App() {
           <Link to="/menus">
             <div className="image-container">
               <img
-                src="../assets/MenusPhoto.jpg"
+                src={image2}
                 alt="Second"
               />
             </div>
