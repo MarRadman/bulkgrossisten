@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-function useSessionStorage<T>(key: string, initialValue: T): [T, React.Dispatch<React.SetStateAction<T>>] {
+function useSessionStorage<T>(
+  key: string,
+  initialValue: T
+): [T, React.Dispatch<React.SetStateAction<T>>] {
   const [value, setValue] = useState<T>(() => {
     const jsonValue = sessionStorage.getItem(key);
     if (jsonValue != null) return JSON.parse(jsonValue);
@@ -19,3 +22,5 @@ function useSessionStorage<T>(key: string, initialValue: T): [T, React.Dispatch<
 }
 
 export default useSessionStorage;
+
+//https://stackoverflow.com/questions/65250178/react-typescript-uselocalstorage-hook

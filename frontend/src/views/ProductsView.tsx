@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { ListGroup, Button, Modal } from 'react-bootstrap';
-import withAuthCheck from '../authentication/withAuthCheck';
-import BackBtn from '../components/BackBtn';
-import '../assets/Product.css';
-import image1 from '../assets/productsPhotos/1.jpg';
-import image2 from '../assets/productsPhotos/2.jpg';
-import image3 from '../assets/productsPhotos/3.jpg';
-import image4 from '../assets/productsPhotos/4.jpg';
-import image5 from '../assets/productsPhotos/5.jpg';
-import image6 from '../assets/productsPhotos/6.jpg';
-import image7 from '../assets/productsPhotos/7.jpg';
-import image8 from '../assets/productsPhotos/8.jpg';
-import useSessionStorage from '../hooks/SessionStorageHook';
+import React, { useState, useEffect } from "react";
+import { ListGroup, Button, Modal } from "react-bootstrap";
+import withAuthCheck from "../authentication/withAuthCheck";
+import BackBtn from "../components/BackBtn";
+import "../assets/Product.css";
+import image1 from "../assets/productsPhotos/1.jpg";
+import image2 from "../assets/productsPhotos/2.jpg";
+import image3 from "../assets/productsPhotos/3.jpg";
+import image4 from "../assets/productsPhotos/4.jpg";
+import image5 from "../assets/productsPhotos/5.jpg";
+import image6 from "../assets/productsPhotos/6.jpg";
+import image7 from "../assets/productsPhotos/7.jpg";
+import image8 from "../assets/productsPhotos/8.jpg";
+import useSessionStorage from "../hooks/SessionStorageHook";
 
 const images: { [key: number]: string } = {
   1: image1,
@@ -21,7 +21,7 @@ const images: { [key: number]: string } = {
   5: image5,
   6: image6,
   7: image7,
-  8: image8
+  8: image8,
 };
 
 interface Product {
@@ -45,21 +45,21 @@ function ProductsView() {
 
   useEffect(() => {
     const fetchProductData = async () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (!token) {
-        console.log('No token found');
+        console.log("No token found");
         return;
       }
 
       try {
-        const response = await fetch('http://localhost:3000/productsAdmin', {
+        const response = await fetch("http://localhost:3000/productsAdmin", {
           headers: {
-            'Authorization': token
-          }
+            Authorization: token,
+          },
         });
 
         if (!response.ok) {
-          console.log('Failed to fetch products');
+          console.log("Failed to fetch products");
           return;
         }
 
@@ -71,7 +71,7 @@ function ProductsView() {
 
         setProductList(products);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       }
     };
 
@@ -79,23 +79,28 @@ function ProductsView() {
   }, []);
 
   useEffect(() => {
-    sessionStorage.setItem('cart', JSON.stringify(cartItems));
+    sessionStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
   const addToCart = (product: Product) => {
     if (!product || !product.name) {
-      console.log('Invalid product');
+      console.log("Invalid product");
       return;
     }
 
     console.log("Item added to cart", product.name);
 
-    setCartItems(prevItems => {
+    setCartItems((prevItems) => {
       const newItems = [...prevItems];
-      const itemIndex = newItems.findIndex(item => item.product.product_id === product.product_id);
+      const itemIndex = newItems.findIndex(
+        (item) => item.product.product_id === product.product_id
+      );
 
       if (itemIndex !== -1) {
-        const updatedItem = { ...newItems[itemIndex], quantity: newItems[itemIndex].quantity + 1 };
+        const updatedItem = {
+          ...newItems[itemIndex],
+          quantity: newItems[itemIndex].quantity + 1,
+        };
         newItems[itemIndex] = updatedItem;
       } else {
         newItems.push({ product, quantity: 1 });
@@ -116,7 +121,7 @@ function ProductsView() {
 
   return (
     <React.Fragment>
-      <h1 className='Products-title'>Products</h1>
+      <h1 className="Products-title">Produkter</h1>
       <div className="product-grid-products">
         {productList.map((product) => (
           <div className="product-card" key={product.product_id}>
@@ -126,8 +131,12 @@ function ProductsView() {
               <p>Pris: {product.price}kr</p>
             </ListGroup.Item>
             <div className="button-group">
-              <Button onClick={() => addToCart(product)}>Add to Cart</Button>
-              <Button variant="info" onClick={() => handleShowModal(product)}>Info</Button>
+              <Button onClick={() => addToCart(product)}>
+                Lägg till i varukorg
+              </Button>
+              <Button variant="info" onClick={() => handleShowModal(product)}>
+                Info
+              </Button>
             </div>
           </div>
         ))}

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import React from 'react';
-import { ListGroup } from 'react-bootstrap';
-import '../assets/Order.css';
-import withAuthCheck from '../authentication/withAuthCheck';
-import BackBtn from '../components/BackBtn';
+import { useState, useEffect } from "react";
+import React from "react";
+import { ListGroup } from "react-bootstrap";
+import "../assets/Order.css";
+import withAuthCheck from "../authentication/withAuthCheck";
+import BackBtn from "../components/BackBtn";
 
 type OrderItem = {
   product_id: number;
@@ -41,24 +41,23 @@ const OrderView = () => {
   const [userId, setUserId] = useState<User | null>(null);
   const [orderList, setOrderList] = useState([]);
   const [productList, setProductList] = useState<Product[]>([]);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
-  sessionStorage.setItem('cart', JSON.stringify([]));
+  sessionStorage.setItem("cart", JSON.stringify([]));
   const [totalPrice, setTotalPrice] = useState(0);
 
-
-const fetchProductData = async () => {
-    const token = localStorage.getItem('token');
+  const fetchProductData = async () => {
+    const token = localStorage.getItem("token");
     if (!token) {
-      console.log('No token found');
+      console.log("No token found");
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:3000/productsAdmin', {
+      const response = await fetch("http://localhost:3000/productsAdmin", {
         headers: {
-          'Authorization': token
-        }
+          Authorization: token,
+        },
       });
 
       if (!response.ok) {
@@ -69,8 +68,11 @@ const fetchProductData = async () => {
       const products: Product[] = await response.json();
       setProductList(products);
     } catch (error) {
-      console.error('An error occurred while fetching the product data:', error);
-   }
+      console.error(
+        "An error occurred while fetching the product data:",
+        error
+      );
+    }
   };
 
   const fetchUserAndOrders = async () => {
@@ -82,27 +84,30 @@ const fetchProductData = async () => {
     try {
       // Fetch the user
       const userResponse = await fetch(`http://localhost:3000/user`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Authorization': token
-        }
+          Authorization: token,
+        },
       });
 
       if (!userResponse.ok) {
-        throw new Error('HTTP error ' + userResponse.status);
+        throw new Error("HTTP error " + userResponse.status);
       }
 
       const userId: User = await userResponse.json();
       setUserId(userId);
 
       // Fetch the orders for this user
-      const orderResponse = await fetch(`http://localhost:3000/orderUser/${userId.user_id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token
+      const orderResponse = await fetch(
+        `http://localhost:3000/orderUser/${userId.user_id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
         }
-      });
+      );
 
       if (!orderResponse.ok) {
         console.log(`HTTP error! status: ${orderResponse.status}`);
@@ -115,39 +120,42 @@ const fetchProductData = async () => {
       console.log(orderResult);
       let total = 0;
 
-      if(orderResult.ok) {
+      if (orderResult.ok) {
         for (const order of orderResult) {
           for (const item of order.items) {
-            const product = productList.find(product => product.product_id === item.product_id);
+            const product = productList.find(
+              (product) => product.product_id === item.product_id
+            );
             if (product) {
               total += product.price * item.quantity;
             } else {
-              console.log('No product found for item:', item);
+              console.log("No product found for item:", item);
             }
           }
         }
         console.log(total);
         setTotalPrice(total);
       }
-
     } catch (error) {
-      console.error("An error occurred while fetching the user and orders:", error);
+      console.error(
+        "An error occurred while fetching the user and orders:",
+        error
+      );
     }
   };
 
   useEffect(() => {
-    if(token) {
+    if (token) {
       fetchProductData();
       fetchUserAndOrders();
     }
   }, []);
 
-
   return (
     <React.Fragment>
       {userId && (
-        <ListGroup className='userInfo'>
-          <h2 className='userInfoTitle'>User Information</h2>
+        <ListGroup className="userInfo">
+          <h2 className="userInfoTitle">User Information</h2>
           <p>Username: {userId.username}</p>
           <p>Email: {userId.email}</p>
           <p>Address: {userId.address}</p>
@@ -155,40 +163,54 @@ const fetchProductData = async () => {
           <p>Country: {userId.country}</p>
         </ListGroup>
       )}
-      <h2 className='orderInfoTitle'>Order Information</h2>
+      <h2 className="orderInfoTitle">Order Information</h2>
       <div className="orders-grid">
-      {/* This div applies the grid layout to the orders */}
-        {orderList && orderList.map((order: Order) => {
-          // Calculate the total price for this order
-          const orderTotalPrice = order.items.reduce((total, item) => total + item.price * item.quantity, 0);
+        {/* This div applies the grid layout to the orders */}
+        {orderList &&
+          orderList.map((order: Order) => {
+            // Calculate the total price for this order
+            const orderTotalPrice = order.items.reduce(
+              (total, item) => total + item.price * item.quantity,
+              0
+            );
 
-          return (
-            <div className="order-card" key={order.order_id}>
-              <ListGroup.Item>
-                <h5>Order ID: {order.order_id}</h5>
-                <h5>Order Date: {new Date(order.order_date).toLocaleDateString()}</h5>
-                <h5>Delivery address: {order.delivery_address}</h5>
-                <h5>Status: {order.status}</h5>
-                <h5>Items:</h5>
-                <ul>
-                  {order.items && order.items.map((item) => (
-                    <li key={item.product_id}>
-                      <p>Product: {item.product_name} x {item.quantity}</p>
-                    </li>
-                  ))}
-                </ul>
-                <p>Total Price: {orderTotalPrice}</p>  {/* Display the total price for this order */}
-              </ListGroup.Item>
-            </div>
-          );
-        })}
+            return (
+              <div className="order-card" key={order.order_id}>
+                <ListGroup.Item>
+                  <h5>Order ID: {order.order_id}</h5>
+                  <h5>
+                    Order Date:{" "}
+                    {new Date(order.order_date).toLocaleDateString()}
+                  </h5>
+                  <h5>Delivery address: {order.delivery_address}</h5>
+                  <h5>Status: {order.status}</h5>
+                  <h5>Items:</h5>
+                  <ul>
+                    {order.items &&
+                      order.items.map((item) => (
+                        <li key={item.product_id}>
+                          <p>
+                            Product: {item.product_name} x {item.quantity}
+                          </p>
+                        </li>
+                      ))}
+                  </ul>
+                  <p>Total Price: {orderTotalPrice}</p>{" "}
+                  {/* Display the total price for this order */}
+                </ListGroup.Item>
+              </div>
+            );
+          })}
       </div>
       <ul>
-        <li><p>Total Price: {totalPrice}</p></li> {/* Display the total price for all orders */}
+        <li>
+          <p>Total Price: {totalPrice}</p>
+        </li>{" "}
+        {/* Display the total price for all orders */}
       </ul>
       <BackBtn />
     </React.Fragment>
   );
-}
+};
 
 export default withAuthCheck(OrderView);
