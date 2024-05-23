@@ -6,7 +6,6 @@ import dotenv = require("dotenv");
 import bcrypt = require("bcrypt");
 import { Request, Response, NextFunction } from "express";
 import * as path from "path";
-import config from "./config";
 
 dotenv.config();
 
@@ -68,7 +67,7 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
 
 // Login section
 
-app.post(`${config.apiUrl}/login`, async (req, res) => {
+app.post(`/login`, async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -105,7 +104,7 @@ app.post(`${config.apiUrl}/login`, async (req, res) => {
 
 //Signup section
 
-app.post(`${config.apiUrl}/signup`, async (req, res) => {
+app.post(`/signup`, async (req, res) => {
   const { username, email, password, address, phone_number, country } =
     req.body;
 
@@ -144,7 +143,7 @@ app.post(`${config.apiUrl}/signup`, async (req, res) => {
 
 //Get user by user_id
 
-app.get(`${config.apiUrl}/user`, authenticate, async (req: Request, res: Response) => {
+app.get(`/user`, authenticate, async (req: Request, res: Response) => {
   try {
     const user = (req as RequestUser).user;
 
@@ -173,7 +172,7 @@ app.get(`${config.apiUrl}/user`, authenticate, async (req: Request, res: Respons
 
 //Get order as an user in the orderView
 app.get(
-  `${config.apiUrl}/orderUser/:userId`,
+  `/orderUser/:userId`,
   authenticate,
   async (req: Request, res: Response) => {
     try {
@@ -245,7 +244,7 @@ app.get(
 );
 
 //Post order as an user in the cartView
-app.post(`${config.apiUrl}/orderUser`, authenticate, async (req: Request, res: Response) => {
+app.post(`/orderUser`, authenticate, async (req: Request, res: Response) => {
   try {
     const user = (req as RequestUser).user;
     const cartItems = req.body; // Get the cart items from the request body
@@ -275,7 +274,7 @@ app.post(`${config.apiUrl}/orderUser`, authenticate, async (req: Request, res: R
 });
 
 //Remove orders from the userId
-app.delete(`${config.apiUrl}/ordersUser/:userId`, async (req: Request, res: Response) => {
+app.delete(`/ordersUser/:userId`, async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
 
@@ -296,7 +295,7 @@ app.delete(`${config.apiUrl}/ordersUser/:userId`, async (req: Request, res: Resp
 });
 
 //Remove orders and user from the database
-app.delete(`${config.apiUrl}/UserAdmin/:userId`, async (req: Request, res: Response) => {
+app.delete(`/UserAdmin/:userId`, async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
 
@@ -321,7 +320,7 @@ app.delete(`${config.apiUrl}/UserAdmin/:userId`, async (req: Request, res: Respo
 
 //Get all users, products, orders, order_details and menus with authentication as admin
 
-app.get(`${config.apiUrl}/usersAdmin`, authenticate, async (req: Request, res: Response) => {
+app.get(`/usersAdmin`, authenticate, async (req: Request, res: Response) => {
   try {
     const { rows } = await pool.query("SELECT * FROM users");
     if (rows.length === 0) {
@@ -334,7 +333,7 @@ app.get(`${config.apiUrl}/usersAdmin`, authenticate, async (req: Request, res: R
   }
 });
 
-app.get(`${config.apiUrl}/productsAdmin`, authenticate, async (req: Request, res: Response) => {
+app.get(`/productsAdmin`, authenticate, async (req: Request, res: Response) => {
   try {
     const { rows } = await pool.query("SELECT * FROM products");
     console.log("SQL query result:", rows);
@@ -350,7 +349,7 @@ app.get(`${config.apiUrl}/productsAdmin`, authenticate, async (req: Request, res
   }
 });
 
-app.get(`${config.apiUrl}/ordersAdmin`, authenticate, async (req: Request, res: Response) => {
+app.get(`/ordersAdmin`, authenticate, async (req: Request, res: Response) => {
   try {
     const { rows } = await pool.query("SELECT * FROM orders");
     if (rows.length === 0) {
@@ -364,7 +363,7 @@ app.get(`${config.apiUrl}/ordersAdmin`, authenticate, async (req: Request, res: 
 });
 
 app.get(
-  `${config.apiUrl}/order_detailsAdmin`,
+  `/order_detailsAdmin`,
   authenticate,
   async (req: Request, res: Response) => {
     try {
@@ -380,7 +379,7 @@ app.get(
   }
 );
 
-app.get(`${config.apiUrl}/menusAdmin`, authenticate, async (req: Request, res: Response) => {
+app.get(`/menusAdmin`, authenticate, async (req: Request, res: Response) => {
   try {
     const { rows } = await pool.query("SELECT * FROM menus");
     if (rows.length === 0) {
