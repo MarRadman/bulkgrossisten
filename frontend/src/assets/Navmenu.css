@@ -9,14 +9,17 @@
 }
 
 .title {
-  font-family: "fantasy";
+  font-family: "Arial", sans-serif;
   text-align: center;
-  font-size: 4em;
+  font-size: 3em;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  padding: 10px;
 }
 
 .title a {
   text-decoration: none;
-  color: black;
+  color: inherit;
 }
 
 .navIcons {
