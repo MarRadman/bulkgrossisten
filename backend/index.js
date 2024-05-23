@@ -497,6 +497,6 @@ app.get("/menusAdmin", authenticate, function (req, res) { return __awaiter(void
         }
     });
 }); });
-app.listen(3000, function () {
+app.listen(port, function () {
     console.log("Server is running on port localhost:".concat(port));
 });
