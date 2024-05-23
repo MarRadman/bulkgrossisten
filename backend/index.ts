@@ -6,7 +6,7 @@ import dotenv = require("dotenv");
 import bcrypt = require("bcrypt");
 import { Request, Response, NextFunction } from "express";
 import * as path from "path";
-import apiUrl from "./config";
+import { apiUrl } from "./config";
 
 dotenv.config();
 

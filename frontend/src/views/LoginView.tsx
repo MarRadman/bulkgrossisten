@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/Login.css";
 import { Link } from "react-router-dom";
-import apiUrl from "../../../backend/config";
+import { apiUrl } from "../../../backend/config";
 
 function LoginView() {
   const [email, setEmail] = useState("");

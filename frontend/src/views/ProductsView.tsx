@@ -12,7 +12,7 @@ import image6 from "../assets/productsPhotos/6.jpg";
 import image7 from "../assets/productsPhotos/7.jpg";
 import image8 from "../assets/productsPhotos/8.jpg";
 import useSessionStorage from "../hooks/SessionStorageHook";
-import apiUrl from "../../../backend/config";
+import { apiUrl } from "../../../backend/config";
 
 const images: { [key: number]: string } = {
   1: image1,

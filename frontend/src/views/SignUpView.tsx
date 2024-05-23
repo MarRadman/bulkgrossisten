@@ -2,7 +2,7 @@ import { useState, FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "../assets/Login.css";
-import apiUrl from "../../../backend/config";
+import { apiUrl } from "../../../backend/config";
 
 function SignUpView() {
   const [username, setUsername] = useState("");

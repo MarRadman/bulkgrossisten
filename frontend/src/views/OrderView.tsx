@@ -4,7 +4,7 @@ import { ListGroup } from "react-bootstrap";
 import "../assets/Order.css";
 import withAuthCheck from "../authentication/withAuthCheck";
 import BackBtn from "../components/BackBtn";
-import apiUrl from "../../../backend/config";
+import { apiUrl } from "../../../backend/config";
 
 type OrderItem = {
   product_id: number;
