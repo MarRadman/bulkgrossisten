@@ -55,7 +55,7 @@ const OrderView = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/productsAdmin`, {
+      const response = await fetch(`${config.apiUrl}/productsAdmin`, {
         headers: {
           Authorization: token,
         },
@@ -84,7 +84,7 @@ const OrderView = () => {
 
     try {
       // Fetch the user
-      const userResponse = await fetch(`http://localhost:3000/user`, {
+      const userResponse = await fetch(`${config.apiUrl}/user`, {
         method: "GET",
         headers: {
           Authorization: token,
@@ -100,7 +100,7 @@ const OrderView = () => {
 
       // Fetch the orders for this user
       const orderResponse = await fetch(
-        `http://localhost:3000/orderUser/${userId.user_id}`,
+        `${config.apiUrl}/orderUser/${userId.user_id}`,
         {
           method: "GET",
           headers: {

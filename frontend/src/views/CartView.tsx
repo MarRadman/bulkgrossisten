@@ -125,7 +125,7 @@ function CartView() {
 
       console.log("the items",order);
       try {
-        const response = await fetch(`http://localhost:3000/orderUser`, {
+        const response = await fetch(`${config.apiUrl}/orderUser`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

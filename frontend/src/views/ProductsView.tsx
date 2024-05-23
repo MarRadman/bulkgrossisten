@@ -53,7 +53,7 @@ function ProductsView() {
       }
 
       try {
-        const response = await fetch(`http://localhost:3000/productsAdmin`, {
+        const response = await fetch(`${config.apiUrl}/productsAdmin`, {
           headers: {
             Authorization: token,
           },
