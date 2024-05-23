@@ -44,11 +44,7 @@ interface RequestUser extends Request {
 
 // Middleware to authenticate the user
 
-const authenticate = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+async function authenticate(req: Request, res: Response, next: NextFunction) {
   const token = req.headers.authorization;
 
   if (!token) {
@@ -69,7 +65,7 @@ const authenticate = async (
     console.error(error);
     res.status(500).json({ error: "An error occurred" });
   }
-};
+}
 
 // Login section
 

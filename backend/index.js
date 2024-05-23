@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var uuidV4 = require('uuid').v4;
+var uuidV4 = require("uuid").v4;
 var cors = require("cors");
 var express = require("express");
 var pg_1 = require("pg");
@@ -45,7 +45,7 @@ var bcrypt = require("bcrypt");
 var path = require("path");
 dotenv.config();
 var pool = new pg_1.Pool({
-    connectionString: process.env.PGURI
+    connectionString: process.env.PGURI,
 });
 var port = process.env.PORT || 3000;
 pool.connect();
@@ -54,40 +54,44 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 // Serve static files from the 'dist' directory
-app.use(express.static(path.join(path.resolve(), 'dist')));
+app.use(express.static(path.join(path.resolve(), "dist")));
 // Middleware to authenticate the user
-var authenticate = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var token, rows, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                token = req.headers.authorization;
-                if (!token) {
-                    console.log("came here. SO wrong in the authentication function");
-                }
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, pool.query('SELECT * FROM users WHERE token = $1', [token])];
-            case 2:
-                rows = (_a.sent()).rows;
-                if (rows.length === 0) {
-                    return [2 /*return*/, res.status(401).json({ error: 'Invalid token' })];
-                }
-                req.user = rows[0];
-                next();
-                return [3 /*break*/, 4];
-            case 3:
-                error_1 = _a.sent();
-                console.error(error_1);
-                res.status(500).json({ error: 'An error occurred' });
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
-        }
+function authenticate(req, res, next) {
+    return __awaiter(this, void 0, void 0, function () {
+        var token, rows, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    token = req.headers.authorization;
+                    if (!token) {
+                        console.log("came here. SO wrong in the authentication function");
+                    }
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, pool.query("SELECT * FROM users WHERE token = $1", [
+                            token,
+                        ])];
+                case 2:
+                    rows = (_a.sent()).rows;
+                    if (rows.length === 0) {
+                        return [2 /*return*/, res.status(401).json({ error: "Invalid token" })];
+                    }
+                    req.user = rows[0];
+                    next();
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_1 = _a.sent();
+                    console.error(error_1);
+                    res.status(500).json({ error: "An error occurred" });
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
     });
-}); };
+}
 // Login section
-app.post('/login', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("/login", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, email, password, rows, user, passwordMatch, token, error_2;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -96,22 +100,27 @@ app.post('/login', function (req, res) { return __awaiter(void 0, void 0, void 0
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 5, , 6]);
-                return [4 /*yield*/, pool.query('SELECT * FROM users WHERE email = $1', [email])];
+                return [4 /*yield*/, pool.query("SELECT * FROM users WHERE email = $1", [
+                        email,
+                    ])];
             case 2:
                 rows = (_b.sent()).rows;
                 user = rows[0];
                 if (!user) {
-                    return [2 /*return*/, res.status(400).json({ error: 'Invalid email or password' })];
+                    return [2 /*return*/, res.status(400).json({ error: "Invalid email or password" })];
                 }
                 return [4 /*yield*/, bcrypt.compare(password, user.password_hash)];
             case 3:
                 passwordMatch = _b.sent();
                 if (!passwordMatch) {
-                    return [2 /*return*/, res.status(400).json({ error: 'Invalid email or password' })];
+                    return [2 /*return*/, res.status(400).json({ error: "Invalid email or password" })];
                 }
                 token = uuidV4();
                 // Store the token in the database
-                return [4 /*yield*/, pool.query('UPDATE users SET token = $1 WHERE user_id = $2', [token, user.user_id])];
+                return [4 /*yield*/, pool.query("UPDATE users SET token = $1 WHERE user_id = $2", [
+                        token,
+                        user.user_id,
+                    ])];
             case 4:
                 // Store the token in the database
                 _b.sent();
@@ -120,14 +129,14 @@ app.post('/login', function (req, res) { return __awaiter(void 0, void 0, void 0
             case 5:
                 error_2 = _b.sent();
                 console.error(error_2);
-                res.status(500).json({ error: 'An error occurred' });
+                res.status(500).json({ error: "An error occurred" });
                 return [3 /*break*/, 6];
             case 6: return [2 /*return*/];
         }
     });
 }); });
 //Signup section
-app.post('/signup', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("/signup", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, username, email, password, address, phone_number, country, rows, password_hash, query, values, error_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -136,33 +145,44 @@ app.post('/signup', function (req, res) { return __awaiter(void 0, void 0, void 
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 5, , 6]);
-                return [4 /*yield*/, pool.query('SELECT * FROM users WHERE email = $1', [email])];
+                return [4 /*yield*/, pool.query("SELECT * FROM users WHERE email = $1", [
+                        email,
+                    ])];
             case 2:
                 rows = (_b.sent()).rows;
                 if (rows.length > 0) {
-                    return [2 /*return*/, res.status(400).json({ message: 'Email already in use' })];
+                    return [2 /*return*/, res.status(400).json({ message: "Email already in use" })];
                 }
                 return [4 /*yield*/, bcrypt.hash(password, 10)];
             case 3:
                 password_hash = _b.sent();
                 query = "\n      INSERT INTO users (username, email, password_hash, address, phone_number, country)\n      VALUES ($1, $2, $3, $4, $5, $6)\n    ";
-                values = [username, email, password_hash, address, phone_number, country];
+                values = [
+                    username,
+                    email,
+                    password_hash,
+                    address,
+                    phone_number,
+                    country,
+                ];
                 return [4 /*yield*/, pool.query(query, values)];
             case 4:
                 _b.sent();
-                res.status(201).json({ message: 'User created' });
+                res.status(201).json({ message: "User created" });
                 return [3 /*break*/, 6];
             case 5:
                 error_3 = _b.sent();
                 console.error(error_3);
-                res.status(500).json({ error: 'An error occurred while creating the user' });
+                res
+                    .status(500)
+                    .json({ error: "An error occurred while creating the user" });
                 return [3 /*break*/, 6];
             case 6: return [2 /*return*/];
         }
     });
 }); });
 //Get user by user_id
-app.get('/user', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/user", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, rows, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -171,13 +191,13 @@ app.get('/user', authenticate, function (req, res) { return __awaiter(void 0, vo
                 user = req.user;
                 if (!user) {
                     console.log("came here. SO wrong in the /user route");
-                    return [2 /*return*/, res.status(401).json({ error: 'Unauthorized' })];
+                    return [2 /*return*/, res.status(401).json({ error: "Unauthorized" })];
                 }
-                return [4 /*yield*/, pool.query('SELECT * FROM users WHERE user_id = $1', [user.user_id])];
+                return [4 /*yield*/, pool.query("SELECT * FROM users WHERE user_id = $1", [user.user_id])];
             case 1:
                 rows = (_a.sent()).rows;
                 if (rows.length === 0) {
-                    res.status(404).json({ error: 'User not found' });
+                    res.status(404).json({ error: "User not found" });
                 }
                 else {
                     res.json(rows[0]);
@@ -186,14 +206,16 @@ app.get('/user', authenticate, function (req, res) { return __awaiter(void 0, vo
             case 2:
                 error_4 = _a.sent();
                 console.error(error_4);
-                res.status(500).json({ error: 'An error occurred while fetching the user' });
+                res
+                    .status(500)
+                    .json({ error: "An error occurred while fetching the user" });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
 //Get order as an user in the orderView
-app.get('/orderUser/:userId', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/orderUser/:userId", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, result, orders, i, row, existingOrder, j, error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -217,7 +239,7 @@ app.get('/orderUser/:userId', authenticate, function (req, res) { return __await
                         existingOrder.items.push({
                             product_id: row.product_id,
                             product_name: row.name,
-                            quantity: row.quantity
+                            quantity: row.quantity,
                         });
                     }
                     else {
@@ -227,11 +249,13 @@ app.get('/orderUser/:userId', authenticate, function (req, res) { return __await
                             order_date: row.order_date,
                             status: row.status,
                             username: row.username,
-                            items: [{
+                            items: [
+                                {
                                     product_id: row.product_id,
                                     product_name: row.name,
-                                    quantity: row.quantity
-                                }]
+                                    quantity: row.quantity,
+                                },
+                            ],
                         });
                     }
                 }
@@ -240,14 +264,16 @@ app.get('/orderUser/:userId', authenticate, function (req, res) { return __await
             case 2:
                 error_5 = _a.sent();
                 console.error(error_5);
-                res.status(500).json({ error: 'An error occurred while fetching the orders' });
+                res
+                    .status(500)
+                    .json({ error: "An error occurred while fetching the orders" });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
 //Post order as an user in the cartView
-app.post('/orderUser', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("/orderUser", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, cartItems, orderResult, orderId, _i, _a, item, error_6;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -255,7 +281,7 @@ app.post('/orderUser', authenticate, function (req, res) { return __awaiter(void
                 _b.trys.push([0, 6, , 7]);
                 user = req.user;
                 cartItems = req.body;
-                return [4 /*yield*/, pool.query('INSERT INTO orders (user_id, delivery_address) VALUES ($1, $2) RETURNING order_id', [user.user_id, user.address])];
+                return [4 /*yield*/, pool.query("INSERT INTO orders (user_id, delivery_address) VALUES ($1, $2) RETURNING order_id", [user.user_id, user.address])];
             case 1:
                 orderResult = _b.sent();
                 orderId = orderResult.rows[0].order_id;
@@ -264,7 +290,7 @@ app.post('/orderUser', authenticate, function (req, res) { return __awaiter(void
             case 2:
                 if (!(_i < _a.length)) return [3 /*break*/, 5];
                 item = _a[_i];
-                return [4 /*yield*/, pool.query('INSERT INTO order_details (order_id, product_id, quantity) VALUES ($1, $2, $3)', [orderId, item.product_id, item.quantity])];
+                return [4 /*yield*/, pool.query("INSERT INTO order_details (order_id, product_id, quantity) VALUES ($1, $2, $3)", [orderId, item.product_id, item.quantity])];
             case 3:
                 _b.sent();
                 _b.label = 4;
@@ -272,19 +298,21 @@ app.post('/orderUser', authenticate, function (req, res) { return __awaiter(void
                 _i++;
                 return [3 /*break*/, 2];
             case 5:
-                res.status(200).json({ message: 'Order created' });
+                res.status(200).json({ message: "Order created" });
                 return [3 /*break*/, 7];
             case 6:
                 error_6 = _b.sent();
                 console.error(error_6);
-                res.status(500).json({ error: 'An error occurred while creating the order' });
+                res
+                    .status(500)
+                    .json({ error: "An error occurred while creating the order" });
                 return [3 /*break*/, 7];
             case 7: return [2 /*return*/];
         }
     });
 }); });
 //Remove orders from the userId
-app.delete('/ordersUser/:userId', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.delete("/ordersUser/:userId", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, error_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -292,26 +320,28 @@ app.delete('/ordersUser/:userId', function (req, res) { return __awaiter(void 0,
                 _a.trys.push([0, 3, , 4]);
                 userId = req.params.userId;
                 // Delete all orders associated with the user ID
-                return [4 /*yield*/, pool.query('DELETE FROM order_details WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = $1)', [userId])];
+                return [4 /*yield*/, pool.query("DELETE FROM order_details WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = $1)", [userId])];
             case 1:
                 // Delete all orders associated with the user ID
                 _a.sent();
-                return [4 /*yield*/, pool.query('DELETE FROM orders WHERE user_id = $1', [userId])];
+                return [4 /*yield*/, pool.query("DELETE FROM orders WHERE user_id = $1", [userId])];
             case 2:
                 _a.sent();
-                res.status(200).json({ message: 'Orders deleted' });
+                res.status(200).json({ message: "Orders deleted" });
                 return [3 /*break*/, 4];
             case 3:
                 error_7 = _a.sent();
                 console.error(error_7);
-                res.status(500).json({ error: 'An error occurred while deleting the orders' });
+                res
+                    .status(500)
+                    .json({ error: "An error occurred while deleting the orders" });
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); });
 //Remove orders and user from the database
-app.delete('/UserAdmin/:userId', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.delete("/UserAdmin/:userId", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, error_8;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -319,41 +349,43 @@ app.delete('/UserAdmin/:userId', function (req, res) { return __awaiter(void 0, 
                 _a.trys.push([0, 4, , 5]);
                 userId = req.params.userId;
                 // Delete all orders associated with the user ID
-                return [4 /*yield*/, pool.query('DELETE FROM order_details WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = $1)', [userId])];
+                return [4 /*yield*/, pool.query("DELETE FROM order_details WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = $1)", [userId])];
             case 1:
                 // Delete all orders associated with the user ID
                 _a.sent();
-                return [4 /*yield*/, pool.query('DELETE FROM orders WHERE user_id = $1', [userId])];
+                return [4 /*yield*/, pool.query("DELETE FROM orders WHERE user_id = $1", [userId])];
             case 2:
                 _a.sent();
                 // Delete the user
-                return [4 /*yield*/, pool.query('DELETE FROM users WHERE user_id = $1', [userId])];
+                return [4 /*yield*/, pool.query("DELETE FROM users WHERE user_id = $1", [userId])];
             case 3:
                 // Delete the user
                 _a.sent();
-                res.status(200).json({ message: 'User and associated orders deleted' });
+                res.status(200).json({ message: "User and associated orders deleted" });
                 return [3 /*break*/, 5];
             case 4:
                 error_8 = _a.sent();
                 console.error(error_8);
-                res.status(500).json({ error: 'An error occurred while deleting the user and orders' });
+                res
+                    .status(500)
+                    .json({ error: "An error occurred while deleting the user and orders" });
                 return [3 /*break*/, 5];
             case 5: return [2 /*return*/];
         }
     });
 }); });
 //Get all users, products, orders, order_details and menus with authentication as admin
-app.get('/usersAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/usersAdmin", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_9;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, pool.query('SELECT * FROM users')];
+                return [4 /*yield*/, pool.query("SELECT * FROM users")];
             case 1:
                 rows = (_a.sent()).rows;
                 if (rows.length === 0) {
-                    res.status(404).json({ error: 'No users found' });
+                    res.status(404).json({ error: "No users found" });
                 }
                 else {
                     res.json(rows);
@@ -361,24 +393,24 @@ app.get('/usersAdmin', authenticate, function (req, res) { return __awaiter(void
                 return [3 /*break*/, 3];
             case 2:
                 error_9 = _a.sent();
-                res.status(500).json({ error: 'An error occured' });
+                res.status(500).json({ error: "An error occured" });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
-app.get('/productsAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/productsAdmin", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_10;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, pool.query('SELECT * FROM products')];
+                return [4 /*yield*/, pool.query("SELECT * FROM products")];
             case 1:
                 rows = (_a.sent()).rows;
-                console.log('SQL query result:', rows);
+                console.log("SQL query result:", rows);
                 if (rows.length === 0) {
-                    res.status(404).json({ error: 'No products found' });
+                    res.status(404).json({ error: "No products found" });
                 }
                 else {
                     res.json(rows);
@@ -386,24 +418,24 @@ app.get('/productsAdmin', authenticate, function (req, res) { return __awaiter(v
                 return [3 /*break*/, 3];
             case 2:
                 error_10 = _a.sent();
-                console.error('An error occurred:', error_10);
-                res.status(500).json({ error: 'An error occurred' });
+                console.error("An error occurred:", error_10);
+                res.status(500).json({ error: "An error occurred" });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
-app.get('/ordersAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/ordersAdmin", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_11;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, pool.query('SELECT * FROM orders')];
+                return [4 /*yield*/, pool.query("SELECT * FROM orders")];
             case 1:
                 rows = (_a.sent()).rows;
                 if (rows.length === 0) {
-                    res.status(404).json({ error: 'No users found' });
+                    res.status(404).json({ error: "No users found" });
                 }
                 else {
                     res.json(rows);
@@ -411,23 +443,23 @@ app.get('/ordersAdmin', authenticate, function (req, res) { return __awaiter(voi
                 return [3 /*break*/, 3];
             case 2:
                 error_11 = _a.sent();
-                res.status(500).json({ error: 'An error occured' });
+                res.status(500).json({ error: "An error occured" });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
-app.get('/order_detailsAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/order_detailsAdmin", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_12;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, pool.query('SELECT * FROM order_details')];
+                return [4 /*yield*/, pool.query("SELECT * FROM order_details")];
             case 1:
                 rows = (_a.sent()).rows;
                 if (rows.length === 0) {
-                    res.status(404).json({ error: 'No users found' });
+                    res.status(404).json({ error: "No users found" });
                 }
                 else {
                     res.json(rows);
@@ -435,23 +467,23 @@ app.get('/order_detailsAdmin', authenticate, function (req, res) { return __awai
                 return [3 /*break*/, 3];
             case 2:
                 error_12 = _a.sent();
-                res.status(500).json({ error: 'An error occured' });
+                res.status(500).json({ error: "An error occured" });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
-app.get('/menusAdmin', authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/menusAdmin", authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_13;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, pool.query('SELECT * FROM menus')];
+                return [4 /*yield*/, pool.query("SELECT * FROM menus")];
             case 1:
                 rows = (_a.sent()).rows;
                 if (rows.length === 0) {
-                    res.status(404).json({ error: 'No users found' });
+                    res.status(404).json({ error: "No users found" });
                 }
                 else {
                     res.json(rows);
@@ -459,7 +491,7 @@ app.get('/menusAdmin', authenticate, function (req, res) { return __awaiter(void
                 return [3 /*break*/, 3];
             case 2:
                 error_13 = _a.sent();
-                res.status(500).json({ error: 'An error occured' });
+                res.status(500).json({ error: "An error occured" });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
