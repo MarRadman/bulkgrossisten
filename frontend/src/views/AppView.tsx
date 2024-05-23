@@ -22,7 +22,7 @@ function App() {
           <Link to="/products">
             <div className="image-container">
               <img
-                src="../src/assets/icons&photos/FoodProducts.jpg"
+                src="../src/assets/FoodProducts.jpg"
                 alt="First"
               />
             </div>
@@ -33,7 +33,7 @@ function App() {
           <Link to="/menus">
             <div className="image-container">
               <img
-                src="../src/assets/icons&photos/MenusPhoto.jpg"
+                src="../src/assets/MenusPhoto.jpg"
                 alt="Second"
               />
             </div>
