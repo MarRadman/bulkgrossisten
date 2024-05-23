@@ -3,6 +3,7 @@ body {
   padding: 0;
   font-family: "Roboto", sans-serif;
   background-color: #caa6a649;
+  /* background-image: url("./icons&photos/MainFoodPhoto.jpg"); */
 }
 
 #App {
@@ -69,7 +70,6 @@ li {
   color: white;
   border-color: #e37171;
 }
-
 
 @media only screen and (min-width: 768px) {
   .appView_photos h2 {

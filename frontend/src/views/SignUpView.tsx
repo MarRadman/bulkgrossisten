@@ -1,33 +1,37 @@
-import { useState, FormEvent, useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useState, FormEvent, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../assets/Login.css";
 
 function SignUpView() {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [address, setAddress] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [country, setCountry] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [address, setAddress] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [country, setCountry] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
-      navigate('/app');
+      navigate("/app");
     }
-  },[navigate]);
+  }, [navigate]);
 
   const handleSubmit = async (e: FormEvent) => {
-
     e.preventDefault();
 
-    if (!username.trim().toLocaleLowerCase() || !email.trim().toLocaleLowerCase() ||
-    !password.trim().toLocaleLowerCase() || !address.trim().toLocaleLowerCase() ||
-    !phoneNumber.trim().toLocaleLowerCase() || !country.trim().toLocaleLowerCase()) {
-      setErrorMessage('Please fill in all fields');
+    if (
+      !username.trim().toLocaleLowerCase() ||
+      !email.trim().toLocaleLowerCase() ||
+      !password.trim().toLocaleLowerCase() ||
+      !address.trim().toLocaleLowerCase() ||
+      !phoneNumber.trim().toLocaleLowerCase() ||
+      !country.trim().toLocaleLowerCase()
+    ) {
+      setErrorMessage("Please fill in all fields");
       return;
     }
 
@@ -36,25 +40,32 @@ function SignUpView() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, email, password, address, phone_number: phoneNumber, country }),
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+        address,
+        phone_number: phoneNumber,
+        country,
+      }),
     });
     const data = await response.json();
 
-    if(response.ok) {
+    if (response.ok) {
       // The signup was successful
-      setErrorMessage('Account was created'); // Clear any previous error message
+      setErrorMessage("Account was created"); // Clear any previous error message
       console.log("user created");
       setTimeout(() => {
-        navigate('/'); // Navigate to LoginView
+        navigate("/"); // Navigate to LoginView
       }, 2000);
     } else {
       // There was an error signing up
-      if (data.message === 'Email already in use') {
-        setErrorMessage('Email already in use. Please use another one.');
+      if (data.message === "Email already in use") {
+        setErrorMessage("Email already in use. Please use another one.");
       } else if (data.message) {
         setErrorMessage(`Error signing up: ${data.message}`);
       } else {
-        setErrorMessage('Error signing up: An unknown error occurred');
+        setErrorMessage("Error signing up: An unknown error occurred");
       }
       console.log("error signing up");
     }
@@ -64,12 +75,12 @@ function SignUpView() {
     <div>
       <form onSubmit={handleSubmit}>
         <label>
-        Name:
-        <input
-          onChange={(event) => setUsername(event.target.value)}
-          placeholder="Username"
-          value={username}
-        />
+          Name:
+          <input
+            onChange={(event) => setUsername(event.target.value)}
+            placeholder="Username"
+            value={username}
+          />
         </label>
         <label>
           Email:
@@ -84,7 +95,7 @@ function SignUpView() {
           <input
             onChange={(event) => setPassword(event.target.value)}
             placeholder="Password"
-            type="password"
+            type="passwordSign"
             value={password}
           />
         </label>
@@ -115,7 +126,18 @@ function SignUpView() {
         <input type="submit" value="Sign Up" />
       </form>
       {errorMessage && <p>{errorMessage}</p>}
-      <p>Got an Account?</p><Link to="/">Login</Link>
+      <div
+        style={{
+          display: "flex",
+          textAlign: "center",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "10px",
+        }}
+      >
+        <p>Got an Account?</p>
+        <Link to="/">Login</Link>
+      </div>
     </div>
   );
 }
