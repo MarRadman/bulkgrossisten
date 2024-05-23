@@ -4,7 +4,7 @@ import { ListGroup } from "react-bootstrap";
 import "../assets/Order.css";
 import withAuthCheck from "../authentication/withAuthCheck";
 import BackBtn from "../components/BackBtn";
-import { apiUrl } from "../../../backend/config";
+import config from "../../../backend/config";
 
 type OrderItem = {
   product_id: number;
@@ -55,7 +55,7 @@ const OrderView = () => {
     }
 
     try {
-      const response = await fetch(`${apiUrl}/productsAdmin`, {
+      const response = await fetch(`${config.apiUrl}/productsAdmin`, {
         headers: {
           Authorization: token,
         },
@@ -84,7 +84,7 @@ const OrderView = () => {
 
     try {
       // Fetch the user
-      const userResponse = await fetch(`${apiUrl}/user`, {
+      const userResponse = await fetch(`${config.apiUrl}/user`, {
         method: "GET",
         headers: {
           Authorization: token,
@@ -100,7 +100,7 @@ const OrderView = () => {
 
       // Fetch the orders for this user
       const orderResponse = await fetch(
-        `${apiUrl}/orderUser/${userId.user_id}`,
+        `${config.apiUrl}/orderUser/${userId.user_id}`,
         {
           method: "GET",
           headers: {

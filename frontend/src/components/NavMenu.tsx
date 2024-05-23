@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import BurgerMenuIcon from "../assets/icons&photos/burgerIcon.svg";
-import CartIcon from "../assets/icons&photos/cartIcon.svg";
+import BurgerMenuIcon from "../assets/burgerIcon.svg";
+import CartIcon from "../assets/cartIcon.svg";
 import "../assets/Navmenu.css";
 
 interface Product {

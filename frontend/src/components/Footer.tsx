@@ -1,11 +1,11 @@
-import visaLogo from "../assets/icons&photos/visa.png";
-import swishLogo from "../assets/icons&photos/swish.png";
-import mastercardLogo from "../assets/icons&photos/mastercard.png";
-import googlepayLogo from "../assets/icons&photos/googlepay.png";
-import paypalLogo from "../assets/icons&photos/paypal.png";
-import facebookLogo from "../assets/icons&photos/facebookIcon.svg";
-import instagramLogo from "../assets/icons&photos/instagramIcon.svg";
-import linkedinLogo from "../assets/icons&photos/linkedinIcon.svg";
+import visaLogo from "../assets/visa.png";
+import swishLogo from "../assets/swish.png";
+import mastercardLogo from "../assets/mastercard.png";
+import googlepayLogo from "../assets/googlepay.png";
+import paypalLogo from "../assets/paypal.png";
+import facebookLogo from "../assets/facebookIcon.svg";
+import instagramLogo from "../assets/instagramIcon.svg";
+import linkedinLogo from "../assets/linkedinIcon.svg";
 
 const Footer = () => {
   return (

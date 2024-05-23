@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/Login.css";
 import { Link } from "react-router-dom";
-import { apiUrl } from "../../../backend/config";
+import config from "../../../backend/config";
 
 function LoginView() {
   const [email, setEmail] = useState("");
@@ -33,7 +33,7 @@ function LoginView() {
     }
 
     try {
-      const response = await fetch(`${apiUrl}/login`, {
+      const response = await fetch(`${config.apiUrl}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

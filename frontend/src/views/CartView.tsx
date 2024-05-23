@@ -5,16 +5,16 @@ import withAuthCheck from '../authentication/withAuthCheck';
 import BackBtn from '../components/BackBtn';
 import useSessionStorage from '../hooks/SessionStorageHook';
 import { ListGroup } from 'react-bootstrap';
-import image1 from '../assets/productsPhotos/1.jpg';
-import image2 from '../assets/productsPhotos/2.jpg';
-import image3 from '../assets/productsPhotos/3.jpg';
-import image4 from '../assets/productsPhotos/4.jpg';
-import image5 from '../assets/productsPhotos/5.jpg';
-import image6 from '../assets/productsPhotos/6.jpg';
-import image7 from '../assets/productsPhotos/7.jpg';
-import image8 from '../assets/productsPhotos/8.jpg';
+import image1 from '../assets/1.jpg';
+import image2 from '../assets/2.jpg';
+import image3 from '../assets/3.jpg';
+import image4 from '../assets/4.jpg';
+import image5 from '../assets/5.jpg';
+import image6 from '../assets/6.jpg';
+import image7 from '../assets/7.jpg';
+import image8 from '../assets/8.jpg';
 import { Link } from 'react-router-dom';
-import { apiUrl } from "../../../backend/config";
+import config from "../../../backend/config";
 
 const images: { [key: number]: string } = {
   1: image1,
@@ -125,7 +125,7 @@ function CartView() {
 
       console.log("the items",order);
       try {
-        const response = await fetch(`${apiUrl}/orderUser`, {
+        const response = await fetch(`${config.apiUrl}/orderUser`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
