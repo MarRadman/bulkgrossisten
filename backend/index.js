@@ -92,7 +92,7 @@ function authenticate(req, res, next) {
     });
 }
 // Login section
-app.post("".concat(config_1.apiUrl, "/login"), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("".concat(config_1.default.apiUrl, "/login"), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, email, password, rows, user, passwordMatch, token, error_2;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -137,7 +137,7 @@ app.post("".concat(config_1.apiUrl, "/login"), function (req, res) { return __aw
     });
 }); });
 //Signup section
-app.post("".concat(config_1.apiUrl, "/signup"), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("".concat(config_1.default.apiUrl, "/signup"), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, username, email, password, address, phone_number, country, rows, password_hash, query, values, error_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -183,7 +183,7 @@ app.post("".concat(config_1.apiUrl, "/signup"), function (req, res) { return __a
     });
 }); });
 //Get user by user_id
-app.get("".concat(config_1.apiUrl, "/user"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default.apiUrl, "/user"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, rows, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -216,7 +216,7 @@ app.get("".concat(config_1.apiUrl, "/user"), authenticate, function (req, res) {
     });
 }); });
 //Get order as an user in the orderView
-app.get("".concat(config_1.apiUrl, "/orderUser/:userId"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default.apiUrl, "/orderUser/:userId"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, result, orders, i, row, existingOrder, j, error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -274,7 +274,7 @@ app.get("".concat(config_1.apiUrl, "/orderUser/:userId"), authenticate, function
     });
 }); });
 //Post order as an user in the cartView
-app.post("".concat(config_1.apiUrl, "/orderUser"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("".concat(config_1.default.apiUrl, "/orderUser"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, cartItems, orderResult, orderId, _i, _a, item, error_6;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -313,7 +313,7 @@ app.post("".concat(config_1.apiUrl, "/orderUser"), authenticate, function (req, 
     });
 }); });
 //Remove orders from the userId
-app.delete("".concat(config_1.apiUrl, "/ordersUser/:userId"), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.delete("".concat(config_1.default.apiUrl, "/ordersUser/:userId"), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, error_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -342,7 +342,7 @@ app.delete("".concat(config_1.apiUrl, "/ordersUser/:userId"), function (req, res
     });
 }); });
 //Remove orders and user from the database
-app.delete("".concat(config_1.apiUrl, "/UserAdmin/:userId"), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.delete("".concat(config_1.default.apiUrl, "/UserAdmin/:userId"), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, error_8;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -376,7 +376,7 @@ app.delete("".concat(config_1.apiUrl, "/UserAdmin/:userId"), function (req, res)
     });
 }); });
 //Get all users, products, orders, order_details and menus with authentication as admin
-app.get("".concat(config_1.apiUrl, "/usersAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default.apiUrl, "/usersAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_9;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -400,7 +400,7 @@ app.get("".concat(config_1.apiUrl, "/usersAdmin"), authenticate, function (req, 
         }
     });
 }); });
-app.get("".concat(config_1.apiUrl, "/productsAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default.apiUrl, "/productsAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_10;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -426,7 +426,7 @@ app.get("".concat(config_1.apiUrl, "/productsAdmin"), authenticate, function (re
         }
     });
 }); });
-app.get("".concat(config_1.apiUrl, "/ordersAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default.apiUrl, "/ordersAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_11;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -450,7 +450,7 @@ app.get("".concat(config_1.apiUrl, "/ordersAdmin"), authenticate, function (req,
         }
     });
 }); });
-app.get("".concat(config_1.apiUrl, "/order_detailsAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default.apiUrl, "/order_detailsAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_12;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -474,7 +474,7 @@ app.get("".concat(config_1.apiUrl, "/order_detailsAdmin"), authenticate, functio
         }
     });
 }); });
-app.get("".concat(config_1.apiUrl, "/menusAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("".concat(config_1.default.apiUrl, "/menusAdmin"), authenticate, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var rows, error_13;
     return __generator(this, function (_a) {
         switch (_a.label) {

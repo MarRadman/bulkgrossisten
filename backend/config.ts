@@ -1,3 +1,5 @@
-const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+const config = {
+  apiUrl: "https://bulkgrossisten.onrender.com" || 'http://localhost:3000'
+};
 
-export { apiUrl };
+export default config;
