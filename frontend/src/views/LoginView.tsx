@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/Login.css";
 import { Link } from "react-router-dom";
-import config from "../config";
+import config from "../../config";
 
 function LoginView() {
   const [email, setEmail] = useState("");

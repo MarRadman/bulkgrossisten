@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import withAuthCheck from '../authentication/withAuthCheck';
 import BackBtn from '../components/BackBtn';
-import config from "../config";
+import config from "../../config";
 
 type Menu = {
   menu_id: number;

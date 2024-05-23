@@ -12,7 +12,7 @@ import image6 from "../assets/6.jpg";
 import image7 from "../assets/7.jpg";
 import image8 from "../assets/8.jpg";
 import useSessionStorage from "../hooks/SessionStorageHook";
-import config from "../config";
+import config from "../../config";
 
 const images: { [key: number]: string } = {
   1: image1,

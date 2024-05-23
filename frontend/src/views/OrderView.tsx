@@ -4,7 +4,7 @@ import { ListGroup } from "react-bootstrap";
 import "../assets/Order.css";
 import withAuthCheck from "../authentication/withAuthCheck";
 import BackBtn from "../components/BackBtn";
-import config from "../config";
+import config from "../../config";
 
 type OrderItem = {
   product_id: number;
