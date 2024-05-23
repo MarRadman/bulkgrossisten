@@ -77,3 +77,11 @@ Fixa så man kan lägga till produkter i varukorgen och därefter kunna trycka k
 När man tryckt köp så läggs ordern med användarens namn, adress, land och orderstatus.
 
 Betalningsmetoder skipar jag för nu. Implementerar i framtiden om det skulle bli aktuellt.
+
+useContext för Cart
+https://dev.to/anne46/cart-functionality-in-react-with-context-api-2k2f
+
+Cart Functionality in React with Context API
+tutorial
+Implementing Cart Functionality in React JS
+Introduction
