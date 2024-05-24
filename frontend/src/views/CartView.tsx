@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import '../assets/Cart.css';
 import withAuthCheck from '../authentication/withAuthCheck';
 import BackBtn from '../components/BackBtn';
-import useSessionStorage from '../hooks/SessionStorageHook';
 import { ListGroup } from 'react-bootstrap';
 import image1 from '../assets/1.jpg';
 import image2 from '../assets/2.jpg';
@@ -15,6 +14,8 @@ import image7 from '../assets/7.jpg';
 import image8 from '../assets/8.jpg';
 import { Link } from 'react-router-dom';
 import config from "../../config";
+import { CartItem } from '../types';
+import { useCart } from '../context/CartContext';
 
 const images: { [key: number]: string } = {
   1: image1,
@@ -27,32 +28,13 @@ const images: { [key: number]: string } = {
   8: image8
 };
 
-interface Product {
-  product_id: number;
-  name: string;
-  description: string;
-  price: number;
-  images: string;
-}
-interface CartItem {
-  product: {
-    product_id: number;
-    name: string;
-    description: string;
-    price: number;
-    images: string;
-  };
-  quantity: number;
-}
-
 function CartView() {
-  const [cartItems, setCartItems] = useSessionStorage<CartItem[]>("cart", []);
-  const [productList, _setProductList] = useState<Product[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
-
+  const { cartItems, addCartItem , handleRemove, clearCart } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     let total = 0;
     for (const items of cartItems) {
       total += items.product.price * items.quantity;
@@ -60,56 +42,16 @@ function CartView() {
     setTotalPrice(total);
   }, [cartItems]);
 
-  function handleAdd(productToAdd: Product) {
-    setCartItems((prevItems: CartItem[]) => {
-      const newItems = [...prevItems];
-      const itemIndex = newItems.findIndex(item => item.product.product_id === productToAdd.product_id);
-
-      if (itemIndex !== -1) {
-        const updatedItem = { ...newItems[itemIndex], quantity: newItems[itemIndex].quantity + 1 };
-        newItems[itemIndex] = updatedItem;
-      } else {
-        newItems.push({ product: productToAdd, quantity: 1 });
-      }
-      // refreshPage(); //Temporary solution to refresh the page
-      return newItems;
-    })
-  }
-
-  function handleRemove(productToRemove: Product) {
-    setCartItems((prevItems: CartItem[]) => {
-      // Create a new array that's a copy of prevItems
-      const newItems = [...prevItems];
-
-      // Find the index of the product in the new array
-      const itemIndex = newItems.findIndex(item => item.product.product_id === productToRemove.product_id);
-
-      if (itemIndex !== -1) {
-        // If the product is in the cart and its quantity is more than 1, we decrease the quantity
-        if (newItems[itemIndex].quantity > 1) {
-          const updatedItem = { ...newItems[itemIndex], quantity: newItems[itemIndex].quantity - 1 };
-          newItems[itemIndex] = updatedItem;
-        } else {
-          // If the product is in the cart and its quantity is 1, we remove it
-          newItems.splice(itemIndex, 1);
-        }
-      }
-      // refreshPage(); //Temporary solution to refresh the page
-      return newItems;
-    });
-  }
-
   async function handlePayment() {
     const fetchOrderData = async () => {
       const token = localStorage.getItem('token');
-      const cartItems = JSON.parse(sessionStorage.getItem('cart') || '[]');
 
       if (!token) {
-        console.log('No token found');
+        alert('No token found');
         return;
       }
 
-      if (cartItems.length === 0 || cartItems === null) {
+      if (cartItems.length === 0) {
         alert("Your cart is empty!");
         return;
       }
@@ -123,7 +65,6 @@ function CartView() {
         items
       };
 
-      console.log("the items",order);
       try {
         const response = await fetch(`${config.apiUrl}/orderUser`, {
           method: 'POST',
@@ -135,12 +76,11 @@ function CartView() {
         });
 
         if (!response.ok) {
-          console.log("server error");
           throw new Error(`HTTP error! status: ${response.status}`);
         } else {
           const data = await response.json();
-          console.log(data);
           alert("Payment Successful");
+          clearCart();
           navigate('/order', { state: { data } });
         }
 
@@ -152,22 +92,18 @@ function CartView() {
     fetchOrderData();
   }
 
-  // function refreshPage(){
-  //   window.location.reload();
-  // }
-
   return (
     <React.Fragment>
       <h2>Cart</h2>
       <div className="product-grid-cart">
-      {productList && cartItems.map((item: CartItem) => (
+      {cartItems.map((item: CartItem) => (
         <div className="product-card" key={item.product.product_id}>
           <ListGroup.Item action className="product-item">
             <h2>{item.product.name}</h2>
             <img src={images[item.product.product_id]} alt={item.product.name} />
             <p>Pris: {item.product.price}kr</p>
             <div className="addOrRemoveQuantity">
-            <input type="button" value={"-"} onClick={() => handleRemove(item.product)} style={{
+            <input type="button" value={"-"} onClick={() => handleRemove(item)} style={{
               height:"30px",
               width:"20px",
               display: 'flex',
@@ -175,7 +111,7 @@ function CartView() {
               alignItems: 'center'
             }} />
               <p>Quantity: {item.quantity}</p>
-            <input type="button" value="+" onClick={() => handleAdd(item.product)}   style={{
+              <input type="button" value="+" onClick={() => addCartItem(item.product)} style={{
               height:"30px",
               width:"20px",
               display: 'flex',

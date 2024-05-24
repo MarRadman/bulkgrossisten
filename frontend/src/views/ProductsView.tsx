@@ -11,8 +11,9 @@ import image5 from "../assets/5.jpg";
 import image6 from "../assets/6.jpg";
 import image7 from "../assets/7.jpg";
 import image8 from "../assets/8.jpg";
-import useSessionStorage from "../hooks/SessionStorageHook";
 import config from "../../config";
+import { useCart } from '../context/CartContext';
+import { Product } from '../types';
 
 const images: { [key: number]: string } = {
   1: image1,
@@ -25,26 +26,14 @@ const images: { [key: number]: string } = {
   8: image8,
 };
 
-interface Product {
-  product_id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-}
-
-interface CartItem {
-  product: Product;
-  quantity: number;
-}
-
 function ProductsView() {
   const [productList, setProductList] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [cartItems, setCartItems] = useSessionStorage<CartItem[]>("cart", []);
+  const { cartItems, addCartItem } = useCart();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchProductData = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -83,34 +72,6 @@ function ProductsView() {
     sessionStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = (product: Product) => {
-    if (!product || !product.name) {
-      console.log("Invalid product");
-      return;
-    }
-
-    console.log("Item added to cart", product.name);
-
-    setCartItems((prevItems) => {
-      const newItems = [...prevItems];
-      const itemIndex = newItems.findIndex(
-        (item) => item.product.product_id === product.product_id
-      );
-
-      if (itemIndex !== -1) {
-        const updatedItem = {
-          ...newItems[itemIndex],
-          quantity: newItems[itemIndex].quantity + 1,
-        };
-        newItems[itemIndex] = updatedItem;
-      } else {
-        newItems.push({ product, quantity: 1 });
-      }
-
-      return newItems;
-    });
-  };
-
   const handleShowModal = (product: Product) => {
     setSelectedProduct(product);
     setShowModal(true);
@@ -132,9 +93,7 @@ function ProductsView() {
               <p>Pris: {product.price}kr</p>
             </ListGroup.Item>
             <div className="button-group">
-              <Button onClick={() => addToCart(product)}>
-                Lägg till i varukorg
-              </Button>
+              <Button onClick={() => addCartItem(product)}>Add to cart</Button>
               <Button variant="info" onClick={() => handleShowModal(product)}>
                 Info
               </Button>

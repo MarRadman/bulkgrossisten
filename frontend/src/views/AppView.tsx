@@ -6,10 +6,6 @@ import image1 from "../assets/FoodProducts.jpg";
 import image2 from "../assets/MenusPhoto.jpg";
 
 function App() {
-
-  // Wanted to check if user had a token, but didnt want to repeat the code in every view. So made a
-  // HOC (higher-order component) to check if user have an token.
-
   // const location = useLocation();
   // const token = localStorage.getItem('token');
 

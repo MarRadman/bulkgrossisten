@@ -15,8 +15,8 @@ function MenusView() {
   const [menuList, setMenuList] = useState<Menu[]>([]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchMenuData = async () => {
-
       const token = localStorage.getItem('token');
       if (!token) {
         console.log('No token found');
