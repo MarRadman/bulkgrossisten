@@ -6,21 +6,24 @@ import OrderView from '../views/OrderView';
 import CartView from '../views/CartView';
 import LoginView from '../views/LoginView';
 import SignUpView from '../views/SignUpView';
-
+import NavMenu from '../components/NavMenu';
+import Footer from '../components/Footer';
 
 function AppRouter() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LoginView />} />
-        <Route path="/signup" element={<SignUpView />} />
-        <Route path="/app" element={<AppView />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/menus" element={<Menus />} />
-        <Route path="/cart" element= {<CartView />} />
-        <Route path="/order" element={<OrderView />} />
-      </Routes>
+        <NavMenu />
+          <Routes>
+            <Route path="/" element={<LoginView />} />
+            <Route path="/signup" element={<SignUpView />} />
+            <Route path="/app" element={<AppView />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/menus" element={<Menus />} />
+            <Route path="/cart" element= {<CartView />} />
+            <Route path="/order" element={<OrderView />} />
+          </Routes>
+        <Footer />
     </BrowserRouter>
   )
 }

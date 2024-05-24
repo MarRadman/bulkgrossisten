@@ -6,34 +6,36 @@ import paypalLogo from "../assets/paypal.png";
 import facebookLogo from "../assets/facebookIcon.svg";
 import instagramLogo from "../assets/instagramIcon.svg";
 import linkedinLogo from "../assets/linkedinIcon.svg";
+import { Link } from "react-router-dom";
+import "../assets/footer.css";
 
 const Footer = () => {
   return (
-    <div className="container">
+    <div className="footer" style={{bottom:"0"}}>
       <footer className="py-3 my-4">
         <div className="row text-center text-md-start">
           <div className="col-md-3">
             <h5>About</h5>
             <ul className="list-unstyled text-small">
               <li>
-                <a className="text-muted" href="#">
+                <Link to="#" className="text-muted" >
                   Our Team
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-muted" href="#">
+                <Link to="#" className="text-muted" >
                   Locations
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-muted" href="#">
+                <Link to="#" className="text-muted" >
                   Privacy
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-muted" href="#">
+                <Link to="#" className="text-muted" >
                   Terms
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -41,19 +43,19 @@ const Footer = () => {
             <h5>Help</h5>
             <ul className="list-unstyled text-small">
               <li>
-                <a className="text-muted" href="#">
+                <Link to="#" className="text-muted" >
                   Support
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-muted" href="#">
+                <Link to="#" className="text-muted" >
                   FAQs
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-muted" href="#">
+                <Link to="#" className="text-muted" >
                   Contact Us
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -61,19 +63,19 @@ const Footer = () => {
             <h5>Contact</h5>
             <ul className="list-unstyled text-small">
               <li>
-                <a className="text-muted" href="#">
+                <Link to="#" className="text-muted" >
                   Email
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-muted" href="#">
+                <Link to="#" className="text-muted" >
                   Phone
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-muted" href="#">
+                <Link to="#" className="text-muted" >
                   Address
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -120,7 +122,7 @@ const Footer = () => {
           <span className="text-muted">© 2024 Bulkgrossisten AB</span>
           <ul className="nav">
             <li className="ms-3">
-              <a className="text-muted" href="#">
+              <Link to="#" className="text-muted" >
                 <img
                   className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
                   src={facebookLogo}
@@ -128,10 +130,10 @@ const Footer = () => {
                   width="30"
                   height="24"
                 />
-              </a>
+              </Link>
             </li>
             <li className="ms-3">
-              <a className="text-muted" href="#">
+              <Link to="#" className="text-muted" >
                 <img
                   className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
                   src={instagramLogo}
@@ -139,10 +141,10 @@ const Footer = () => {
                   width="30"
                   height="24"
                 />
-              </a>
+              </Link>
             </li>
             <li className="ms-3">
-              <a className="text-muted" href="#">
+              <Link to="#" className="text-muted" >
                 <img
                   className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
                   src={linkedinLogo}
@@ -150,7 +152,7 @@ const Footer = () => {
                   width="30"
                   height="24"
                 />
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

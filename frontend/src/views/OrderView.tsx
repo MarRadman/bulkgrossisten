@@ -205,8 +205,8 @@ const OrderView = () => {
       </div>
       <ul>
         <li>
-          <p>Total Price: {totalPrice}</p>
-        </li>{" "}
+          {!orderList && <p>Total Price: {totalPrice}</p>}
+        </li>
         {/* Display the total price for all orders */}
       </ul>
       <BackBtn />

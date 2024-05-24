@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import BurgerMenuIcon from "../assets/burgerIcon.svg";
 import CartIcon from "../assets/cartIcon.svg";
 import "../assets/Navmenu.css";
+import { Link } from "react-router-dom";
 
 interface Product {
   product_id: number;
@@ -78,19 +79,19 @@ function NavMenu() {
             aria-labelledby="dropdownMenuButton"
           >
             <li>
-              <a className="dropDownLinks" href="/order">
+              <Link to="/order" className="dropDownLinks">
                 Orders
-              </a>
+              </Link>
             </li>
             <li>
-              <a className="dropDownLinks" href="/" onClick={handleLogout}>
+              <Link to="/" onClick={handleLogout} className="dropDownLinks">
                 Logout
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
         <h1 className="title">
-          <a href="/app">Bulkgrossisten</a>
+          <Link to="/app">Bulkgrossisten</Link>
         </h1>
         <div className="dropdown">
           <img src={CartIcon} alt="Cart" className="navIcons" />
@@ -108,9 +109,7 @@ function NavMenu() {
                 </li>
               ))}
             <li>
-              <a className="dropDownLinks" href="/cart">
-                Checkout
-              </a>
+              <Link to="/cart" className="dropDownLinks">Checkout</Link>
             </li>
           </ul>
         </div>

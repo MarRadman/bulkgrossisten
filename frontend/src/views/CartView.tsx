@@ -187,7 +187,7 @@ function CartView() {
           </div>
           ))}
           </div>
-          {cartItems.length <= 0  && <p>Your cart is empty. Checkout <Link to="/prodcuts">Products</Link></p>}
+          {cartItems.length <= 0  && <p>Your cart is empty. Checkout <Link to="/products">Products</Link></p>}
           {cartItems.length > 0 && (
             <React.Fragment>
               <p>Total Price: {totalPrice}kr</p>
