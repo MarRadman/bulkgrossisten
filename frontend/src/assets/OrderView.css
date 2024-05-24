@@ -3,16 +3,20 @@
   height: auto;
   font-weight: bold;
   text-align: center;
+  color: #333;
+  font-size: 2rem;
 }
 
 .userInfo {
   background-color: rgba(255, 255, 255, 0.9);
-  width: 50%;
+  max-width: 600px;
+  width: 100%;
   height: auto;
-  margin: 10% 0% 10% 0%;
+  margin: 10% auto;
   padding: 30px;
-  height: auto;
   text-align: left;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .orderInfoTitle {
@@ -21,6 +25,7 @@
   font-size: 3rem;
   font-weight: bold;
   text-align: center;
+  color: #333;
 }
 
 .orders-grid {
@@ -33,7 +38,7 @@
   align-content: center;
   justify-items: center;
   align-items: center;
-  margin: 5% 0 5% 0;
+  margin: 5% auto;
 }
 
 .order-card {
@@ -66,11 +71,16 @@
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
+  color: #333;
 }
 
 @media only screen and (max-width: 600px) {
   .product-card {
     width: 90%;
     padding: 0.5rem;
+  }
+
+  .userInfo, .orderInfoTitle {
+    width: 90%;
   }
 }

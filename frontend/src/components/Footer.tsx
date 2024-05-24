@@ -11,7 +11,7 @@ import "../assets/footer.css";
 
 const Footer = () => {
   return (
-    <div className="footer" style={{bottom:"0"}}>
+    <div className="footer">
       <footer className="py-3 my-4">
         <div className="row text-center text-md-start">
           <div className="col-md-3">

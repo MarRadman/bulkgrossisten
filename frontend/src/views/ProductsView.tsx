@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ListGroup, Button, Modal } from "react-bootstrap";
 import withAuthCheck from "../authentication/withAuthCheck";
 import BackBtn from "../components/BackBtn";
-import "../assets/Product.css";
+import "../assets/ProductView.css";
 import image1 from "../assets/1.jpg";
 import image2 from "../assets/2.jpg";
 import image3 from "../assets/3.jpg";
@@ -33,7 +33,6 @@ function ProductsView() {
   const { cartItems, addCartItem } = useCart();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     const fetchProductData = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -83,7 +82,7 @@ function ProductsView() {
 
   return (
     <React.Fragment>
-      <h1 className="Products-title">Produkter</h1>
+      <h1 className="products-title">Produkter</h1>
       <div className="product-grid-products">
         {productList.map((product) => (
           <div className="product-card" key={product.product_id}>

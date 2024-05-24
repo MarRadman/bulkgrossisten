@@ -1,4 +1,9 @@
-/* LoginView.css */
+.form-container{
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: 10% 0 10% 0;
+}
 
 form {
   background-color: #ffffff;
@@ -55,12 +60,14 @@ p a:hover {
   text-decoration: underline;
 }
 
-.loading,
 .error {
   color: #ff0000;
   margin-top: 1rem;
+  text-align: center;
 }
 
 .loading {
   color: #007bff;
+  margin-top: 1rem;
+  text-align: center;
 }

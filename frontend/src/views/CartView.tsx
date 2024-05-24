@@ -1,6 +1,6 @@
 import React, { useEffect, useState  } from "react";
 import { useNavigate } from 'react-router-dom';
-import '../assets/Cart.css';
+import '../assets/CartView.css';
 import withAuthCheck from '../authentication/withAuthCheck';
 import BackBtn from '../components/BackBtn';
 import { ListGroup } from 'react-bootstrap';
@@ -34,7 +34,6 @@ function CartView() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     let total = 0;
     for (const items of cartItems) {
       total += items.product.price * items.quantity;
@@ -94,30 +93,18 @@ function CartView() {
 
   return (
     <React.Fragment>
-      <h2>Cart</h2>
+      <h2 className="cart-title">Cart</h2>
       <div className="product-grid-cart">
       {cartItems.map((item: CartItem) => (
-        <div className="product-card" key={item.product.product_id}>
-          <ListGroup.Item action className="product-item">
+        <div className="product-card-cart" key={item.product.product_id}>
+          <ListGroup.Item action className="product-item-cart">
             <h2>{item.product.name}</h2>
             <img src={images[item.product.product_id]} alt={item.product.name} />
             <p>Pris: {item.product.price}kr</p>
             <div className="addOrRemoveQuantity">
-            <input type="button" value={"-"} onClick={() => handleRemove(item)} style={{
-              height:"30px",
-              width:"20px",
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }} />
+            <input type="button" value={"-"} onClick={() => handleRemove(item)} className="quantity-button-rmv"/>
               <p>Quantity: {item.quantity}</p>
-              <input type="button" value="+" onClick={() => addCartItem(item.product)} style={{
-              height:"30px",
-              width:"20px",
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }} />
+              <input type="button" value="+" onClick={() => addCartItem(item.product)} className="quantity-button-add" />
             </div>
           </ListGroup.Item>
           </div>
@@ -127,7 +114,7 @@ function CartView() {
           {cartItems.length > 0 && (
             <React.Fragment>
               <p>Total Price: {totalPrice}kr</p>
-              <input onClick={handlePayment} type="button" value="Proceed to Payment" />
+              <button onClick={handlePayment} className="proceed-button">Proceed to Payment</button>
             </React.Fragment>
           )}
       <BackBtn />

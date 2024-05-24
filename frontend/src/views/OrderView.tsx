@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import { ListGroup } from "react-bootstrap";
-import "../assets/Order.css";
+import "../assets/OrderView.css";
 import withAuthCheck from "../authentication/withAuthCheck";
 import BackBtn from "../components/BackBtn";
 import config from "../../config";
@@ -216,8 +216,8 @@ const OrderView = () => {
             );
           })}
       </div>
-        <h5>Total Price: {totalOrdersPrice}</h5>
-        {/* Display the total price for all orders */}
+        {orderList && orderList.length > 0 && <h5>Total Price: {totalOrdersPrice}</h5>}
+        {/* Display the total price for all orders if there are any orders */}
       <BackBtn />
     </React.Fragment>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../assets/Login.css";
+import "../assets/LoginView.css";
 import { Link } from "react-router-dom";
 import config from "../../config";
 
@@ -12,7 +12,6 @@ function LoginView() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     const token = localStorage.getItem("token");
     if (token) {
       navigate("/app");
@@ -66,11 +65,11 @@ function LoginView() {
   };
 
   return (
-    <div>
+    <div className="form-container">
       <form onSubmit={handleSubmit}>
         <div>
           <label>
-            Username:
+            Email:
             <input
               type="text"
               placeholder="Email"
@@ -105,8 +104,10 @@ function LoginView() {
           gap: "10px",
         }}
       >
-        <p>Don't have an account?</p>
-        <Link to="/signup">Sign up</Link>
+        <div style={{display:"flex", alignItems:"center", gap:"10px"}}>
+          <p>Don't have an account?</p>
+          <Link to="/signup">Sign up</Link>
+        </div>
       </div>
     </div>
   );

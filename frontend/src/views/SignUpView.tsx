@@ -1,7 +1,7 @@
-import { useState, FormEvent, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import "../assets/Login.css";
+import "../assets/SignUpView.css";
 import config from "../../config";
 
 function SignUpView() {
@@ -12,19 +12,14 @@ function SignUpView() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [country, setCountry] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/app");
-    }
-  }, [navigate]);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
+    // Check if the user left a empty field
     if (
       !username.trim().toLocaleLowerCase() ||
       !email.trim().toLocaleLowerCase() ||
@@ -34,53 +29,79 @@ function SignUpView() {
       !country.trim().toLocaleLowerCase()
     ) {
       setErrorMessage("Please fill in all fields");
+      setLoading(false);
+      return;
+    }
+      // Check if the username is at least 3 characters long
+    if (username.length < 3) {
+      setErrorMessage("Username must be at least 3 characters long");
+      setLoading(false);
       return;
     }
 
-    const response = await fetch(`${config.apiUrl}/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        email,
-        password,
-        address,
-        phone_number: phoneNumber,
-        country,
-      }),
-    });
-    const data = await response.json();
+    // Check if the email contains an @ symbol
+    if (!email.includes("@")) {
+      setErrorMessage("Please enter a valid email address");
+      setLoading(false);
+      return;
+    }
 
-    if (response.ok) {
-      // The signup was successful
-      setErrorMessage("Account was created"); // Clear any previous error message
-      console.log("user created");
-      setTimeout(() => {
-        navigate("/"); // Navigate to LoginView
-      }, 2000);
-    } else {
-      // There was an error signing up
-      if (data.message === "Email already in use") {
-        setErrorMessage("Email already in use. Please use another one.");
-      } else if (data.message) {
-        setErrorMessage(`Error signing up: ${data.message}`);
+    // Check if the password is at least 6 characters long
+    if (password.length < 6) {
+      setErrorMessage("Password must be at least 6 characters long");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${config.apiUrl}/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          address,
+          phone_number: phoneNumber,
+          country,
+        }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        // The signup was successful
+        setErrorMessage("Account was created"); // Clear any previous error message
+        console.log("user created");
+        setTimeout(() => {
+          setLoading(false);
+          navigate("/"); // Navigate to LoginView
+        }, 2000);
       } else {
-        setErrorMessage("Error signing up: An unknown error occurred");
+        // There was an error signing up
+        throw new Error(data.message || "An unknown error occurred");
       }
-      console.log("error signing up");
+    } catch (error: unknown) {
+      setTimeout(() => {
+        setLoading(false);
+        if (error instanceof Error) {
+          setErrorMessage(error.message);
+        } else {
+          setErrorMessage("An unknown error occurred");
+        }
+      }, 2000);
     }
   };
 
   return (
-    <div>
+    <div className="form-container">
       <form onSubmit={handleSubmit}>
         <label>
           Name:
           <input
             onChange={(event) => setUsername(event.target.value)}
-            placeholder="Username"
+            placeholder="Name"
             value={username}
           />
         </label>
@@ -127,19 +148,12 @@ function SignUpView() {
         </label>
         <input type="submit" value="Sign Up" />
       </form>
-      {errorMessage && <p>{errorMessage}</p>}
-      <div
-        style={{
-          display: "flex",
-          textAlign: "center",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "10px",
-        }}
-      >
-        <p>Got an Account?</p>
-        <Link to="/">Login</Link>
-      </div>
+        {loading && <p style={{textAlign:"center"}}>Loading...</p>}
+        {errorMessage && <p style={{textAlign:"center"}}>{errorMessage}</p>}
+        <div className="signup-link" >
+          <p>Got an Account?</p>
+          <Link to="/">Login</Link>
+        </div>
     </div>
   );
 }

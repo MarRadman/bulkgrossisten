@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../assets/App.css";
+import "../assets/AppView.css";
 import withAuthCheck from '../authentication/withAuthCheck';
 import image1 from "../assets/FoodProducts.jpg";
 import image2 from "../assets/MenusPhoto.jpg";

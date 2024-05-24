@@ -10,8 +10,8 @@ p {
   margin: 0 0 1rem 0;
 }
 
-.Products-title {
-  margin-top: 5%;
+.products-title {
+  margin: 5% 0 5% 0;
   font-size: 3rem;
   font-weight: 700;
 }

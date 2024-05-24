@@ -4,6 +4,7 @@ import { ListGroup } from 'react-bootstrap';
 import withAuthCheck from '../authentication/withAuthCheck';
 import BackBtn from '../components/BackBtn';
 import config from "../../config";
+import '../assets/MenusView.css';
 
 type Menu = {
   menu_id: number;
@@ -15,7 +16,6 @@ function MenusView() {
   const [menuList, setMenuList] = useState<Menu[]>([]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     const fetchMenuData = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
