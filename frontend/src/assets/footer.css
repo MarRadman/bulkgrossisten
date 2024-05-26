@@ -1,5 +1,30 @@
 .footer {
   margin-top: 10%;
-  min-width: 90%;
-  height: auto;
+  left: 0;
+  bottom: 0;
+  width: 90%;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.footer .text-muted {
+  color: #6c757d;
+}
+
+.footer h5 {
+  margin-bottom: 1rem;
+}
+
+.footer ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.footer ul li a {
+  color: #6c757d;
+  text-decoration: none;
+}
+
+.footer ul li a:hover {
+  color: #343a40;
 }

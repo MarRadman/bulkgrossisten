@@ -46,7 +46,7 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
   const token = req.headers.authorization;
 
   if (!token) {
-    console.log("came here. SO wrong in the authentication function");
+    console.log("No token in the header");
   }
 
   try {

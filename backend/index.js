@@ -64,7 +64,7 @@ function authenticate(req, res, next) {
                 case 0:
                     token = req.headers.authorization;
                     if (!token) {
-                        console.log("came here. SO wrong in the authentication function");
+                        console.log("No token in the header");
                     }
                     _a.label = 1;
                 case 1:

@@ -10,6 +10,21 @@ import { Link } from "react-router-dom";
 import "../assets/footer.css";
 
 const Footer = () => {
+
+  const paymentLogos = [
+    { src: visaLogo, alt: "Visa" },
+    { src: swishLogo, alt: "Swish" },
+    { src: mastercardLogo, alt: "Mastercard" },
+    { src: googlepayLogo, alt: "Google Pay" },
+    { src: paypalLogo, alt: "Paypal" },
+  ];
+
+  const socialLogos = [
+    { src: facebookLogo, alt: "Facebook" },
+    { src: instagramLogo, alt: "Instagram" },
+    { src: linkedinLogo, alt: "LinkedIn" },
+  ];
+
   return (
     <div className="footer">
       <footer className="py-3 my-4">
@@ -81,79 +96,34 @@ const Footer = () => {
           </div>
           <div className="col-md-3 text-center">
             <h5>Payment Methods</h5>
-            <img
-              className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
-              src={visaLogo}
-              alt="Visa"
-              width="35"
-              height="24"
-            />
-            <img
-              className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
-              src={swishLogo}
-              alt="Swish"
-              width="35"
-              height="24"
-            />
-            <img
-              className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
-              src={mastercardLogo}
-              alt="Mastercard"
-              width="35"
-              height="24"
-            />
-            <img
-              className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
-              src={googlepayLogo}
-              alt="Google Pay"
-              width="35"
-              height="24"
-            />
-            <img
-              className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
-              src={paypalLogo}
-              alt="Paypal"
-              width="35"
-              height="24"
-            />
+            {paymentLogos.map((logo, index) => (
+              <img
+                key={index}
+                className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
+                src={logo.src}
+                alt={logo.alt}
+                width="35"
+                height="24"
+              />
+            ))}
           </div>
         </div>
         <div className="d-flex justify-content-between align-items-center border-top mt-3 pt-3">
           <span className="text-muted">© 2024 Bulkgrossisten AB</span>
           <ul className="nav">
-            <li className="ms-3">
-              <Link to="#" className="text-muted" >
-                <img
-                  className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
-                  src={facebookLogo}
-                  alt="Paypal"
-                  width="30"
-                  height="24"
-                />
-              </Link>
-            </li>
-            <li className="ms-3">
-              <Link to="#" className="text-muted" >
-                <img
-                  className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
-                  src={instagramLogo}
-                  alt="Paypal"
-                  width="30"
-                  height="24"
-                />
-              </Link>
-            </li>
-            <li className="ms-3">
-              <Link to="#" className="text-muted" >
-                <img
-                  className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
-                  src={linkedinLogo}
-                  alt="Paypal"
-                  width="30"
-                  height="24"
-                />
-              </Link>
-            </li>
+            {socialLogos.map((logo, index) => (
+              <li className="ms-3" key={index}>
+                <Link to="#" className="text-muted" >
+                  <img
+                    className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
+                    src={logo.src}
+                    alt={logo.alt}
+                    width="30"
+                    height="24"
+                  />
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </footer>

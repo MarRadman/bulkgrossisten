@@ -30,7 +30,7 @@
 }
 
 .appView_photos div .image-container {
-  width: 100%;
+  width: 80%;
   object-fit: cover;
 }
 
@@ -54,22 +54,32 @@
 
 @media only screen and (min-width: 768px) {
   .appView_photos h2 {
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
   .appView_photos {
     flex-direction: row;
+    width: 70%;
   }
   .appView_photos img {
-    min-width: 300px;
-    min-height: 300px;
+    min-width: 200px;
+    max-width: 400px;
+    min-height: 200px;
+    max-height: 400px;
   }
 }
 
 @media only screen and (min-width: 1200px) {
   .appView_photos h2 {
-    font-size: 4rem;
+    font-size: 3rem;
   }
   .appView_photos {
-    width: 60%;
+    flex-direction: row;
+    width: 90%;
+  }
+  .appView_photos img {
+    min-width: 300px;
+    max-width: 500px;
+    min-height: 300px;
+    max-height: 500px;
   }
 }
