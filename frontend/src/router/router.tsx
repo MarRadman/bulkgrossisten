@@ -6,6 +6,7 @@ import OrderView from '../views/OrderView';
 import CartView from '../views/CartView';
 import LoginView from '../views/LoginView';
 import SignUpView from '../views/SignUpView';
+import ComingSoon from '../views/ComingSoonView'
 import NavMenu from '../components/NavMenu';
 import Footer from '../components/Footer';
 
@@ -22,6 +23,7 @@ function AppRouter() {
             <Route path="/menus" element={<Menus />} />
             <Route path="/cart" element= {<CartView />} />
             <Route path="/order" element={<OrderView />} />
+            <Route path='/comingsoon' element={<ComingSoon />} />
           </Routes>
         <Footer />
     </BrowserRouter>

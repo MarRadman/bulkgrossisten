@@ -85,3 +85,6 @@ Cart Functionality in React with Context API
 tutorial
 Implementing Cart Functionality in React JS
 Introduction
+
+*Fixa MenuView
+*Lägg till på app.post (index.ts backend) för cartView och visa datan på orderView.
