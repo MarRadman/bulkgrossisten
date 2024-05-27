@@ -3,21 +3,21 @@ import { Product, CartItem } from '../types';
 
 
 interface CartContextProps {
-  cartItems: CartItem[];
-  addCartItem: (product: Product) => void;
-  handleRemove: (item: CartItem) => void;
-  clearCart: () => void;
-  totalPrice: number;
-  setTotalPrice: React.Dispatch<React.SetStateAction<number>>;
+  cartItems: CartItem[]; //Create a array of CartItem type
+  addCartItem: (product: Product) => void; //Add product to the cart
+  handleRemove: (item: CartItem) => void; //Remove product from the cart
+  clearCart: () => void; //Clear the cart
+  totalPrice: number; //Total price of the cart
+  setTotalPrice: React.Dispatch<React.SetStateAction<number>>; //Set the total price of the cart
 }
 
 const CartContext = createContext<CartContextProps>({
-  cartItems: [],
-  addCartItem: () => {},
-  handleRemove: () => {},
-  clearCart: () => {},
-  totalPrice: 0,
-  setTotalPrice: () => {},
+  cartItems: [], //Initial value of cartItems
+  addCartItem: () => {}, //Initial value of addCartItem
+  handleRemove: () => {}, //Initial value of handleRemove
+  clearCart: () => {}, //Initial value of clearCart
+  totalPrice: 0, //Initial value of totalPrice
+  setTotalPrice: () => {}, //Initial value of setTotalPrice
 });
 
 export const CartProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -25,8 +25,8 @@ export const CartProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    sessionStorage.setItem("cart", JSON.stringify(cartItems));
+    window.scrollTo(0, 0); //Scroll to the top of the page
+    sessionStorage.setItem("cart", JSON.stringify(cartItems)); //Store the cart items in the session storage
   }, [cartItems]);
 
   function handleAdd(productToAdd: Product) {
@@ -78,6 +78,8 @@ export const CartProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   );
 };
 
+//{children}: This is a special prop in React that allows components to be passed as inputs to other components.
+//https://react.dev/learn/passing-props-to-a-component
 export function useCart() {
   const context = useContext(CartContext);
   if (!context) {

@@ -1,7 +1,8 @@
 import "../assets/BackBtn.css"
 
 function BackBtn() {
-  const handleClick = () => {
+  const handleClick = (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    event.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   return (
