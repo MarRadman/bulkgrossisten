@@ -9,6 +9,7 @@ import * as path from "path";
 
 dotenv.config();
 
+// Create a new PostgreSQL connection pool using the connection string from the environment variables
 const pool = new Pool({
   connectionString: process.env.PGURI,
 });
@@ -50,13 +51,16 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
   }
 
   try {
+    // Query the database for a user with the provided token
     const { rows } = await pool.query("SELECT * FROM users WHERE token = $1", [
       token,
     ]);
+
     if (rows.length === 0) {
       return res.status(401).json({ error: "Invalid token" });
     }
 
+    // If a user is found, add it to the request object and call the next middleware
     (req as RequestUser).user = rows[0];
     next();
   } catch (error) {

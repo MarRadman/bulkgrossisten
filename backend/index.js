@@ -44,6 +44,7 @@ var dotenv = require("dotenv");
 var bcrypt = require("bcrypt");
 var path = require("path");
 dotenv.config();
+// Create a new PostgreSQL connection pool using the connection string from the environment variables
 var pool = new pg_1.Pool({
     connectionString: process.env.PGURI,
 });
@@ -77,6 +78,7 @@ function authenticate(req, res, next) {
                     if (rows.length === 0) {
                         return [2 /*return*/, res.status(401).json({ error: "Invalid token" })];
                     }
+                    // If a user is found, add it to the request object and call the next middleware
                     req.user = rows[0];
                     next();
                     return [3 /*break*/, 4];
