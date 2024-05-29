@@ -49,6 +49,7 @@ function ProductsView() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showModal, setShowModal] = useState(false);
   const { cartItems, addCartItem } = useCart();
+  const [showNotification, setShowNotification] = useState<{ [key: number]: boolean }>({});
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -110,11 +111,16 @@ function ProductsView() {
               <p>Pris: {product.price}kr</p>
             </ListGroup.Item>
             <div className="button-group">
-              <Button onClick={() => addCartItem(product)}>Add to cart</Button>
+            <Button onClick={() => {
+                addCartItem(product);
+                setShowNotification(prevState => ({ ...prevState, [product.product_id]: true }));
+                setTimeout(() => setShowNotification(prevState => ({ ...prevState, [product.product_id]: false })), 3000);
+              }}>Add to cart</Button>
               <Button variant="info" onClick={() => handleShowModal(product)}>
                 Info
               </Button>
             </div>
+            {showNotification[product.product_id] && <div>Item added to cart!</div>}
           </div>
         ))}
       </div>

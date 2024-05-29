@@ -25,7 +25,6 @@ export const CartProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    window.scrollTo(0, 0); //Scroll to the top of the page
     sessionStorage.setItem("cart", JSON.stringify(cartItems)); //Store the cart items in the session storage
   }, [cartItems]);
 

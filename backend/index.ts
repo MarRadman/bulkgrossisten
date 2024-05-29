@@ -184,19 +184,19 @@ app.get(
 
       const result = await pool.query(
         `
-    SELECT orders.order_id,
-    orders.delivery_address,
-    orders.order_date,
-    orders.status,
-    users.username,
-    order_details.product_id,
-    order_details.quantity,
-    products.name
-    FROM orders
-    INNER JOIN users ON orders.user_id = users.user_id
-    INNER JOIN order_details ON orders.order_id = order_details.order_id
-    INNER JOIN products ON order_details.product_id = products.product_id
-    WHERE orders.user_id = $1`,
+          SELECT orders.order_id,
+          orders.delivery_address,
+          orders.order_date,
+          orders.status,
+          users.username,
+          order_details.product_id,
+          order_details.quantity,
+          products.name
+          FROM orders
+          INNER JOIN users ON orders.user_id = users.user_id
+          INNER JOIN order_details ON orders.order_id = order_details.order_id
+          INNER JOIN products ON order_details.product_id = products.product_id
+          WHERE orders.user_id = $1`,
         [userId]
       );
 

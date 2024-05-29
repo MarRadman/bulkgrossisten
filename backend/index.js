@@ -224,7 +224,7 @@ app.get("/orderUser/:userId", authenticate, function (req, res) { return __await
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 userId = req.params.userId;
-                return [4 /*yield*/, pool.query("\n    SELECT orders.order_id,\n    orders.delivery_address,\n    orders.order_date,\n    orders.status,\n    users.username,\n    order_details.product_id,\n    order_details.quantity,\n    products.name\n    FROM orders\n    INNER JOIN users ON orders.user_id = users.user_id\n    INNER JOIN order_details ON orders.order_id = order_details.order_id\n    INNER JOIN products ON order_details.product_id = products.product_id\n    WHERE orders.user_id = $1", [userId])];
+                return [4 /*yield*/, pool.query("\n          SELECT orders.order_id,\n          orders.delivery_address,\n          orders.order_date,\n          orders.status,\n          users.username,\n          order_details.product_id,\n          order_details.quantity,\n          products.name\n          FROM orders\n          INNER JOIN users ON orders.user_id = users.user_id\n          INNER JOIN order_details ON orders.order_id = order_details.order_id\n          INNER JOIN products ON order_details.product_id = products.product_id\n          WHERE orders.user_id = $1", [userId])];
             case 1:
                 result = _a.sent();
                 orders = [];

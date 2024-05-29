@@ -5,9 +5,9 @@ CREATE TABLE
         username VARCHAR(50) UNIQUE NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
-        address TEXT,
-        phone_number TEXT,
-        country TEXT,
+        address TEXT NOT NULL,
+        phone_number TEXT NOT NULL,
+        country TEXT NOT NULL,
         token TEXT
     );
 
