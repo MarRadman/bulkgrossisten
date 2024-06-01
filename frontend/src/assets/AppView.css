@@ -6,8 +6,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 50px;
-  height: 50vh;
+  height: 75vh;
 }
 
 .photo-container {
@@ -24,7 +23,7 @@
 .appView_photos div {
   position: relative;
   width: 80%;
-  margin: 2% auto;
+  margin: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,6 +50,15 @@
   transform: translate(-50%, -50%);
   color: white;
   border-color: #e37171;
+}
+
+@media only screen and (min-width: 425px){
+  .appView_photos img {
+    min-width: 200px;
+    max-width: 300px;
+    min-height: 200px;
+    max-height: 300px;
+  }
 }
 
 @media only screen and (min-width: 768px) {
